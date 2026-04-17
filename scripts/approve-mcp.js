@@ -14,3 +14,4 @@ fs.writeFileSync(path, JSON.stringify(j, null, 2), 'utf8');
 
 const j2 = JSON.parse(fs.readFileSync(path, 'utf8'));
 console.log('enabledMcpjsonServers:', j2.projects[key].enabledMcpjsonServers.join(', '));
+console.log('enableAllProjectMcpServers:', j2.projects[key].enableAllProjectMcpServers);
