@@ -23,9 +23,22 @@
       "command": "cmd",
       "args": ["/c", "npx", "-y", "@automattic/mcp-wordpress-remote@latest"],
       "env": {
-        "WP_API_URL": "${WC_MCP_URL}",
+        "WP_API_URL": "https://inaricom.com/wp-json/woocommerce/mcp",
         "CUSTOM_HEADERS": "${WC_MCP_HEADERS}"
       }
+    },
+    "ssh-inaricom": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@fangjunjie/ssh-mcp-server",
+        "--host",
+        "inaricom",
+        "--blacklist",
+        "^rm\\s+-rf,^:\\(\\)\\{,^mkfs,^dd\\s+if=,^shutdown,^reboot,^halt,^poweroff,wp\\s+db\\s+drop,wp\\s+db\\s+reset,DROP\\s+DATABASE,DROP\\s+TABLE"
+      ]
     }
   }
 }
