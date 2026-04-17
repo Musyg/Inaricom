@@ -26,26 +26,6 @@
         "WP_API_URL": "${WC_MCP_URL}",
         "CUSTOM_HEADERS": "${WC_MCP_HEADERS}"
       }
-    },
-    "ssh-staging": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@fangjunjie/ssh-mcp-server"],
-      "env": {
-        "SSH_HOST": "${STAGING_SSH_HOST}",
-        "SSH_USER": "${STAGING_SSH_USER}",
-        "SSH_PORT": "${STAGING_SSH_PORT}",
-        "SSH_KEY_PATH": "${STAGING_SSH_KEY_PATH}"
-      }
-    },
-    "ssh-prod-readonly": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@fangjunjie/ssh-mcp-server"],
-      "env": {
-        "SSH_HOST": "${PROD_SSH_HOST}",
-        "SSH_USER": "${PROD_SSH_USER_READONLY}",
-        "SSH_PORT": "${PROD_SSH_PORT}",
-        "SSH_KEY_PATH": "${PROD_SSH_KEY_PATH_READONLY}"
-      }
     }
   }
 }
