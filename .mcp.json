@@ -1,6 +1,6 @@
 {
   "$schema": "https://modelcontextprotocol.io/schemas/mcp-config.json",
-  "note": "Configuration MCP du projet Inaricom. Adapter les hosts/users avant premier usage. Secrets via variables d'environnement (.env).",
+  "note": "Configuration MCP du projet Inaricom. Secrets via variables d'environnement (.env).",
   "mcpServers": {
     "filesystem": {
       "command": "npx",
@@ -21,6 +21,15 @@
       "args": ["/c", "npx", "-y", "@playwright/mcp@latest"],
       "description": "Tests E2E, visual regression, accessibility multi-browser"
     },
+    "woocommerce-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@automattic/mcp-wordpress-remote@latest"],
+      "env": {
+        "WP_API_URL": "${WC_MCP_URL}",
+        "CUSTOM_HEADERS": "${WC_MCP_HEADERS}"
+      },
+      "description": "WooCommerce MCP natif — CRUD produits, commandes, clients via MCP. Active cote WP dans Reglages > Avance > Fonctionnalites. Necessite Coming Soon patche (whitelist API). Docs : https://developer.woocommerce.com/docs/features/mcp/"
+    },
     "ssh-staging": {
       "command": "npx",
       "args": ["-y", "@fangjunjie/ssh-mcp-server"],
@@ -30,7 +39,7 @@
         "SSH_PORT": "${STAGING_SSH_PORT}",
         "SSH_KEY_PATH": "${STAGING_SSH_KEY_PATH}"
       },
-      "description": "SSH staging.inaricom.com — lecture-ecriture. Tests + verifications. Secrets dans .env local."
+      "description": "SSH staging.inaricom.com — lecture-ecriture. Tests + verifications."
     },
     "ssh-prod-readonly": {
       "command": "npx",
