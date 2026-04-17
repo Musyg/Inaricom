@@ -1,5 +1,5 @@
 {
-  "$schema": "https://claude.ai/schemas/claude-code-settings.json",
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "autoMemoryEnabled": false,
   "defaultModel": "sonnet",
   "permissions": {
@@ -22,21 +22,5 @@
       "Bash(wp db:*)",
       "Bash(wp search-replace:* --no-dry-run:*)"
     ]
-  },
-  "agents": {
-    "autoDelegation": true,
-    "available": [
-      "frontend-kadence",
-      "woo-backend",
-      "seo-content",
-      "qa-visual",
-      "security-redteam"
-    ]
-  },
-  "mcp": {
-    "configFile": ".mcp.json"
-  },
-  "notes": {
-    "fr": "Cette config est pour Claude Code sur le projet Inaricom. Les commandes de modification DB requierent toujours --dry-run en premier."
   }
 }
