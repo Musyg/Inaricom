@@ -203,6 +203,45 @@ TVA suisse, droit contractuel : grandes lignes + renvoi vers fiduciaire/avocat.
 
 ---
 
+## EXISTANT PROD — NE PAS DUPLIQUER
+
+Ecrit et deploye par Gilles Munier. **A NE PAS toucher sans test staging complet**. Pour toute evolution, passer par Gilles.
+
+### `inaricom-security.php` (must-use, 189 lignes)
+- **Chemin** : `/home/toriispo/inaricom.com/web/wp-content/mu-plugins/inaricom-security.php`
+- **Copie locale** : `audits/plugins-discovered/inaricom-security.php`
+- **Audit detaille** : `audits/plugins-discovered/inaricom-security-audit.md`
+- **Couvre** : HSTS, CSP complet, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, rate limit login (5/15min/IP), REST user enumeration lockdown, version hiding WP/WC, blocage readme/changelog, security.txt, helper IP Cloudflare-aware.
+- **NE PAS redeclarer** ces headers ni ces hooks dans `inaricom-core` ou ailleurs. Les modifications vont dans ce plugin directement.
+- **Points d'evolution Phase 2** notes dans l'audit (nonces CSP, rate-limit par username, logging, CSP reporting, audit log admin).
+
+### `inaricom-digikey` (actif, namespace `inaricom/v1`)
+- Plugin custom d'integration DigiKey (OAuth fonctionnel)
+- **Pas encore audite** — a inspecter quand on travaillera sur le configurateur hardware.
+
+### Snippets WooCommerce (via plugin Code Snippets, hook `template_redirect`)
+1. **Coming Soon Red Team** (actif, v2 avec REST bypass) — message retour juillet 2026, signature "Your Red Team", contact security@inaricom.com
+2. **Bypass Coming Soon API** (actif) — hook `pre_option_woocommerce_coming_soon` pour permettre l'auth REST meme pendant le mode Coming Soon
+3. ~~Restore Authorization Header~~ (desactivable, inutile — le `.htaccess` racine forwarde deja `HTTP_AUTHORIZATION`)
+
+### Architecture WordPress particuliere
+- **WP_SITEURL** = `https://inaricom.com/web` (fichiers physiques dans `/web/`)
+- **WP_HOME** = `https://inaricom.com` (URL publique = racine)
+- **Consequence critique** : REST API accessible UNIQUEMENT a la racine `/wp-json/`, **jamais** dans `/web/wp-json/` (404).
+- Ref pattern : https://developer.wordpress.org/advanced-administration/server/wordpress-in-directory/
+
+### Acces prod operationnel
+- **SSH** : `ssh inaricom` (alias dans `~/.ssh/config`) — user `toriispo`, host `web24.swisscenter.com:22`, cle `~/.ssh/inaricom_swisscenter`
+- **WP-CLI 2.12.0** dispo globalement sur serveur (`/usr/local/bin/wp`)
+- **PHP 8.5.4** (binaire `/usr/local/bin/php85`, detection auto dans `~/inaricom.com/`)
+- **REST API auth** : Basic Auth avec ck/cs dans `.env` (variables `WC_CONSUMER_KEY/SECRET`)
+- **WooCommerce MCP natif** : `https://inaricom.com/wp-json/woocommerce/mcp` (JSON-RPC 2.0)
+
+### Headers HTTP deja en place (source = inaricom-security)
+Audit baseline 17/04/2026 confirme : HSTS 1 an + preload, CSP stricte, X-Frame DENY, frame-ancestors 'none', X-Content-Type nosniff, Referrer-Policy strict, Permissions-Policy restrictive, Cloudflare NEL monitoring. **Ne rien redeclarer ailleurs, l'existant est propre.**
+
+---
+
 ## GUARDRAILS ABSOLUS
 
 - JAMAIS editer `/wp-content/themes/kadence/` directement (toujours child theme)

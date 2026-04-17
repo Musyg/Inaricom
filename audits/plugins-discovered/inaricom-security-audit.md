@@ -3,12 +3,13 @@
 > Plugin must-use localisé sur prod : `/home/toriispo/inaricom.com/web/wp-content/mu-plugins/inaricom-security.php`
 > Copie locale : `audits/plugins-discovered/inaricom-security.php`
 > Date audit : 17 avril 2026
+> **Auteur : Gilles Munier** (responsable technique site)
 
 ## Bilan global
 
-**Bonne architecture, protection sérieuse**. Le plugin couvre les 11 points critiques de durcissement WordPress (HL-001 à HL-011) référencés probablement dans un rapport de pentest antérieur ou une checklist interne. Positionnement en must-use = garantit chargement prioritaire et impossibilité de désactivation depuis le backoffice.
+**Bonne architecture, protection sérieuse**. Le plugin couvre 11 points critiques de durcissement WordPress (IDs HL-001 à HL-011, probablement issus d'une checklist interne ou d'un audit préalable). Positionnement en must-use = garantit chargement prioritaire et impossibilité de désactivation depuis le backoffice.
 
-Responsable de la **quasi-totalité** de la stack headers HTTP observée dans l'audit baseline du 17 avril.
+**Responsable de la quasi-totalité de la stack headers HTTP** observée dans l'audit baseline du 17 avril. C'est cette file qui rend la posture sécu du site "enterprise-grade" dès la baseline.
 
 ## Couverture détaillée
 
@@ -60,11 +61,10 @@ Aucune trace des actions admin (plugin activé, user créé, option changée). U
 ## Décisions pour Phase 1
 
 - **Ne pas toucher le plugin** en Phase 1 → il marche, le modifier sans test = risque casser la sécu prod
-- **Documenter clairement** que ce plugin est la source des headers (pour que personne ne les duplique dans `inaricom-core` à venir)
-- **Noter son existence** dans `CLAUDE.md` pour que Claude Code ne tente pas de redéclarer les mêmes headers ailleurs
+- **Documenter clairement** que ce plugin est la source des headers (pour que `inaricom-core` à venir ne les duplique pas)
+- **Noter son existence dans `CLAUDE.md`** pour que Claude Code connaisse l'existant et ne tente pas de redéclarer les mêmes headers ailleurs
 
-## Questions à Kevin (propriétaire)
+## Questions ouvertes
 
-1. Qui a écrit ce plugin ? Y a-t-il un repo git privé / versionné ?
-2. Les IDs HL-001 à HL-011 correspondent-ils à un rapport de pentest ? Si oui, l'avoir pour voir les autres points.
-3. Comment est-il déployé ? (manuel ? script ? rsync ?) — important pour les updates futures.
+1. **Origine des IDs HL-001 → HL-011** : checklist perso, pentest externe, OWASP WP Hardening, autre ? À documenter pour que le plugin puisse évoluer avec un référentiel clair.
+2. **Process de déploiement actuel** : SCP manuel ? Update via WP Admin file manager ? Pas de versionning git sur cette copie prod. À formaliser en Phase 2 (repo git privé + script rsync).
