@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inaricom — WebGL Fox Constellation</title>
+
+<style>
+/* ============================
+   RESET & BASE
+============================ */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  height:100%;
+  background:#05060a;
+  overflow:hidden;
+  font-family:Inter,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif;
+}
+
+/* ============================
+   WEBGL CANVAS
+============================ */
+#gl{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+/* ============================
+   BRAND OVERLAY
+============================ */
+.brand{
+  position:absolute;
+  left:50%;
+  bottom:9vh;
+  transform:translateX(-50%);
+  text-align:center;
+  pointer-events:none;
+  z-index:10;
+}
+.brand h1{
+  margin:0;
+  font-size:clamp(28px,5vw,48px);
+  letter-spacing:.5em;
+  font-weight:700;
+  color:#fff;
+  text-shadow:0 0 40px rgba(227,30,36,0.15);
+}
+.brand h1 span{color:#e31e24}
+.brand p{
+  margin:12px 0 0;
+  font-size:clamp(10px,1.5vw,14px);
+  letter-spacing:.22em;
+  color:rgba(255,255,255,.5);
+  text-transform:uppercase;
+}
+
+/* ============================
+   LOADING / ERROR STATES
+============================ */
+.overlay{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  text-align:center;
+  z-index:20;
+}
+.overlay.hidden{display:none}
+.loading{color:rgba(255,255,255,.5);font-size:14px;letter-spacing:.1em}
+.loading::after{
+  content:'';
+  animation:dots 1.5s infinite;
+}
+@keyframes dots{
+  0%,20%{content:''}
+  40%{content:'.'}
+  60%{content:'..'}
+  80%,100%{content:'...'}
+}
+.error{color:#e31e24;font-size:14px;max-width:400px;line-height:1.6}
+
+/* ============================
+   VERSION BADGE (dev only)
+============================ */
+.version{
+  position:absolute;
+  bottom:12px;right:12px;
+  font-size:10px;
+  color:rgba(255,255,255,.2);
+  letter-spacing:.05em;
+  z-index:10;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="gl"></canvas>
+
+<div class="overlay" id="loadingOverlay">
+  <div class="loading">Initialisation WebGL</div>
+</div>
+
+<div class="overlay hidden" id="errorOverlay">
+  <div class="error" id="errorMsg"></div>
+</div>
+
+<div class="brand">
+  <h1>INARI<span>COM</span></h1>
+  <p>Premium AI Solutions • Local First</p>
+</div>
+
+<div class="version">WebGL v1.0</div>
+
+<script>
+/* ========================================================
+   INARICOM WEBGL FOX CONSTELLATION
+   --------------------------------------------------------
+   Architecture: WebGL + SVG Raster + Path API
+   - SVG chargé depuis serveur
+   - Rasterisé en texture WebGL
+   - Paths extraits pour animation faisceaux
+   - Parallax au mouvement souris
+======================================================== */
+
+(async function(){
+'use strict';
+
+/* ============================
+   CONFIGURATION
+============================ */
+const CONFIG = {
+  // SVG source - adapter selon environnement
+  svgUrl: './Fox.svg',
+  // Alternative WordPress:
+  // svgUrl: '/wp-content/uploads/2025/01/Fox.svg',
+  
+  // Dimensions de référence du SVG
+  svgWidth: 3840,
+  svgHeight: 2160,
+  
+  // Texture resolution
+  texWidth: 2048,
+  
+  // Animation
+  beamSpeed: 0.055,        // vitesse des faisceaux (tours/sec)
+  beamSize: 0.0035,        // taille du glow
+  beamGlow: 6.0,           // intensité lumineuse
+  shadowAmount: 0.78,      // assombrissement du renard (0-1)
+  
+  // Parallax
+  parallaxStrength: 0.01,
+  parallaxSmoothing: 0.06,
+  
+  // Path IDs dans le SVG
+  pathRedId: 'path595',
+  pathWhiteId: 'path596'
+};
+
+/* ============================
+   HELPERS
+============================ */
+const $ = id => document.getElementById(id);
+const hideLoading = () => $('loadingOverlay').classList.add('hidden');
+const showError = msg => {
+  hideLoading();
+  $('errorMsg').textContent = msg;
+  $('errorOverlay').classList.remove('hidden');
+};
+
+/* ============================
+   WEBGL SETUP
+============================ */
+const canvas = $('gl');
+const gl = canvas.getContext('webgl2', { 
+  alpha: false, 
+  antialias: true,
+  powerPreference: 'high-performance'
+});
+
+if (!gl) {
+  showError('WebGL2 non supporté par ce navigateur. Essayez Chrome, Firefox ou Edge récent.');
+  return;
+}
+
+// Resize handler
+function resize() {
+  const dpr = Math.min(2, devicePixelRatio || 1);
+  canvas.width = innerWidth * dpr;
+  canvas.height = innerHeight * dpr;
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+addEventListener('resize', resize);
+resize();
+
+/* ============================
+   SHADERS
+============================ */
+const vertexShaderSrc = `#version 300 es
+in vec2 aPos;
+out vec2 vUv;
+
+void main() {
+  vUv = aPos * 0.5 + 0.5;
+  gl_Position = vec4(aPos, 0.0, 1.0);
+}
+`;
+
+const fragmentShaderSrc = `#version 300 es
+precision highp float;
+
+uniform sampler2D uTex;
+uniform vec2 uResolution;
+uniform vec2 uParallax;
+uniform vec2 uBeamWhite;
+uniform vec2 uBeamRed;
+uniform float uBeamSize;
+uniform float uBeamGlow;
+uniform float uShadow;
+
+in vec2 vUv;
+out vec4 fragColor;
+
+// Gaussian glow
+float glow(float dist, float size) {
+  return exp(-(dist * dist) / (2.0 * size * size));
+}
+
+void main() {
+  // UV avec parallax
+  vec2 uv = vUv + uParallax;
+  
+  // Background gradient subtil
+  vec3 bg = vec3(0.02, 0.025, 0.04);
+  
+  // Texture du renard (assombrie)
+  vec3 fox = texture(uTex, uv).rgb;
+  fox *= (1.0 - uShadow);
+  fox = max(fox - 0.03, 0.0);
+  
+  // Distance aux faisceaux
+  float distWhite = distance(vUv, uBeamWhite);
+  float distRed = distance(vUv, uBeamRed);
+  
+  // Couleurs des faisceaux
+  vec3 colorWhite = vec3(1.0);
+  vec3 colorRed = vec3(0.9, 0.12, 0.14);
+  
+  // Composition finale
+  vec3 color = bg + fox;
+  color += colorWhite * glow(distWhite, uBeamSize) * uBeamGlow;
+  color += colorRed * glow(distRed, uBeamSize) * uBeamGlow;
+  
+  // Tone mapping simple
+  color = 1.0 - exp(-color);
+  
+  fragColor = vec4(color, 1.0);
+}
+`;
+
+// Compile shader
+function compileShader(type, source) {
+  const shader = gl.createShader(type);
+  gl.shaderSource(shader, source);
+  gl.compileShader(shader);
+  
+  if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+    const error = gl.getShaderInfoLog(shader);
+    gl.deleteShader(shader);
+    throw new Error(`Shader compilation failed: ${error}`);
+  }
+  return shader;
+}
+
+// Create program
+const program = gl.createProgram();
+gl.attachShader(program, compileShader(gl.VERTEX_SHADER, vertexShaderSrc));
+gl.attachShader(program, compileShader(gl.FRAGMENT_SHADER, fragmentShaderSrc));
+gl.linkProgram(program);
+
+if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+  throw new Error(`Program linking failed: ${gl.getProgramInfoLog(program)}`);
+}
+
+gl.useProgram(program);
+
+/* ============================
+   GEOMETRY (Fullscreen quad)
+============================ */
+const quadBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
+gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([
+  -1, -1,  1, -1,  -1, 1,
+  -1,  1,  1, -1,   1, 1
+]), gl.STATIC_DRAW);
+
+const aPosLoc = gl.getAttribLocation(program, 'aPos');
+gl.enableVertexAttribArray(aPosLoc);
+gl.vertexAttribPointer(aPosLoc, 2, gl.FLOAT, false, 0, 0);
+
+/* ============================
+   UNIFORMS
+============================ */
+const uniforms = {
+  tex: gl.getUniformLocation(program, 'uTex'),
+  resolution: gl.getUniformLocation(program, 'uResolution'),
+  parallax: gl.getUniformLocation(program, 'uParallax'),
+  beamWhite: gl.getUniformLocation(program, 'uBeamWhite'),
+  beamRed: gl.getUniformLocation(program, 'uBeamRed'),
+  beamSize: gl.getUniformLocation(program, 'uBeamSize'),
+  beamGlow: gl.getUniformLocation(program, 'uBeamGlow'),
+  shadow: gl.getUniformLocation(program, 'uShadow')
+};
+
+// Set static uniforms
+gl.uniform1f(uniforms.shadow, CONFIG.shadowAmount);
+gl.uniform1f(uniforms.beamSize, CONFIG.beamSize);
+gl.uniform1f(uniforms.beamGlow, CONFIG.beamGlow);
+
+/* ============================
+   TEXTURE SETUP
+============================ */
+const texture = gl.createTexture();
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D, texture);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+gl.uniform1i(uniforms.tex, 0);
+
+/* ============================
+   LOAD SVG
+============================ */
+console.log(`[Inari] Loading SVG from: ${CONFIG.svgUrl}`);
+
+let response;
+try {
+  response = await fetch(CONFIG.svgUrl);
+} catch (e) {
+  showError(`Impossible de charger le SVG. Vérifiez que le serveur local est lancé (python -m http.server 8000)`);
+  return;
+}
+
+if (!response.ok) {
+  showError(`SVG non trouvé (${response.status}). Vérifiez que Fox.svg est dans le même dossier que ce HTML.`);
+  return;
+}
+
+const svgText = await response.text();
+const parser = new DOMParser();
+const svgDoc = parser.parseFromString(svgText, 'image/svg+xml');
+const svg = svgDoc.documentElement;
+
+// Check parse errors
+if (svg.querySelector('parsererror')) {
+  showError('Le fichier SVG est invalide ou corrompu.');
+  return;
+}
+
+// Force viewBox and dimensions
+svg.setAttribute('viewBox', `0 0 ${CONFIG.svgWidth} ${CONFIG.svgHeight}`);
+svg.setAttribute('width', CONFIG.svgWidth);
+svg.setAttribute('height', CONFIG.svgHeight);
+
+/* ============================
+   EXTRACT PATHS
+============================ */
+const pathRed = svg.querySelector(`#${CONFIG.pathRedId}`);
+const pathWhite = svg.querySelector(`#${CONFIG.pathWhiteId}`);
+
+if (!pathRed || !pathWhite) {
+  showError(`Le SVG doit contenir les paths avec id="${CONFIG.pathRedId}" et id="${CONFIG.pathWhiteId}". Vérifiez votre fichier Fox.svg.`);
+  return;
+}
+
+// Mount SVG hidden for path calculations
+const hiddenContainer = document.createElement('div');
+hiddenContainer.style.cssText = 'position:absolute;left:-99999px;visibility:hidden';
+hiddenContainer.appendChild(svg);
+document.body.appendChild(hiddenContainer);
+
+// Get path lengths
+const lengthRed = pathRed.getTotalLength();
+const lengthWhite = pathWhite.getTotalLength();
+
+console.log(`[Inari] Paths loaded - Red: ${lengthRed.toFixed(0)}px, White: ${lengthWhite.toFixed(0)}px`);
+
+/* ============================
+   RASTERIZE SVG TO TEXTURE
+============================ */
+const img = new Image();
+const svgBlob = new Blob([new XMLSerializer().serializeToString(svg)], { type: 'image/svg+xml' });
+img.src = URL.createObjectURL(svgBlob);
+
+await img.decode();
+
+const texHeight = Math.round(CONFIG.texWidth * CONFIG.svgHeight / CONFIG.svgWidth);
+const rasterCanvas = document.createElement('canvas');
+rasterCanvas.width = CONFIG.texWidth;
+rasterCanvas.height = texHeight;
+
+const ctx = rasterCanvas.getContext('2d');
+ctx.drawImage(img, 0, 0, CONFIG.texWidth, texHeight);
+
+gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, rasterCanvas);
+
+URL.revokeObjectURL(img.src);
+
+console.log(`[Inari] Texture rasterized: ${CONFIG.texWidth}x${texHeight}`);
+
+/* ============================
+   PARALLAX STATE
+============================ */
+let parallax = { x: 0, y: 0 };
+let parallaxTarget = { x: 0, y: 0 };
+
+addEventListener('pointermove', e => {
+  parallaxTarget.x = (e.clientX / innerWidth * 2 - 1) * CONFIG.parallaxStrength;
+  parallaxTarget.y = -(e.clientY / innerHeight * 2 - 1) * CONFIG.parallaxStrength * 0.8;
+});
+
+/* ============================
+   COORDINATE CONVERSION
+============================ */
+function svgToUv(point) {
+  return {
+    x: point.x / CONFIG.svgWidth,
+    y: 1 - point.y / CONFIG.svgHeight  // Flip Y for WebGL
+  };
+}
+
+/* ============================
+   RENDER LOOP
+============================ */
+hideLoading();
+console.log('[Inari] WebGL initialized - starting render loop');
+
+const startTime = performance.now();
+
+function render(timestamp) {
+  // Update resolution uniform
+  gl.uniform2f(uniforms.resolution, canvas.width, canvas.height);
+  
+  // Smooth parallax
+  parallax.x += (parallaxTarget.x - parallax.x) * CONFIG.parallaxSmoothing;
+  parallax.y += (parallaxTarget.y - parallax.y) * CONFIG.parallaxSmoothing;
+  gl.uniform2f(uniforms.parallax, parallax.x, parallax.y);
+  
+  // Calculate beam positions along paths
+  const elapsed = (timestamp - startTime) / 1000;
+  const progressRed = (elapsed * CONFIG.beamSpeed) % 1;
+  const progressWhite = ((elapsed * CONFIG.beamSpeed) + 0.5) % 1;  // Offset 180°
+  
+  const pointRed = pathRed.getPointAtLength(progressRed * lengthRed);
+  const pointWhite = pathWhite.getPointAtLength(progressWhite * lengthWhite);
+  
+  const uvRed = svgToUv(pointRed);
+  const uvWhite = svgToUv(pointWhite);
+  
+  gl.uniform2f(uniforms.beamRed, uvRed.x, uvRed.y);
+  gl.uniform2f(uniforms.beamWhite, uvWhite.x, uvWhite.y);
+  
+  // Draw
+  gl.drawArrays(gl.TRIANGLES, 0, 6);
+  
+  requestAnimationFrame(render);
+}
+
+requestAnimationFrame(render);
+
+})();
+</script>
+
+</body>
+</html>

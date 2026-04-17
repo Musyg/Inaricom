@@ -1,0 +1,13 @@
+INSTRUCTIONS:
+
+1. Télécharge le fichier fox-paths-fixed.json depuis Claude
+2. Place-le dans ce dossier (fox-animation)
+3. Renomme-le en: fox-paths-full.json (remplace l'ancien)
+4. Rafraîchis la page dans le navigateur (Ctrl+Shift+R)
+
+Le fichier corrigé contient:
+- Path blanc: 12790 points (inchangé)
+- Path rouge: 25150 points (inchangé)
+- 7 crochets corrigés dans le path blanc
+- 36 crochets corrigés dans le path rouge
+- 161 angles aigus lissés au total

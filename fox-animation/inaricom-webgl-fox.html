@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inari — WebGL Fox Animation</title>
+
+<style>
+html,body{
+  margin:0;
+  height:100%;
+  background:#05060a;
+  overflow:hidden;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial;
+}
+canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  display:block;
+}
+.brand{
+  position:absolute;
+  left:50%;
+  bottom:9vh;
+  transform:translateX(-50%);
+  text-align:center;
+  pointer-events:none;
+}
+.brand h1{
+  margin:0;
+  font-size:44px;
+  letter-spacing:.6em;
+  font-weight:700;
+  color:#fff;
+}
+.brand h1 span{color:#e31e24}
+.brand p{
+  margin:10px 0 0;
+  font-size:13px;
+  letter-spacing:.22em;
+  color:rgba(255,255,255,.55);
+}
+
+/* Loading state */
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255,0.6);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+}
+.loading.hidden { display: none; }
+
+/* Error state */
+.error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #e31e24;
+  font-size: 14px;
+  text-align: center;
+  max-width: 400px;
+  line-height: 1.6;
+}
+.error.hidden { display: none; }
+</style>
+</head>
+
+<body>
+<canvas id="gl"></canvas>
+
+<div class="loading" id="loading">Chargement de l'animation...</div>
+<div class="error hidden" id="error"></div>
+
+<div class="brand">
+  <h1>INARI<span>COM</span></h1>
+  <p>PREMIUM AI SOLUTIONS • LOCAL FIRST</p>
+</div>
+
+<script>
+/* ============================
+   CONFIG
+============================ */
+// Option 1: Fichier externe (même dossier)
+const FOX_SVG_URL = "./Fox.svg";
+
+// Option 2: URL absolue (WordPress)
+// const FOX_SVG_URL = "/wp-content/uploads/2025/01/Fox.svg";
+
+// Option 3: CDN ou autre hébergement
+// const FOX_SVG_URL = "https://inaricom.com/assets/svg/Fox.svg";
+
+/* ============================
+   ERROR HANDLING
+============================ */
+function showError(msg) {
+  document.getElementById("loading").classList.add("hidden");
+  const errorEl = document.getElementById("error");
+  errorEl.textContent = msg;
+  errorEl.classList.remove("hidden");
+}
+
+/* ============================
+   MAIN ASYNC INIT
+============================ */
+(async function init() {
+try {
+
+/* ============================
+   WEBGL INIT
+============================ */
+const canvas = document.getElementById("gl");
+const gl = canvas.getContext("webgl2",{alpha:false,antialias:true});
+if(!gl) throw new Error("WebGL2 non disponible sur ce navigateur");
+
+function resize(){
+  const dpr = Math.min(2,devicePixelRatio||1);
+  canvas.width = innerWidth*dpr;
+  canvas.height = innerHeight*dpr;
+  gl.viewport(0,0,canvas.width,canvas.height);
+}
+addEventListener("resize",resize);
+resize();
+
+/* ============================
+   SHADERS
+============================ */
+const vs=`#version 300 es
+in vec2 p; out vec2 uv;
+void main(){uv=p*.5+.5;gl_Position=vec4(p,0,1);}
+`;
+
+const fs=`#version 300 es
+precision highp float;
+uniform sampler2D tex;
+uniform vec2 res;
+uniform vec2 par;
+uniform vec2 beamW, beamR;
+uniform float beamSize, beamGlow, shadow;
+in vec2 uv; out vec4 o;
+
+float g(float d,float s){return exp(-(d*d)/(2.*s*s));}
+
+void main(){
+  vec2 u=uv+par;
+  vec3 bg=vec3(0.02,0.025,0.04);
+
+  vec3 base=texture(tex,u).rgb;
+  base*=1.-shadow;
+  base=max(base-0.03,0.);
+
+  float dw=distance(uv,beamW);
+  float dr=distance(uv,beamR);
+
+  vec3 bw=vec3(1.);
+  vec3 br=vec3(.9,.12,.14);
+
+  vec3 col=bg+base;
+  col+=bw*g(dw,beamSize)*beamGlow;
+  col+=br*g(dr,beamSize)*beamGlow;
+
+  col=1.-exp(-col);
+  o=vec4(col,1);
+}
+`;
+
+function sh(t,s){
+  const o=gl.createShader(t);
+  gl.shaderSource(o,s);
+  gl.compileShader(o);
+  if(!gl.getShaderParameter(o,gl.COMPILE_STATUS))
+    throw new Error("Shader error: " + gl.getShaderInfoLog(o));
+  return o;
+}
+const prog=gl.createProgram();
+gl.attachShader(prog,sh(gl.VERTEX_SHADER,vs));
+gl.attachShader(prog,sh(gl.FRAGMENT_SHADER,fs));
+gl.linkProgram(prog);
+gl.useProgram(prog);
+
+/* ============================
+   FULLSCREEN QUAD
+============================ */
+const buf=gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER,buf);
+gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([
+  -1,-1, 1,-1, -1,1,
+  -1,1, 1,-1, 1,1
+]),gl.STATIC_DRAW);
+const loc=gl.getAttribLocation(prog,"p");
+gl.enableVertexAttribArray(loc);
+gl.vertexAttribPointer(loc,2,gl.FLOAT,false,0,0);
+
+/* ============================
+   UNIFORMS
+============================ */
+const u={
+  tex:gl.getUniformLocation(prog,"tex"),
+  res:gl.getUniformLocation(prog,"res"),
+  par:gl.getUniformLocation(prog,"par"),
+  beamW:gl.getUniformLocation(prog,"beamW"),
+  beamR:gl.getUniformLocation(prog,"beamR"),
+  beamSize:gl.getUniformLocation(prog,"beamSize"),
+  beamGlow:gl.getUniformLocation(prog,"beamGlow"),
+  shadow:gl.getUniformLocation(prog,"shadow")
+};
+
+gl.uniform1f(u.shadow,0.78);
+gl.uniform1f(u.beamSize,0.0035);
+gl.uniform1f(u.beamGlow,6.0);
+
+/* ============================
+   TEXTURE
+============================ */
+const tex=gl.createTexture();
+gl.activeTexture(gl.TEXTURE0);
+gl.bindTexture(gl.TEXTURE_2D,tex);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);
+gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+gl.uniform1i(u.tex,0);
+
+/* ============================
+   SVG LOAD + PATHS
+============================ */
+console.log("Chargement du SVG:", FOX_SVG_URL);
+const response = await fetch(FOX_SVG_URL);
+if (!response.ok) {
+  throw new Error(`SVG introuvable (${response.status}). Vérifiez que Fox.svg est dans le même dossier.`);
+}
+const svgText = await response.text();
+const svgDoc=new DOMParser().parseFromString(svgText,"image/svg+xml");
+const svg=svgDoc.documentElement;
+
+// Check for parsing errors
+const parseError = svg.querySelector("parsererror");
+if (parseError) {
+  throw new Error("Le fichier SVG est invalide ou corrompu.");
+}
+
+svg.setAttribute("viewBox","0 0 3840 2160");
+svg.setAttribute("width","3840");
+svg.setAttribute("height","2160");
+
+const pathRed = svg.querySelector("#path595");
+const pathWhite = svg.querySelector("#path596");
+
+if(!pathRed || !pathWhite) {
+  console.warn("IDs path595/path596 non trouvés. Recherche de paths alternatifs...");
+  // Fallback: chercher tous les paths
+  const allPaths = svg.querySelectorAll("path");
+  if (allPaths.length >= 2) {
+    console.log("Utilisation des 2 premiers paths trouvés");
+  } else {
+    throw new Error("Le SVG doit contenir les éléments avec id='path595' et id='path596' (contours du renard)");
+  }
+}
+
+/* hidden SVG for geometry */
+const h=document.createElement("div");
+h.style.position="absolute";
+h.style.left="-99999px";
+h.appendChild(svg);
+document.body.appendChild(h);
+
+const lenR = pathRed ? pathRed.getTotalLength() : 1000;
+const lenW = pathWhite ? pathWhite.getTotalLength() : 1000;
+
+/* ============================
+   RASTERIZE SVG
+============================ */
+const img=new Image();
+const blob=new Blob([new XMLSerializer().serializeToString(svg)],{type:"image/svg+xml"});
+img.src=URL.createObjectURL(blob);
+await img.decode();
+
+const c=document.createElement("canvas");
+c.width=2048;
+c.height=Math.round(2048*2160/3840);
+c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);
+
+// Hide loading
+document.getElementById("loading").classList.add("hidden");
+
+/* ============================
+   PARALLAX
+============================ */
+let par={x:0,y:0}, tgt={x:0,y:0};
+addEventListener("pointermove",e=>{
+  tgt.x=(e.clientX/innerWidth*2-1)*0.01;
+  tgt.y=-(e.clientY/innerHeight*2-1)*0.008;
+});
+
+/* ============================
+   LOOP
+============================ */
+const t0=performance.now();
+function uv(pt){return {x:pt.x/3840,y:1-pt.y/2160};}
+
+function frame(t){
+  gl.uniform2f(u.res,canvas.width,canvas.height);
+
+  par.x+=(tgt.x-par.x)*0.06;
+  par.y+=(tgt.y-par.y)*0.06;
+  gl.uniform2f(u.par,par.x,par.y);
+
+  const tt=(t-t0)/1000;
+  
+  if (pathRed && pathWhite) {
+    const pR=pathRed.getPointAtLength((tt*.055%1)*lenR);
+    const pW=pathWhite.getPointAtLength(((tt*.055+.5)%1)*lenW);
+
+    const uR=uv(pR), uW=uv(pW);
+    gl.uniform2f(u.beamR,uR.x,uR.y);
+    gl.uniform2f(u.beamW,uW.x,uW.y);
+  } else {
+    // Fallback animation si pas de paths
+    const angle = tt * 0.5;
+    gl.uniform2f(u.beamR, 0.5 + Math.cos(angle) * 0.2, 0.5 + Math.sin(angle) * 0.2);
+    gl.uniform2f(u.beamW, 0.5 + Math.cos(angle + Math.PI) * 0.2, 0.5 + Math.sin(angle + Math.PI) * 0.2);
+  }
+
+  gl.drawArrays(gl.TRIANGLES,0,6);
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+} catch(err) {
+  console.error("Erreur:", err);
+  showError(err.message || "Une erreur est survenue");
+}
+})();
+</script>
+</body>
+</html>

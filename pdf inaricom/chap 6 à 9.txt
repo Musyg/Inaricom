@@ -1,0 +1,194 @@
+📘 CHAPITRES 6 → 9 (version livre blanc, avec sources 2025)
+### CHAPITRE 6 — CAS D’USAGE : ENTREPRISE / CTO / ARCHITECTURE, Gouvernance & Infrastructures
+6.1 Gouvernance interne & enjeux de déploiement IA locale
+
+Le marché global Edge AI market est estimé à USD 20,78 milliards en 2024, avec une projection à USD 66,47 milliards d’ici 2030. 
+Grand View Research
+
+Cela confirme que l’IA locale / edge-AI n’est plus marginale, mais constitue aujourd’hui un enjeu stratégique pour les entreprises.
+
+Déployer l’IA en interne implique de :
+
+Choisir des modèles (open-source ou licenciés) compatibles avec votre infrastructure, et décider de la maintenance, des mises à jour, des sauvegardes.
+
+Mettre en place une gouvernance des données : permissions, accès, journalisation, auditabilité, séparation des environnements selon la sensibilité des données.
+
+Prévoir la formation des utilisateurs / administrateurs, définir des responsabilités, garantir la conformité (sécurité, RGPD le cas échéant), anticiper les montées en charge et les évolutions.
+
+6.2 Architecture type pour usage entreprise
+
+Une architecture robuste pour IA locale / hybride peut suivre ce workflow :
+
+Ingestion et préprocessing des données internes — documents, bases, CRM, fichiers, archives.
+
+Indexation / vectorisation (embeddings + base vectorielle interne) — pour permettre recherche sémantique, retrieval.
+
+Moteur d’inférence local (LLM + inference-engine) — via un serveur interne (GPU/CPU selon modèle). En 2025, des moteurs comme vLLM optimisent l’utilisation GPU/mémoire pour LLM. 
+Red Hat Developer
++1
+
+API interne — REST ou micro-service, utilisée par vos applications internes (CRM, ERP, intranet, outils métier) pour requêter l’IA, tout en gardant les données en local.
+
+Monitoring & logging — suivi des requêtes, latence, ressources consommées, taux d’erreur, accès, journalisation pour audit et sécurité.
+
+6.3 Multi-modèles, optimisation des ressources
+
+En 2025, l’écosystème open-source LLM est mature : des modèles légers ou efficaces sont optimisés pour tourner localement, certains même en quantification (4-bit, gguf) pour minimiser l’utilisation mémoire tout en restant utilisables. 
+Medium
++1
+
+Choix pragmatique possible : utiliser modèles légers (pour chat, FAQ, support, tâches simples), modèles moyens / lourds pour tâches complexes (analyse, génération volumineuse, process critiques).
+
+L’approche multi-modèles permet de maximiser l’usage tout en limitant les coûts et la complexité.
+
+6.4 Sécurité, conformité, gouvernance
+
+En gardant l’IA en interne, vos données sensibles ne quittent jamais votre infrastructure → avantage pour la confidentialité, la souveraineté, la conformité (RGPD, données clients, IP, secret entreprise).
+
+Mais cela impose des obligations : contrôle d’accès, gestion des identités / permissions, chiffrement, sauvegardes régulières, traçabilité / audit des usages, séparation des environnements selon les niveaux de confiance.
+
+Pour les entreprises soumises à des normes ou des obligations légales, c’est un atout — à condition d’implémenter correctement la gouvernance.
+
+### CHAPITRE 7 — Matériel & Infrastructure recommandés selon le besoin
+7.1 Pour prototypage ou usage léger — budget modéré
+
+Si vos besoins sont modestes — chat interne, automatisation d’emails, support, contenus légers — un PC standard ou un PC d’entrée de gamme récent peut suffire, même sans GPU dédié, pour certains modèles légers quantisés. C’est une solution d’entrée qui permet de tester l’IA locale sans investissement important. 
+Medium
++1
+
+Cela correspond à des usages “faible volume”, “usage individuel ou ponctuel”.
+
+7.2 Pour PME / usages réguliers — compromis performance / coût
+
+Pour un bon compromis (modèles 7B–14B, usage modéré à régulier, quelques utilisateurs), un PC avec GPU milieu-gamme (VRAM suffisante, 8–12 Go ou plus selon modèle) est un bon choix.
+
+L’écosystème 2025 montre que de nombreux LLM open-source sont optimisés pour ce type de matériel. 
+Medium
++1
+
+Cette configuration offre flexibilité : chat, support, automatisation, contenus, workflows métiers, sans faire exploser le budget.
+
+7.3 Infrastructure “heavy usage / multi-utilisateurs / entreprise”
+
+Pour des usages intensifs : modèles volumineux, base de documents dense, multitâche, plusieurs utilisateurs simultanés — il faut envisager une machine robuste : GPU puissant, mémoire importante, stockage rapide, refroidissement, redondance.
+
+Alternativement, un cluster interne ou serveur dédié : pour mutualiser l’IA, répartir la charge, garantir disponibilité, scalabilité.
+
+À long terme : prévoir maintenance, monitoring, plan de montée en charge ou de scale-out.
+
+7.4 Optimisations & bonnes pratiques
+
+Utiliser des inference engines optimisés (comme vLLM) pour tirer le maximum du matériel et gérer efficacement mémoire et GPU. 
+Red Hat Developer
++1
+
+Quantisation, formats gguf / 4-bit / 8-bit pour réduire l’empreinte mémoire et permettre l’utilisation de machines modérées. 
+Medium
+
+Prévoir refroidissement, alimentation adaptée, backups réguliers, redondance si besoin — surtout pour usage entreprise.
+
+### CHAPITRE 8 — Choix de Modèles LLM selon usage (2025)
+8.1 Modèles open-source pertinents en 2025
+
+Selon un recueil 2025 des LLM open-source les plus pertinents, plusieurs modèles offrent un bon équilibre entre capacité, efficacité, coût et déploiement local : 
+ema.co
++2
+DataCamp
++2
+
+Certains sont spécifiquement optimisés pour tourner sur matériel modéré ou en quantisation, ce qui permet de les héberger localement sans infrastructure serveur lourde.
+
+Les avantages des LLM open-source :
+
+Contrôle total des données (aucun envoi vers un tiers) 
+DataCamp
++1
+
+Coûts réduits : pas de licence ni de facturation à l’usage — coûts fixes seulement (infrastructure + maintenance) 
+InvestGlass
++1
+
+Flexibilité : adaptation, fine-tuning, intégration interne, personnalisation selon besoin. 
+ema.co
++1
+
+8.2 Adapter la taille du modèle à l’usage
+Usage / Contexte	Taille / type de modèle recommandé
+Chat interne, support, FAQ, tâches simples / répétitives	Modèles légers (3B–7B), quantifiés, usage CPU ou GPU modéré
+Contenu, marketing, emails, scripts, textes longs, automatisation	Modèles de taille moyenne (7B–14B) — bon équilibre qualité / ressources
+Analyse documentaire, synthèse, traitement de données, usage métier	Modèles 14B–22B — meilleure compréhension, cohérence, capacité raisonnement
+Projets complexes, multi-langues, gros contextes, usages intensifs / entreprise	Modèles lourds (22B–70B+), idéal avec GPU dédié ou infrastructure adaptée
+
+Les modèles optimisés pour inference locale (quantisés, formats légers) rendent l’IA accessible à beaucoup plus d’acteurs qu’il y a quelques années. 
+Medium
++1
+
+8.3 LLM + Inference-Engine : la bonne combinaison
+
+Combinez un LLM open-source adapté + un moteur d’inférence optimisé (comme vLLM) pour maximiser l’efficacité GPU, la rapidité de réponse et la stabilité. 
+Red Hat Developer
++1
+
+Ajustez le modèle selon la tâche : légers pour la volume, plus grands pour la qualité — pas de “taille universelle”.
+
+Vérifiez que votre infrastructure (RAM, VRAM, CPU/GPU, stockage) correspond aux besoins du modèle et de l’usage.
+
+### CHAPITRE 9 — Coût comparatif : Cloud vs IA Locale (modèle économique 2025)
+9.1 Pourquoi le cloud reste cher sur le long terme
+
+Les services cloud facturent à l’usage : tokens, requêtes, volume, ce qui rend le coût variable, imprévisible, souvent élevé quand l’usage est intensif (support, contenu, automatisation massive).
+
+En 2025, avec l’apparition de modèles “light + rapide” via API, le coût reste significatif dès que le volume monte. 
+IntuitionLabs
++1
+
+9.2 IA locale : coût fixe, amortissement, retour sur investissement
+
+Investissement initial : matériel + mise en place (serveur, GPU, installation, infrastructure).
+
+Coût marginal très faible : chaque requête supplémentaire ne “coûte rien”, car pas de facturation à l’usage.
+
+Sur le long terme, pour un usage régulier/moyen à élevé, l’IA locale devient souvent plus rentable que le cloud — selon une étude 2025 sur “on-premise LLM cost vs cloud”. 
+arXiv
++1
+
+9.3 Simulation / Hypothèses (exemple)
+
+Imaginons une PME qui traite 10 000 requêtes par mois (emails, support, contenu, automatisation).
+
+Cloud : facturation à l’usage → facture variable, dépendant de la taille des requêtes, du volume, des tokens, du fournisseur.
+
+Local : matériel + infrastructure amortie → coût fixe initial, puis coût marginal quasi-nul → coût total maîtrisé sur 12–24 mois, souvent inférieur au coût cloud cumulé.
+
+Le point de bascule (break-even) dépend du volume d’usage : plus l’usage est régulier et volumineux, plus l’IA locale devient avantageuse.
+
+9.4 Avantages supplémentaires de l’IA locale vs cloud
+
+Confidentialité et souveraineté des données — pas de transmission, pas de dépendance externe.
+
+Latence plus faible — fluidité, réactivité meilleure pour l’utilisateur.
+
+Stabilité des coûts — pas de variation brusque selon l’usage ou les évolutions des prix cloud.
+
+Flexibilité et personnalisation — adaptation des modèles, fine-tuning interne, intégration avec vos outils internes, contrôle total.
+
+🧾 Références principales pour chapitres 6 → 9
+
+« Global Edge AI Market Size & Forecast 2024–2030 », GrandView Research, 2025. 
+Grand View Research
++1
+
+« Edge AI Market Size 2025 estimate & forecast to 2034 », Precedence Research, 2025. 
+Precedence Research
+
+« A Survey on Inference Engines for Large Language Models », 2025 — étude comparative sur moteurs d’inférence pour LLM. 
+arXiv
+
+« The 7 fastest open source LLMs you can run locally in 2025 » — guide d’utilisation de LLM quantifiés pour matériel modéré. 
+Medium
+
+« 9 Top Open-Source LLMs for 2025 and Their Uses », DataCamp blog, Oct 2025 — panorama des LLM open-source adoptables. 
+DataCamp
+
+« Guide 2025 : run LLMs locally for privacy & control », InvestGlass, Nov 2025 — argumentaire pour hébergement local vs cloud. 
+InvestGlass

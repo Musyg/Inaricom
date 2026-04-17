@@ -1,0 +1,167 @@
+📘 CHAPITRE 10 — GUIDE PRATIQUE : DÉMARRER SON IA LOCALE EN 15 MINUTES
+10.1 Préparer l’environnement et choisir un outil d’hébergement simple
+
+Pour débuter rapidement avec l’IA locale, plusieurs outils récents (2025) permettent un déploiement simple, sans grande expertise technique — notamment Ollama, LM Studio, vLLM, LocalAI, etc. 
+Rost Glukhov
++2
+WordPress UNIL
++2
+
+Ces solutions acceptent des modèles open-source, permettent l’inférence locale, souvent avec quantification ou optimisation mémoire. 
+Rost Glukhov
++1
+
+Elles facilitent l’installation, même sur un PC ou un mini-PC — ce qui rend l’IA locale accessible dès aujourd’hui, sans infrastructure serveur dédiée. 
+WordPress UNIL
++1
+
+➡️ Étape concrète : installe ton outil choisi (ex. Ollama ou LM Studio), télécharge un modèle open-source léger (7B–14B), teste une requête simple.
+
+10.2 Télécharger un modèle adapté & vérifier compatibilité
+
+En 2025, il existe plusieurs LLM open-source bien évalués pour un usage local et “frugal” en ressources — par exemple des modèles cités par les classements “Top 10 open source LLMs 2025”. 
+Instaclustr
++1
+
+Choisis un modèle dont la RAM et la VRAM requises correspondent à ta machine. S’il s’agit d’un petit PC, un modèle 7B quantifié peut suffire. Pour un usage plus conséquent, un 14B ou plus peut être envisagé. 
+Rost Glukhov
++1
+
+10.3 Lancer l’interface test & effectuer une requête simple
+
+Une fois l’outil et le modèle installés, ouvre l’interface (GUI ou API locale), et teste des prompts simples : génération de texte, résumé, reformulation, FAQ, etc.
+
+L’un des avantages de l’IA locale — mentionné dans les comparatifs récents — : latence faible et contrôle total des données. 
+IINFINITIX
++2
+signitysolutions.com
++2
+
+10.4 Automatiser des tâches concrètes : emails, documents, scripts
+
+Dès ce stade, l’IA locale peut servir à :
+
+rédiger ou reformuler des emails / propositions / devis,
+
+générer du contenu (articles, posts, scripts),
+
+synthétiser des documents internes, notes, réunions,
+
+produire des modèles de documents (contrats, CGV, factures, templates).
+
+L’intérêt : aucun coût récurrent, pas de dépendance extérieure, et les données restent en interne.
+
+10.5 Intégration avec vos outils : CRM, Notion, site web, automatisations
+
+Grâce à l’API locale ou à des scripts d’automatisation, l’IA locale peut être connectée à vos outils existants (site vitrine, CRM, Google Docs, Notion, ERP, etc.), pour automatiser des workflows métier tout en gardant souveraineté. Plusieurs retours d’expérience 2025 confirment la faisabilité de telles intégrations. 
+Innoflexion
++2
+signitysolutions.com
++2
+
+🔐 CHAPITRE 11 — GUIDE TECHNIQUE : DÉPLOYER L’IA COMME UNE ENTREPRISE
+11.1 Moteurs d’inférence, backend & déploiement local
+
+Pour des usages sérieux ou multiples, il vaut mieux s’appuyer sur un moteur d’inférence optimisé comme vLLM, conçu pour exécuter des LLM en local de façon efficace, avec quantification, gestion mémoire, performance, etc. 
+Rost Glukhov
++2
+IINFINITIX
++2
+
+D’autres outils mentionnés comme adaptés à l’hébergement local : LocalAI, Jan, LM Studio — utiles pour structurer un environnement IA interne complet. 
+Rost Glukhov
++1
+
+11.2 Architecture type : API interne, isolation des environnements, sécurité
+
+Une architecture d’IA locale “pro” inclut :
+
+Serveur/bibliothèque d’inférence,
+
+API interne (REST / micro-service) pour que les outils métiers communiquent avec l’IA,
+
+Isolation des environnements selon les usages (production, test, données sensibles),
+
+Gestion des accès et permissions, audit/statistiques, sauvegardes, redondance, plan de reprise.
+
+Ce schéma est recommandé dans les analyses 2025 comparant cloud vs on-premise : l’on-premise offre un contrôle total sur les données, la sécurité, et la conformité. 
+signitysolutions.com
++2
+anchoreo.ai
++2
+
+11.3 Multi-modèles / scaling / optimisation d’usage
+
+Utiliser des modèles “légers” pour les tâches fréquentes/simple, et des modèles “plus conséquents” pour les besoins intensifs — c’est la stratégie recommandée pour concilier performances, coût et flexibilité. 
+IINFINITIX
++2
+Medium
++2
+
+Pour des volumes élevés ou des utilisateurs multiples : prévoir infrastructure adaptée, monitoring ressources, éventuellement cluster ou serveur dédié. 
+Lenovo Press
++2
+Innoflexion
++2
+
+11.4 Sécurité, conformité, protection des données
+
+Déployer une IA locale ne dispense pas des bonnes pratiques :
+
+Les données sensibles restent en interne — avantage pour confidentialité, RGPD, IP — un vrai plus comparé au cloud. 
+Innoflexion
++2
+oligo.security
++2
+
+Il faut mettre en place des garde-fous : accès restreint, chiffrement, logs, audits réguliers, traçabilité, contrôle des accès. 
+oligo.security
++2
+Appinventiv
++2
+
+Pour des secteurs régulés (finance, santé, juridique), l’IA locale peut offrir un cadre plus sécurisé qu’un usage cloud — ce qui est un avantage concurrentiel. 
+Innoflexion
++2
+signitysolutions.com
++2
+
+📊 CHAPITRE 12 — SÉCURITÉ, RGPD, CONFORMITÉ & BONNES PRATIQUES
+12.1 Pourquoi l’IA locale est souvent plus adaptée pour les données sensibles
+
+Quand les données sont confidentielles (clients, contrats, santé, propriété intellectuelle…), les risques liés au cloud — transferts, stockage externe, fuite potentielle — sont réels. L’hébergement local réduit drastiquement ce risque : vos données ne quittent jamais votre périmètre. 
+Innoflexion
++2
+signitysolutions.com
++2
+
+Des analyses récentes (2025) soulignent qu’une IA locale correctement configurée — avec chiffrement, accès restreint, audit — peut répondre aux exigences de conformité et aux régulations (RGPD, normes internes). 
+oligo.security
++2
+Maruti Techlabs
++2
+
+12.2 Risques possibles & mesures recommandées
+
+Sécurité interne : il faut garantir que seules les personnes autorisées accèdent à l’IA, aux données, aux logs.
+
+Mises à jour & maintenance : régulièrement mettre à jour les modèles, le système, corriger vulnérabilités.
+
+Backup & redondance : prévoir des sauvegardes, un plan de reprise, éviter la perte de données.
+
+Audit & traçabilité : journaliser les requêtes, les accès, les modifications, pour conformité, traçage, transparence.
+
+Gouvernance des prompts / sorties : filtrer, modérer, contrôler la sortie des modèles — surtout si l’IA est utilisée pour des usages externes ou sensibles.
+
+Des frameworks explicitement conçus pour “IA locale + confidentialité” ont été proposés en 2025, comme OnPrem.LLM, permettant de traiter des documents sensibles en local, tout en garantissant sécurité, anonymisation, auditabilité. 
+arXiv
+
+✅ Conclusion partielle (chapitres 10 → 12)
+
+Les outils d’hébergement local LLM sont fonctionnels et matures en 2025, accessibles à des structures modestes comme à des entreprises, permettant de démarrer en minutes.
+
+Une architecture d’IA locale bien pensée — inférence, API interne, gouvernance, sécurité — offre un bon compromis entre autonomie, coût maîtrisé, performance et conformité.
+
+L’IA locale apparaît comme une option sérieuse, crédible et stratégique pour qui veut conserver le contrôle de ses données tout en bénéficiant de l’IA.
+
+Les risques existent, mais peuvent être largement maîtrisés en respectant les bonnes pratiques : sécurité, audit, redondance, gestion des accès.

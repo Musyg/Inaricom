@@ -1,0 +1,129 @@
+# ============================================
+# INARICOM — .gitignore
+# ============================================
+
+# === SECRETS (CRITIQUE) ===
+.env
+.env.local
+.env.production
+.env.*.local
+*.key
+*.pem
+*.p12
+*.pfx
+*_secret*
+*_private*
+api-keys/
+secrets/
+.vault/
+
+# === Claude Code local ===
+.claude/settings.local.json
+.claude/cache/
+CLAUDE.local.md
+
+# === Node / JS ===
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+.npm
+.yarn/
+dist/
+build/
+.next/
+.nuxt/
+.turbo/
+coverage/
+.nyc_output
+
+# === PHP / Composer ===
+vendor/
+composer.lock
+*.log
+.phpunit.result.cache
+.php-cs-fixer.cache
+.phpcs-cache
+
+# === WordPress ===
+wp-config.php
+wp-content/uploads/
+wp-content/cache/
+wp-content/debug.log
+wp-content/backup-db/
+wp-content/backups/
+wp-content/updraft/
+wp-content/w3tc-config/
+wp-content/advanced-cache.php
+wp-content/object-cache.php
+
+# === Backups ===
+*.sql
+*.sql.gz
+*.sql.bz2
+*.bak
+*.backup
+backup-*/
+
+# === Dumps & exports ===
+*.dump
+*.export
+export-*
+dump-*
+
+# === Tests & rapports ===
+tests/reports/
+tests/screenshots/
+tests/baselines/.cache/
+playwright-report/
+test-results/
+.lighthouseci/
+lighthouseci/
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === OS ===
+.AppleDouble
+.LSOverride
+$RECYCLE.BIN/
+System Volume Information/
+
+# === Logs ===
+logs/
+*.log
+pnpm-debug.log*
+
+# === Archives ===
+*.zip
+*.tar
+*.tar.gz
+*.tar.bz2
+*.7z
+*.rar
+!.claude/skills/*.zip
+
+# === Fox animation — anciennes versions ===
+fox-animation/fox-beams-v7.html
+fox-animation/fox-beams-v8.html
+fox-animation/fox-beams-v14.html
+fox-animation/fox-beams-v15.html
+fox-animation/fox-beams-v16.html
+fox-animation/fox-beams-v17.html
+fox-animation/fox-beams-v18.html
+fox-animation/fox-beams-v19-test-optimized.html
+fox-animation/fox-beams-v20-github.html
+
+# === Divers ===
+.cache/
+.temp/
+tmp/
+*.tmp

@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inaricom Fox - Reveal Effect</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .fox-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 1920px;
+            max-height: 1080px;
+            background: #0a0a0b;
+        }
+        .fox-raster {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: auto;
+            height: 75%;
+            opacity: 0.06;
+            pointer-events: none;
+        }
+        #beamCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="fox-container">
+        <img class="fox-raster" src="fox_raster_3000x2000_transparent.png" alt="">
+        <canvas id="beamCanvas"></canvas>
+    </div>
+    <script>
+        let foxPaths = null;
+        let unifiedPath = []; // Path unifié avec info couleur
+        
+        // Config - faisceaux fins, queue TRES courte
+        const CONFIG = {
+            beamDuration: 60000,       // 60s - très lent
+            tailSegments: 10,          // 10 segments max pour la queue
+            dotRadius: 2.5,            // Taille du point principal
+            headWidth: 3,              // Largeur tête
+            tailEndWidth: 0.5,         // Largeur fin de queue (plus fine)
+            glowRadius: 10,            // Petit halo
+            colors: {
+                red: { r: 227, g: 30, b: 36 },
+                white: { r: 255, g: 255, b: 255 }
+            }
+        };
+        
+        const canvas = document.getElementById('beamCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, scale;
+        
+        function resize() {
+            const container = document.querySelector('.fox-container');
+            const rect = container.getBoundingClientRect();
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+            width = rect.width;
+            height = rect.height;
+            scale = Math.min(width / 3000, height / 2000);
+        }
+        
+        function toCanvas(point) {
+            const cx = width / 2;
+            const cy = height / 2;
+            return {
+                x: cx + (point[0] - 1500) * scale,
+                y: cy + (point[1] - 1000) * scale
+            };
+        }
+
+        // Obtenir un point interpolé sur le path unifié
+        function getPointOnPath(pathData, t) {
+            const points = pathData.points;
+            const colors = pathData.colors;
+            
+            const idx = t * (points.length - 1);
+            const i = Math.floor(idx);
+            const frac = idx - i;
+            
+            if (i >= points.length - 1) {
+                return { 
+                    pos: toCanvas(points[points.length - 1]), 
+                    color: colors[colors.length - 1] 
+                };
+            }
+            
+            const p1 = points[i];
+            const p2 = points[i + 1];
+            
+            return {
+                pos: toCanvas([
+                    p1[0] + (p2[0] - p1[0]) * frac,
+                    p1[1] + (p2[1] - p1[1]) * frac
+                ]),
+                color: colors[i] // Couleur du segment
+            };
+        }
+        
+        // Dessine le faisceau avec queue courte, fine, et fade
+        function drawBeam(pathData, progress) {
+            // Nombre de points pour la queue (10 segments max)
+            const tailLength = CONFIG.tailSegments;
+            const stepSize = 1 / pathData.points.length; // Un point = un step
+            
+            // Collecter les points de la queue (DERRIERE le head)
+            const tailPoints = [];
+            for (let i = tailLength; i >= 0; i--) {
+                const t = Math.max(0, progress - (i * stepSize));
+                if (t >= 0 && t <= progress) {
+                    tailPoints.push(getPointOnPath(pathData, t));
+                }
+            }
+            
+            if (tailPoints.length < 2) return;
+            
+            // Dessiner la queue segment par segment
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            for (let i = 0; i < tailPoints.length - 1; i++) {
+                const p1 = tailPoints[i];
+                const p2 = tailPoints[i + 1];
+                
+                // Ratio: 0 = début queue (fin, transparent), 1 = tête (épais, opaque)
+                const ratio = i / (tailPoints.length - 1);
+                
+                // Largeur: s'élargit vers la tête
+                const lineWidth = CONFIG.tailEndWidth + (CONFIG.headWidth - CONFIG.tailEndWidth) * ratio;
+                
+                // Opacité: fade au bout, plein vers la tête
+                const alpha = 0.1 + 0.7 * ratio;
+                
+                const { r, g, b } = CONFIG.colors[p2.color];
+                
+                ctx.beginPath();
+                ctx.moveTo(p1.pos.x, p1.pos.y);
+                ctx.lineTo(p2.pos.x, p2.pos.y);
+                ctx.strokeStyle = `rgba(${r},${g},${b},${alpha})`;
+                ctx.lineWidth = lineWidth;
+                ctx.stroke();
+            }
+            
+            // Position et couleur de la tête
+            const head = getPointOnPath(pathData, progress);
+            const { r, g, b } = CONFIG.colors[head.color];
+            
+            // Petit halo autour de la tête
+            const gradient = ctx.createRadialGradient(
+                head.pos.x, head.pos.y, 0,
+                head.pos.x, head.pos.y, CONFIG.glowRadius
+            );
+            gradient.addColorStop(0, `rgba(${r},${g},${b},0.8)`);
+            gradient.addColorStop(0.4, `rgba(${r},${g},${b},0.3)`);
+            gradient.addColorStop(1, `rgba(${r},${g},${b},0)`);
+            
+            ctx.beginPath();
+            ctx.arc(head.pos.x, head.pos.y, CONFIG.glowRadius, 0, Math.PI * 2);
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Point central lumineux
+            ctx.beginPath();
+            ctx.arc(head.pos.x, head.pos.y, CONFIG.dotRadius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${r},${g},${b},1)`;
+            ctx.shadowColor = `rgb(${r},${g},${b})`;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+        }
+        
+        // Créer le path unifié (blanc puis rouge, parcours complet)
+        function createUnifiedPath(data) {
+            const unified = {
+                points: [],
+                colors: []
+            };
+            
+            // D'abord le path blanc
+            for (let i = 0; i < data.w.length; i++) {
+                unified.points.push(data.w[i]);
+                unified.colors.push('white');
+            }
+            
+            // Puis le path rouge
+            for (let i = 0; i < data.r.length; i++) {
+                unified.points.push(data.r[i]);
+                unified.colors.push('red');
+            }
+            
+            return unified;
+        }
+        
+        let startTime = null;
+        
+        function animate(timestamp) {
+            if (!startTime) startTime = timestamp;
+            if (!unifiedPath.points) {
+                requestAnimationFrame(animate);
+                return;
+            }
+            
+            const elapsed = timestamp - startTime;
+            ctx.clearRect(0, 0, width, height);
+            
+            // Deux faisceaux décalés de moitié
+            const progress1 = (elapsed % CONFIG.beamDuration) / CONFIG.beamDuration;
+            const progress2 = ((elapsed + CONFIG.beamDuration / 2) % CONFIG.beamDuration) / CONFIG.beamDuration;
+            
+            // Dessiner les deux faisceaux
+            drawBeam(unifiedPath, progress1);
+            drawBeam(unifiedPath, progress2);
+            
+            requestAnimationFrame(animate);
+        }
+        
+        async function init() {
+            resize();
+            window.addEventListener('resize', resize);
+            
+            try {
+                const response = await fetch('fox-paths-min.json');
+                const data = await response.json();
+                
+                // Créer le path unifié
+                unifiedPath = createUnifiedPath(data);
+                console.log('Unified path:', unifiedPath.points.length, 'points');
+                
+            } catch (e) {
+                console.error('Failed to load paths:', e);
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        init();
+    </script>
+</body>
+</html>

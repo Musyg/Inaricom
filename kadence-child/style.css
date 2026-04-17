@@ -1,0 +1,34 @@
+/*
+ Theme Name:   Kadence Child - Inaricom
+ Theme URI:    https://inaricom.com
+ Description:  Thème enfant Kadence pour Inaricom avec animation fox
+ Author:       Inaricom
+ Author URI:   https://inaricom.com
+ Template:     kadence
+ Version:      1.0.0
+ License:      GNU General Public License v2 or later
+ License URI:  http://www.gnu.org/licenses/gpl-2.0.html
+ Text Domain:  kadence-child
+*/
+
+/* ==========================================================================
+   CUSTOM CSS INARICOM
+   ========================================================================== */
+
+/* Fox Animation Background - Fixed Parallax */
+#fox-canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+    background: #0a0a0b;
+}
+
+#fox-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/mcp-config.json",
+  "note": "Configuration MCP du projet Inaricom. Adapter les hosts/users avant premier usage. Secrets via variables d'environnement (.env).",
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:/Users/gimu8/Desktop/Inaricom"
+      ],
+      "description": "Edition locale du code versionne (child theme, plugin inaricom-core, snippets)"
+    },
+    "chrome-devtools": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "chrome-devtools-mcp@latest"],
+      "description": "Perf, traces Lighthouse, Core Web Vitals via CrUX real-user"
+    },
+    "playwright": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@playwright/mcp@latest"],
+      "description": "Tests E2E, visual regression, accessibility multi-browser"
+    },
+    "ssh-staging": {
+      "command": "npx",
+      "args": ["-y", "@fangjunjie/ssh-mcp-server"],
+      "env": {
+        "SSH_HOST": "${STAGING_SSH_HOST}",
+        "SSH_USER": "${STAGING_SSH_USER}",
+        "SSH_PORT": "${STAGING_SSH_PORT}",
+        "SSH_KEY_PATH": "${STAGING_SSH_KEY_PATH}"
+      },
+      "description": "SSH staging.inaricom.com — lecture-ecriture. Tests + verifications. Secrets dans .env local."
+    },
+    "ssh-prod-readonly": {
+      "command": "npx",
+      "args": ["-y", "@fangjunjie/ssh-mcp-server"],
+      "env": {
+        "SSH_HOST": "${PROD_SSH_HOST}",
+        "SSH_USER": "${PROD_SSH_USER_READONLY}",
+        "SSH_PORT": "${PROD_SSH_PORT}",
+        "SSH_KEY_PATH": "${PROD_SSH_KEY_PATH_READONLY}"
+      },
+      "description": "SSH prod inaricom.com — READ-ONLY STRICT. JAMAIS d'ecriture depuis MCP."
+    },
+    "hermes-control": {
+      "note": "Deja configure au niveau systeme Phoenix2. Pas besoin de le redeclarer ici."
+    }
+  },
+  "deferredTools": [
+    "Les outils ci-dessus sont charges par tool_search selon besoin",
+    "Pour activer un serveur : claude mcp enable <nom>"
+  ]
+}
