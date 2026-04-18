@@ -128,3 +128,5 @@ fox-animation/fox-beams-v20-github.html
 tmp/
 *.tmp
 tmp_api_root.txt  
+tmp_*
+scripts/approve-project-mcp.ps1
