@@ -130,3 +130,10 @@ tmp/
 tmp_api_root.txt  
 tmp_*
 scripts/approve-project-mcp.ps1
+
+# === STAGING secrets (jamais committed) ===
+STAGING_CREDENTIALS.txt
+PWstagingmysql.txt
+backups/
+_temp_*
+tmp_*
