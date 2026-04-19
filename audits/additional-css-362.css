@@ -1,0 +1,279 @@
+/* Fix: Le texte ne colle plus l'image au hover */
+.woocommerce ul.products.woo-archive-action-on-hover li.product:hover .entry-content-wrap,
+.woocommerce ul.products.woo-archive-action-on-hover li.product:focus-within .entry-content-wrap {
+    transform: translateY(0) !important;
+}
+
+/* Bouton sous le prix: position relative dans le flux */
+.woocommerce ul.products.woo-archive-action-on-hover li.product:hover .product-action-wrap,
+.woocommerce ul.products.woo-archive-action-on-hover li.product:focus-within .product-action-wrap {
+    position: relative !important;
+    bottom: auto !important;
+    opacity: 1 !important;
+    margin-top: 8px;
+    padding: 0 !important;
+}
+
+/* La carte s'agrandit pour contenir le bouton (overflow visible) */
+.woocommerce ul.products.woo-archive-action-on-hover li.product:hover,
+.woocommerce ul.products.woo-archive-action-on-hover li.product:focus-within {
+    overflow: visible !important;
+}
+
+/* ===================================================
+   THÈME ROUGE - Règles manquantes (calquées sur or/bleu/vert)
+   Couleur principale: #E31E24 (rgb 227,30,36)
+   =================================================== */
+
+/* Titres avec spans colorés, highlights, accents */
+[data-theme="rouge"] .inaricom-hero-title span,
+[data-theme="rouge"] .inari-hero-title .highlight,
+[data-theme="rouge"] h1 span,
+[data-theme="rouge"] h2 span,
+[data-theme="rouge"] h3 span,
+[data-theme="rouge"] .text-red,
+[data-theme="rouge"] .highlight,
+[data-theme="rouge"] .accent-text {
+    color: #E31E24;
+    background: linear-gradient(135deg, #E31E24 0%, #B01218 100%) text;
+    background-color: initial;
+}
+
+/* Liens dans le contenu */
+[data-theme="rouge"] a:not(.wp-block-button__link):not(.btn-primary):not(.btn-secondary):not(.entry-title):not(h1 a):not(h2 a):not(h3 a):not(h4 a) {
+    color: #E31E24;
+}
+[data-theme="rouge"] a:not(.wp-block-button__link):not(.btn-primary):not(.btn-secondary):hover {
+    color: #FF4040;
+}
+
+/* Titres au hover */
+[data-theme="rouge"] .entry-title:hover,
+[data-theme="rouge"] .entry-title a:hover,
+[data-theme="rouge"] h2 a:hover,
+[data-theme="rouge"] h3 a:hover,
+[data-theme="rouge"] .article-card h3:hover,
+[data-theme="rouge"] .product-card h3:hover {
+    color: #E31E24;
+}
+
+/* Badges, kickers, pills */
+[data-theme="rouge"] .section-badge,
+[data-theme="rouge"] .inari-hero-badge,
+[data-theme="rouge"] .inaricom-kicker {
+    color: #E31E24;
+    background: rgba(227, 30, 36, 0.08);
+    background-color: rgba(227, 30, 36, 0.08);
+    border-color: rgba(227, 30, 36, 0.25);
+}
+[data-theme="rouge"] .inaricom-kicker-dot,
+[data-theme="rouge"] .inaricom-pill-dot {
+    background: #E31E24;
+    background-color: #E31E24;
+}
+
+/* Prix WooCommerce, catégories articles, read more */
+[data-theme="rouge"] .article-category,
+[data-theme="rouge"] .product-price strong,
+[data-theme="rouge"] .woocommerce .price,
+[data-theme="rouge"] .read-more,
+[data-theme="rouge"] .more-link {
+    color: #E31E24;
+}
+
+/* Cartes au hover */
+[data-theme="rouge"] .service-card:hover,
+[data-theme="rouge"] .product-card:hover,
+[data-theme="rouge"] .article-card:hover,
+[data-theme="rouge"] .inaricom-card:hover {
+    border-color: rgba(227, 30, 36, 0.3);
+    box-shadow: rgba(227, 30, 36, 0.15) 0px 16px 48px;
+}
+
+/* Menu navigation actif */
+[data-theme="rouge"] .current-menu-item > a,
+[data-theme="rouge"] .current_page_item > a,
+[data-theme="rouge"] .header-navigation .menu-item.active > a {
+    color: #E31E24;
+}
+
+/* Sélection texte */
+[data-theme="rouge"] ::selection {
+    background: #E31E24;
+    background-color: #E31E24;
+}
+
+/* Scrollbar */
+[data-theme="rouge"] ::-webkit-scrollbar-thumb:hover {
+    background: #E31E24;
+    background-color: #E31E24;
+}
+
+/* Liens dans colonnes Kadence */
+[data-theme="rouge"] .kb-row-layout-inner a,
+[data-theme="rouge"] .kt-inside-inner-col a,
+[data-theme="rouge"] .kadence-column a {
+    color: #E31E24;
+}
+
+/* Spans colorés dans titres avancés Kadence */
+[data-theme="rouge"] .kt-adv-heading span[style*="color"],
+[data-theme="rouge"] .kb-adv-text span[style*="color"] {
+    color: #E31E24;
+}
+
+/* Boutons principaux */
+[data-theme="rouge"] .wp-block-button__link,
+[data-theme="rouge"] .kb-button,
+[data-theme="rouge"] button[type="submit"],
+[data-theme="rouge"] input[type="submit"] {
+    color: #ffffff;
+    background: #E31E24;
+    background-color: #E31E24;
+}
+[data-theme="rouge"] .wp-block-button__link:hover,
+[data-theme="rouge"] .kb-button:hover,
+[data-theme="rouge"] button[type="submit"]:hover,
+[data-theme="rouge"] input[type="submit"]:hover {
+    background: #B01218;
+    background-color: #B01218;
+    box-shadow: rgba(227, 30, 36, 0.4) 0px 12px 35px;
+}
+
+/* Boutons outline */
+[data-theme="rouge"] .is-style-outline .wp-block-button__link,
+[data-theme="rouge"] .kb-button.kb-btn-outline,
+[data-theme="rouge"] .btn-secondary {
+    border-color: rgba(227, 30, 36, 0.3) !important;
+    color: #E31E24 !important;
+}
+[data-theme="rouge"] .is-style-outline .wp-block-button__link:hover,
+[data-theme="rouge"] .kb-button.kb-btn-outline:hover,
+[data-theme="rouge"] .btn-secondary:hover {
+    background: rgba(227, 30, 36, 0.15) !important;
+    border-color: rgba(227, 30, 36, 0.5) !important;
+    box-shadow: rgba(227, 30, 36, 0.2) 0px 0px 20px !important;
+}
+
+/* Cartes service/product/article hover border */
+[data-theme="rouge"] .service-card:hover,
+[data-theme="rouge"] .product-card:hover,
+[data-theme="rouge"] .article-card:hover,
+[data-theme="rouge"] .inaricom-card:hover {
+    border-color: rgba(227, 30, 36, 0.4) !important;
+    box-shadow: rgba(227, 30, 36, 0.12) 0px 16px 48px,
+                rgba(227, 30, 36, 0.2) 0px 0px 0px 1px,
+                rgba(255, 255, 255, 0.08) 0px 1px 0px inset !important;
+}
+
+/* Tags catégories, badges */
+[data-theme="rouge"] .article-category,
+[data-theme="rouge"] .product-tag,
+[data-theme="rouge"] .category-badge,
+[data-theme="rouge"] .entry-taxonomies a,
+[data-theme="rouge"] .cat-links a {
+    background: rgba(227, 30, 36, 0.12) !important;
+    border: 1px solid rgba(227, 30, 36, 0.3) !important;
+    color: #E31E24 !important;
+}
+
+/* Focus inputs */
+[data-theme="rouge"] input:focus,
+[data-theme="rouge"] textarea:focus,
+[data-theme="rouge"] select:focus {
+    border-color: rgba(227, 30, 36, 0.5) !important;
+    box-shadow: rgba(227, 30, 36, 0.15) 0px 0px 20px !important;
+}
+
+/* Prix WooCommerce */
+[data-theme="rouge"] .woocommerce .price,
+[data-theme="rouge"] .woocommerce-Price-amount,
+[data-theme="rouge"] .product-price strong,
+[data-theme="rouge"] .price ins {
+    color: #E31E24 !important;
+}
+
+/* Badge promo */
+[data-theme="rouge"] .woocommerce span.onsale {
+    background: #E31E24 !important;
+    color: #ffffff !important;
+}
+
+/* Info boxes et row layouts Kadence */
+[data-theme="rouge"] .kb-info-box-wrap:hover,
+[data-theme="rouge"] .kt-info-box:hover {
+    border-color: rgba(227, 30, 36, 0.4) !important;
+}
+[data-theme="rouge"] .kb-row-layout-wrap:hover .kb-row-layout-inner,
+[data-theme="rouge"] .kt-row-layout-inner:hover {
+    border-color: rgba(227, 30, 36, 0.2) !important;
+}
+
+/* Boutons Kadence */
+[data-theme="rouge"] .kb-btns-wrap .kb-button,
+[data-theme="rouge"] .kt-btn-wrap .kt-button {
+    background: #E31E24 !important;
+    color: #ffffff !important;
+}
+
+/* Icônes SVG Kadence */
+[data-theme="rouge"] .kb-svg-icon-wrap svg,
+[data-theme="rouge"] .kt-svg-icon-list-item-wrap svg {
+    color: #E31E24 !important;
+    fill: #E31E24 !important;
+}
+
+/* Override prix produits similaires pour thème rouge */
+[data-theme="rouge"] .related.products li.product .price,
+[data-theme="rouge"] .related.products li.product span.price,
+[data-theme="rouge"] .related.products li.product .woocommerce-Price-amount,
+[data-theme="rouge"] .related.products li.product .wc-block-grid__product-price {
+    color: #E31E24 !important;
+}
+
+/* === Bouton "Nous contacter" (.i-cta-box__btn) adapté par thème === */
+
+/* Thème OR */
+[data-theme="or"] .i-cta-box__btn {
+    background: #FFD700 !important;
+    color: #0a0a0f !important;
+    box-shadow: 0 8px 32px rgba(255,215,0,0.25) !important;
+}
+[data-theme="or"] .i-cta-box__btn:hover {
+    background: #B8860B !important;
+    box-shadow: 0 8px 32px rgba(255,215,0,0.4) !important;
+}
+
+/* Thème BLEU */
+[data-theme="bleu"] .i-cta-box__btn {
+    background: #00D4FF !important;
+    color: #0a0a0f !important;
+    box-shadow: 0 8px 32px rgba(0,212,255,0.25) !important;
+}
+[data-theme="bleu"] .i-cta-box__btn:hover {
+    background: #00A8CC !important;
+    box-shadow: 0 8px 32px rgba(0,212,255,0.4) !important;
+}
+
+/* Thème VERT */
+[data-theme="vert"] .i-cta-box__btn {
+    background: #10B981 !important;
+    color: #0a0a0f !important;
+    box-shadow: 0 8px 32px rgba(16,185,129,0.25) !important;
+}
+[data-theme="vert"] .i-cta-box__btn:hover {
+    background: #059669 !important;
+    box-shadow: 0 8px 32px rgba(16,185,129,0.4) !important;
+}
+
+/* Thème ROUGE */
+[data-theme="rouge"] .i-cta-box__btn {
+    background: #E31E24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 32px rgba(227,30,36,0.25) !important;
+}
+[data-theme="rouge"] .i-cta-box__btn:hover {
+    background: #B01218 !important;
+    box-shadow: 0 8px 32px rgba(227,30,36,0.4) !important;
+}
+

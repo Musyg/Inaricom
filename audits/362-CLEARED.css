@@ -1,0 +1,8 @@
+/* ============================================================
+   KADENCE CUSTOMIZER → ADDITIONAL CSS
+   Vidé 2026-04-19 : contenu migré vers snippet custom-css-js #347
+   (sections 47 WooCommerce hover + 47b .i-cta-box__btn par thème).
+   Les 200 lignes [data-theme="rouge"] du Customizer ont été supprimées :
+   elles dupliquaient les sections 43-46 du 347 via variables CSS.
+   Ne plus rien mettre ici : ajouter dans #347 à la place.
+   ============================================================ */
