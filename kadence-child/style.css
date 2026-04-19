@@ -1,18 +1,56 @@
 /*
  Theme Name:   Kadence Child - Inaricom
  Theme URI:    https://inaricom.com
- Description:  Thème enfant Kadence pour Inaricom avec animation fox
+ Description:  Theme enfant Kadence pour Inaricom avec animation fox et fonts self-hosted (nLPD/RGPD)
  Author:       Inaricom
  Author URI:   https://inaricom.com
  Template:     kadence
- Version:      1.0.0
+ Version:      1.1.0
  License:      GNU General Public License v2 or later
  License URI:  http://www.gnu.org/licenses/gpl-2.0.html
  Text Domain:  kadence-child
 */
 
 /* ==========================================================================
-   CUSTOM CSS INARICOM
+   FONTS SELF-HOSTED — Inter (OFL, rsms.me)
+   Violation nLPD resolue : plus de @import Google Fonts CDN.
+   Poids 400/500/600/700 pour couvrir les besoins du CSS Inaricom.
+   ========================================================================== */
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url('assets/fonts/inter/inter-400.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('assets/fonts/inter/inter-500.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('assets/fonts/inter/inter-600.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url('assets/fonts/inter/inter-700.woff2') format('woff2');
+}
+
+/* ==========================================================================
+   FOX ANIMATION — Background Parallax
    ========================================================================== */
 
 /* Fox Animation Background - Fixed Parallax */
