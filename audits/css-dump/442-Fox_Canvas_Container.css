@@ -1,0 +1,51 @@
+/* ===========================================
+   CANVAS RENARD — EN FOND SUR MOBILE
+   Version v28 — Renard derrière le contenu
+   =========================================== */
+@media (max-width: 768px) {
+  
+  /* Canvas — FOND CENTRÉ, semi-transparent */
+  #fox-canvas-container {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 0.35 !important;
+    background: transparent !important;
+  }
+  
+  #fox-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+  
+  /* Hero — contient le canvas absolu */
+  .hero-section,
+  .inari-hero {
+    background: linear-gradient(180deg, #0a0a0b 0%, #12121a 100%) !important;
+    position: relative !important;
+    z-index: 1 !important;
+    min-height: 100vh !important;
+    overflow: hidden !important;
+  }
+  
+  /* Contenu AU-DESSUS du canvas */
+  .hero-section > .inari-hero-badge-wrapper,
+  .hero-section > .inari-hero-content,
+  .hero-section > .inari-hero-stats-wrapper {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+  
+}
+
+@media (max-width: 480px) {
+  #fox-canvas-container {
+    opacity: 0.30 !important;  /* Légèrement plus discret sur petit écran */
+  }
+}

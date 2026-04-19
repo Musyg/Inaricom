@@ -1,0 +1,10 @@
+/* HERO FULL-WIDTH — Sortir du conteneur WordPress (DESKTOP ONLY) */
+@media (min-width: 1025px) {
+  .hero-section {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: calc(-50vw + 50%) !important;
+    position: relative;
+    left: 0;
+  }
+}

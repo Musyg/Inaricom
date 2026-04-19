@@ -1,0 +1,7 @@
+array (
+  'type' => 'footer',
+  'linking' => 'internal',
+  'priority' => '5',
+  'side' => 'frontend',
+  'language' => 'js',
+)

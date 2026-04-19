@@ -1,0 +1,102 @@
+/* THEME SWITCHER — Mobile Fix */
+
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.theme-switcher-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+.theme-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.theme-dot[data-theme="rouge"] { background: #E31E24; }
+.theme-dot[data-theme="or"] { background: #FFD700; }
+.theme-dot[data-theme="bleu"] { background: #00d4ff; }
+.theme-dot[data-theme="vert"] { background: #10B981; }
+
+.theme-dot:hover {
+  transform: scale(1.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Bordure de la couleur du thème actif */
+.theme-dot.active[data-theme="rouge"] {
+  border-color: #E31E24;
+  box-shadow: 0 0 10px rgba(227, 30, 36, 0.6);
+}
+
+.theme-dot.active[data-theme="or"] {
+  border-color: #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+}
+
+.theme-dot.active[data-theme="bleu"] {
+  border-color: #00d4ff;
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.6);
+}
+
+.theme-dot.active[data-theme="vert"] {
+  border-color: #10B981;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.6);
+}
+
+.theme-dot.active {
+  transform: scale(1.15);
+}
+
+@media (max-width: 768px) {
+  .theme-switcher {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9998;
+    background: rgba(22, 22, 28, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 30px;
+    padding: 10px 16px;
+    gap: 10px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .theme-switcher-label {
+    display: none;
+  }
+  
+  .theme-dot {
+    width: 28px;
+    height: 28px;
+    border-width: 3px;
+  }
+  
+  .theme-dot.active {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 400px) {
+  .theme-switcher {
+    bottom: 16px;
+    left: 16px;
+    padding: 8px 12px;
+    gap: 8px;
+  }
+  
+  .theme-dot {
+    width: 24px;
+    height: 24px;
+  }
+}

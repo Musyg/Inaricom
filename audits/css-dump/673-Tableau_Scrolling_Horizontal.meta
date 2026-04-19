@@ -1,0 +1,7 @@
+array (
+  'type' => 'header',
+  'linking' => 'internal',
+  'priority' => '5',
+  'side' => 'frontend',
+  'language' => 'js',
+)
