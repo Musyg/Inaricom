@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<ruleset name="Inaricom Core">
+    <description>PHPCS ruleset pour le plugin inaricom-core.</description>
+
+    <file>src/</file>
+    <file>inaricom-core.php</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/tests/*</exclude-pattern>
+
+    <arg name="extensions" value="php"/>
+    <arg value="ps"/>
+
+    <rule ref="WordPress">
+        <!-- On autorise les short array syntax [] -->
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found"/>
+        <!-- On n'utilise pas le text domain partout (plugin interne) -->
+        <exclude name="WordPress.WP.I18n.MissingArgDomain"/>
+    </rule>
+
+    <rule ref="PHPCompatibilityWP"/>
+    <config name="testVersion" value="8.3-"/>
+
+    <!-- Text domain impose -->
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array" value="inaricom-core"/>
+        </properties>
+    </rule>
+
+    <!-- Long lines autorises jusqu'a 140 chars -->
+    <rule ref="Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="140"/>
+            <property name="absoluteLineLimit" value="0"/>
+        </properties>
+    </rule>
+</ruleset>
