@@ -1,0 +1,197 @@
+/* ══════════════════════════════════════════════════════════
+   INARICOM — FICHES PRODUITS PREMIUM
+   Ajouter dans : Simple Custom CSS & JS → Nouveau CSS
+   Nom : "Fiches Produits Premium"
+   ══════════════════════════════════════════════════════════ */
+
+/* --- Badges produit --- */
+.inari-badges {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+  padding-top: 1rem;
+}
+
+.inari-badge {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inari-badge--stock {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22C55E;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.inari-badge--shipping {
+  background: rgba(59, 130, 246, 0.15);
+  color: #3B82F6;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.inari-badge--guarantee {
+  background: rgba(var(--inari-red-rgb), 0.15);
+  color: var(--inari-red);
+  border: 1px solid rgba(var(--inari-red-rgb), 0.3);
+}
+
+/* --- Quick Specs (sous le titre) --- */
+.inari-quick-specs {
+  display: flex;
+  justify-content: center;
+  gap: 2.5rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 0;
+  margin: 1rem 0 1.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.inari-quick-specs .qs-item {
+  text-align: center;
+}
+
+.inari-quick-specs .qs-value {
+  display: block;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--inari-red);
+  line-height: 1.1;
+}
+
+.inari-quick-specs .qs-label {
+  font-size: 0.8rem;
+  color: var(--inari-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* --- Sections additionnelles (cas d'usage, inclus, etc.) --- */
+.inari-section {
+  background: var(--inari-black-alt);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 2rem;
+  margin: 1.5rem 0;
+  max-width: 1200px;
+}
+
+.inari-section h2 {
+  font-size: 1.3rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  color: #E8E8E8;
+}
+
+/* --- Use Cases Grid --- */
+.inari-usecase-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.inari-usecase {
+  text-align: center;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.3s ease;
+}
+
+.inari-usecase:hover {
+  border-color: var(--inari-red);
+  transform: translateY(-2px);
+}
+
+.inari-usecase .uc-icon {
+  font-size: 2rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.inari-usecase h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: #E8E8E8;
+}
+
+.inari-usecase p {
+  font-size: 0.85rem;
+  color: var(--inari-text-muted);
+  margin: 0;
+}
+
+/* --- Contenu inclus --- */
+.inari-includes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 0.5rem;
+}
+
+.inari-includes-list li {
+  padding: 0.5rem 0;
+  color: #B0B0C0;
+  font-size: 0.95rem;
+}
+
+.inari-includes-list li.included::before {
+  content: "✓ ";
+  color: #22C55E;
+  font-weight: bold;
+}
+
+.inari-includes-list li.separate::before {
+  content: "○ ";
+  color: var(--inari-text-muted);
+}
+
+/* --- CTA Box --- */
+.inari-cta-box {
+  background: linear-gradient(135deg, rgba(var(--inari-red-rgb), 0.1) 0%, rgba(var(--inari-red-rgb), 0.05) 100%);
+  border: 1px solid rgba(var(--inari-red-rgb), 0.3);
+  border-radius: 12px;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.inari-cta-box p {
+  color: #B0B0C0;
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+}
+
+.inari-cta-box strong {
+  color: var(--inari-red);
+}
+
+/* --- Responsive --- */
+@media (max-width: 768px) {
+  .inari-quick-specs {
+    gap: 1.5rem;
+  }
+  .inari-quick-specs .qs-value {
+    font-size: 1.6rem;
+  }
+  .inari-section {
+    padding: 1.25rem;
+  }
+  .inari-badges {
+    gap: 0.5rem;
+  }
+  .inari-badge {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.75rem;
+  }
+}
