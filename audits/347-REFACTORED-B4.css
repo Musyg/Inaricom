@@ -1,0 +1,3522 @@
+/* ============================================================
+   FONTS SELF-HOSTED — Inter (OFL, rsms.me)
+   Violation nLPD/RGPD resolue : plus de Google Fonts CDN.
+   Poids 400/500/600/700.
+   ============================================================ */
+
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 400; font-display: swap; src: url('https://staging.inaricom.com/wp-content/themes/kadence-child/assets/fonts/inter/inter-400.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 500; font-display: swap; src: url('https://staging.inaricom.com/wp-content/themes/kadence-child/assets/fonts/inter/inter-500.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 600; font-display: swap; src: url('https://staging.inaricom.com/wp-content/themes/kadence-child/assets/fonts/inter/inter-600.woff2') format('woff2'); }
+@font-face { font-family: 'Inter'; font-style: normal; font-weight: 700; font-display: swap; src: url('https://staging.inaricom.com/wp-content/themes/kadence-child/assets/fonts/inter/inter-700.woff2') format('woff2'); }
+
+/* ============================================================
+   INARICOM — CSS UNIFIÉ PREMIUM v5.1
+   Système de thèmes dynamiques (Rouge / Or Hermès / Bleu Tech)
+   PATCH: Glassmorphism gris neutre (teintes bordeaux corrigées)
+   ============================================================ */
+
+/* ===========================================
+   1. VARIABLES — THÈME PAR DÉFAUT (ROUGE)
+   =========================================== */
+
+:root {
+  /* === COULEURS THÈME (changent selon le thème actif) === */
+  --inari-red: #E31E24;
+  --inari-red-dark: #B8161B;
+  --inari-red-light: #FF3A40;
+  --inari-red-rgb: 227, 30, 36;
+  
+  /* Glow & effets thème */
+  --glow-color: rgba(var(--inari-red-rgb), 0.5);
+  --glow-soft: rgba(var(--inari-red-rgb), 0.25);
+  --glow-subtle: rgba(var(--inari-red-rgb), 0.1);
+  
+  /* Bordures accent thème */
+  --border-accent: rgba(var(--inari-red-rgb), 0.3);
+  --border-accent-hover: rgba(var(--inari-red-rgb), 0.6);
+  
+  /* === COULEURS FIXES (ne changent pas) === */
+  /* Noirs & surfaces */
+  --inari-black: #0A0A0F;
+  --inari-black-alt: #12121A;
+  --inari-black-light: #1A1A24;
+  --inari-black-lighter: #242430;
+  
+  /* Textes */
+  --inari-white: #FFFFFF;
+  --inari-text: #F0F0F5;
+  --inari-text-muted: #8A8A9A;
+  --inari-text-soft: #B6B0B4;
+  
+  /* Bordures & UI */
+  --inari-border: #2A2A35;
+  --inari-gradient: linear-gradient(135deg, var(--inari-red) 0%, var(--inari-red-dark) 100%);
+  
+  /* Rayons & ombres */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+  --radius-full: 999px;
+  --shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.55);
+  --shadow-subtle: 0 10px 26px rgba(0, 0, 0, 0.35);
+  
+  /* Glassmorphism — GRIS NEUTRE */
+  --glass-bg: rgba(18, 18, 22, 0.6);
+  --glass-bg-light: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-accent: rgba(var(--inari-red-rgb), 0.2);
+  --glass-blur: 16px;
+  --glass-blur-heavy: 24px;
+	
+  /* === FILTRES LOGO (liseret blanc subtil uniquement) === */
+  --logo-filter: brightness(1);  /* Neutre mais combinable */
+  --logo-halo: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+/* 1b. THÈME OR / HERMÈS
+   =========================================== */
+[data-theme="or"],
+.theme-or {
+  --inari-red: #FFD700;
+  --inari-red-dark: #B8860B;
+  --inari-red-light: #FFE55C;
+  --inari-red-rgb: 255, 215, 0;
+  
+  /* Glow dorés */
+  --glow-color: rgba(255, 215, 0, 0.5);
+  --glow-soft: rgba(255, 215, 0, 0.25);
+  --glow-subtle: rgba(255, 215, 0, 0.1);
+  
+  /* Bordures dorées */
+  --border-accent: rgba(255, 215, 0, 0.3);
+  --border-accent-hover: rgba(255, 215, 0, 0.6);
+  
+  /* Glass légèrement plus chaud */
+  --glass-bg: rgba(22, 20, 18, 0.6);
+  --glass-border-accent: rgba(255, 215, 0, 0.2);
+  
+  /* Gradient doré */
+  --inari-gradient: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
+}
+
+/* Logo Or - swap image */
+[data-theme="or"] .site-logo img,
+[data-theme="or"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-16.png');
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+/* ===========================================
+   1c. THÈME BLEU / TECH
+   =========================================== */
+[data-theme="bleu"],
+.theme-bleu {
+  --inari-red: #00d4ff;
+  --inari-red-dark: #00A8CC;
+  --inari-red-light: #4DE8FF;
+  --inari-red-rgb: 0, 212, 255;
+  
+  /* Glow cyan */
+  --glow-color: rgba(0, 212, 255, 0.5);
+  --glow-soft: rgba(0, 212, 255, 0.25);
+  --glow-subtle: rgba(0, 212, 255, 0.1);
+  
+  /* Bordures cyan */
+  --border-accent: rgba(0, 212, 255, 0.3);
+  --border-accent-hover: rgba(0, 212, 255, 0.6);
+  
+  /* Glass légèrement plus froid */
+  --glass-bg: rgba(12, 16, 24, 0.6);
+  --glass-border-accent: rgba(0, 212, 255, 0.2);
+  
+  /* Gradient cyan */
+  --inari-gradient: linear-gradient(135deg, #00d4ff 0%, #00A8CC 100%);
+}
+
+/* Logo Bleu - swap image */
+[data-theme="bleu"] .site-logo img,
+[data-theme="bleu"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-13.png');
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+/* Box-sizing global */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+/* ===========================================
+   1d. THÈME VERT / ÉMERAUDE
+   =========================================== */
+[data-theme="vert"],
+.theme-vert {
+  --inari-red: #10B981;
+  --inari-red-dark: #059669;
+  --inari-red-light: #34D399;
+  --inari-red-rgb: 16, 185, 129;
+  
+  /* Glow émeraude */
+  --glow-color: rgba(16, 185, 129, 0.5);
+  --glow-soft: rgba(16, 185, 129, 0.25);
+  --glow-subtle: rgba(16, 185, 129, 0.1);
+  
+  /* Bordures émeraude */
+  --border-accent: rgba(16, 185, 129, 0.3);
+  --border-accent-hover: rgba(16, 185, 129, 0.6);
+  
+  /* Glass légèrement plus frais */
+  --glass-bg: rgba(12, 20, 18, 0.6);
+  --glass-border-accent: rgba(16, 185, 129, 0.2);
+  
+  /* Gradient émeraude */
+  --inari-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
+}
+
+/* Logo Vert - swap image */
+[data-theme="vert"] .site-logo img,
+[data-theme="vert"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-15.png');
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+/* ===========================================
+   2. BASE — FOND TRANSPARENT POUR CANVAS
+   =========================================== */
+html,
+body {
+  background: #0a0a0b !important;
+  color: var(--inari-text) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* Conteneurs WordPress transparents */
+.site,
+.wp-site-blocks,
+.entry-content,
+.kadence-pro-navigation-wrap,
+.inaricom-page-wrapper {
+  background: transparent !important;
+}
+
+/* ===========================================
+   3. SECTIONS — SEMI-TRANSPARENTES (GLASS)
+   =========================================== */
+.hero-section,
+.inari-hero,
+.inari-services,
+.inari-shop,
+.inari-articles,
+.inari-resources {
+  background: rgba(10, 10, 15, 0.30) !important;
+  position: relative;
+}
+
+/* Glows atténués mais visibles */
+.inari-hero-bg {
+  opacity: 0.5;
+}
+
+.hero-glow {
+  opacity: 0.4;
+}
+
+/* Contenu au-dessus */
+.inari-hero-content,
+.inari-container,
+.inaricom-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ===========================================
+   4. TYPOGRAPHIE
+   =========================================== */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  color: var(--inari-white) !important;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+h2 { font-size: clamp(2rem, 4vw, 2.75rem); }
+h3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+h4 { font-size: 1.35rem; }
+
+p, li, span {
+  color: var(--inari-text);
+}
+
+.typo-display {
+  font-size: clamp(2.4rem, 4.5vw, 3rem);
+  line-height: 1.05;
+  font-weight: 700;
+}
+
+.typo-body {
+  font-size: 1rem;
+  line-height: 1.55;
+  color: var(--inari-text-muted);
+}
+
+/* ===========================================
+   5. LIENS
+   =========================================== */
+a {
+  color: var(--inari-red);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--inari-red-light);
+}
+
+/* ===========================================
+   6. BOUTONS
+   =========================================== */
+
+/* Primary */
+.wp-block-button__link,
+.kb-button,
+button,
+input[type="submit"],
+.woocommerce a.button,
+.woocommerce button.button,
+.btn-primary,
+.inaricom-btn-primary,
+.inari-hero-cta .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  padding: 14px 28px !important;
+  background: var(--inari-red) !important;
+  color: var(--inari-white) !important;
+  border: none !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+  text-transform: none !important;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: all 0.25s ease !important;
+}
+
+.wp-block-button__link:hover,
+.kb-button:hover,
+button:hover,
+input[type="submit"]:hover,
+.woocommerce a.button:hover,
+.woocommerce button.button:hover,
+.btn-primary:hover,
+.inaricom-btn-primary:hover,
+.inari-hero-cta .btn-primary:hover {
+  background: var(--inari-red-dark) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(var(--inari-red-rgb), 0.4);
+}
+
+/* Secondary / Ghost — GLASS — CORRIGÉ */
+.is-style-outline .wp-block-button__link,
+.kb-button.kb-btn-outline,
+.btn-secondary,
+.inaricom-btn-ghost,
+.inaricom-btn-secondary,
+.inari-hero-cta .btn-secondary {
+  padding: 14px 28px;
+  background: rgba(14, 14, 18, 0.4) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  border-radius: var(--radius-sm);
+  color: var(--inari-white) !important;
+  text-decoration: none !important;
+  transition: all 0.25s ease;
+}
+
+.is-style-outline .wp-block-button__link:hover,
+.kb-button.kb-btn-outline:hover,
+.btn-secondary:hover,
+.inaricom-btn-ghost:hover,
+.inaricom-btn-secondary:hover,
+.inari-hero-cta .btn-secondary:hover {
+  background: rgba(var(--inari-red-rgb), 0.15) !important;
+  border-color: rgba(var(--inari-red-rgb), 0.4) !important;
+  color: var(--inari-red) !important;
+}
+
+/* Bouton large */
+.btn-primary-large,
+.btn-secondary-large {
+  padding: 18px 40px;
+  font-size: 16px;
+}
+
+/* ===========================================
+   7. HEADER / NAVIGATION — GLASS (COMPLET)
+   =========================================== */
+.site-header,
+#masthead,
+.kadence-sticky-header,
+header.header {
+  background: rgba(10, 10, 15, 0.85) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--inari-border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+/* Header inner container */
+.site-header .site-container,
+.header-container,
+.kadence-header-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 70px;
+}
+
+/* Navigation links */
+.header-navigation .menu-item a,
+.primary-navigation a,
+.main-navigation a,
+.kadence-navigation a,
+.nav-menu a {
+  color: var(--inari-text) !important;
+  font-weight: 500;
+  font-size: 15px;
+  padding: 8px 16px;
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+.header-navigation .menu-item a:hover,
+.primary-navigation a:hover,
+.main-navigation a:hover,
+.kadence-navigation a:hover,
+.nav-menu a:hover {
+  color: var(--inari-red) !important;
+}
+
+/* Current/Active menu item */
+.current-menu-item > a,
+.current_page_item > a,
+.menu-item.active > a {
+  color: var(--inari-red) !important;
+}
+
+/* Submenu / Dropdown */
+.sub-menu,
+.dropdown-menu,
+.kadence-menu-dropdown {
+  background: rgba(10, 10, 15, 0.95) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--inari-border);
+  border-radius: var(--radius-md);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  padding: 8px 0;
+  min-width: 200px;
+}
+
+.sub-menu a,
+.dropdown-menu a {
+  padding: 10px 20px !important;
+  display: block;
+}
+
+.sub-menu a:hover,
+.dropdown-menu a:hover {
+  background: rgba(var(--inari-red-rgb), 0.1) !important;
+}
+
+/* Mobile menu toggle */
+.menu-toggle,
+.mobile-toggle,
+.kadence-menu-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--inari-border);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  color: var(--inari-white);
+  cursor: pointer;
+}
+
+.menu-toggle:hover {
+  border-color: var(--inari-red);
+  color: var(--inari-red);
+}
+
+/* Mobile menu */
+@media (max-width: 1024px) {
+  .menu-toggle,
+  .mobile-toggle,
+  .kadence-menu-toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .primary-navigation,
+  .main-navigation,
+  .kadence-navigation {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    right: 0;
+    background: rgba(10, 10, 15, 0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 20px;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 999;
+  }
+  
+  .primary-navigation.active,
+  .main-navigation.active,
+  .navigation-open .primary-navigation {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  
+  .primary-navigation .menu,
+  .main-navigation .menu {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .primary-navigation .menu-item a,
+  .main-navigation .menu-item a {
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+  }
+  
+  .primary-navigation .menu-item a:hover {
+    background: rgba(var(--inari-red-rgb), 0.1);
+  }
+}
+
+/* Logo */
+.custom-logo,
+.site-logo img,
+.kadence-site-logo img {
+  filter: drop-shadow(0 0 1px rgba(255,255,255,0.6));
+  max-height: 50px;
+  width: auto;
+}
+
+.site-title,
+.site-branding .site-title a {
+  color: var(--inari-white) !important;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+/* Header CTA button */
+.header-cta,
+.header-button,
+.kadence-header-button {
+  background: var(--inari-red) !important;
+  color: var(--inari-white) !important;
+  padding: 10px 20px !important;
+  border-radius: var(--radius-sm) !important;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.header-cta:hover,
+.header-button:hover {
+  background: var(--inari-red-dark) !important;
+  transform: translateY(-2px);
+}
+
+/* ===========================================
+   8. BADGES & PILLS — GLASS — CORRIGÉ
+   =========================================== */
+.section-badge,
+.inari-hero-badge,
+.inaricom-kicker {
+  display: inline-block;
+  padding: 8px 16px;
+  background: rgba(var(--inari-red-rgb), 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(var(--inari-red-rgb), 0.25);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--inari-red);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.inaricom-pill {
+  padding: 0.4rem 0.9rem;
+  background: rgba(12, 12, 14, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  color: var(--inari-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.inaricom-kicker-dot,
+.inaricom-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-full);
+  background: var(--inari-red);
+}
+
+/* ===========================================
+   9. CARDS — GLASSMORPHISM — CORRIGÉ
+   =========================================== */
+.service-card,
+.product-card,
+.article-card,
+.inaricom-card,
+.inaricom-mini-card {
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  transition: all 0.3s ease;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.service-card:hover,
+.product-card:hover,
+.article-card:hover,
+.inaricom-card:hover {
+  background: rgba(26, 26, 32, 0.65);
+  border-color: rgba(var(--inari-red-rgb), 0.3);
+  transform: translateY(-4px);
+  box-shadow: 
+    0 16px 48px rgba(var(--inari-red-rgb), 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Card titles */
+.service-card h3,
+.product-card h3,
+.article-card h3,
+.inaricom-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--inari-white);
+  margin: 0 0 12px;
+}
+
+.service-card p,
+.product-card p,
+.article-card p,
+.inaricom-card-text {
+  font-size: 15px;
+  color: var(--inari-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Mini cards */
+.inaricom-mini-card {
+  padding: 0.9rem;
+  border-radius: 15px;
+}
+
+.inaricom-mini-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+  color: var(--inari-text);
+}
+
+.inaricom-mini-text {
+  color: var(--inari-text-muted);
+  font-size: 0.8rem;
+}
+
+/* ===========================================
+   10. HERO SECTIONS
+   =========================================== */
+.inaricom-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 3rem;
+  margin-bottom: 4rem;
+  align-items: center;
+}
+
+.inaricom-hero-title {
+  font-size: clamp(2rem, 4.3vw, 3rem) !important;
+  font-weight: 700 !important;
+  margin-bottom: 0.8rem !important;
+}
+
+.inaricom-hero-title span,
+.inari-hero-title .highlight {
+  color: var(--inari-red);
+  background: var(--inari-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.inaricom-hero-subtitle,
+.inari-hero-subtitle {
+  color: var(--inari-text-muted);
+  max-width: 35rem;
+  margin-bottom: 2rem;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+  line-height: 1.7;
+}
+
+.inaricom-hero-highlights,
+.inari-hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+}
+
+/* Hero right block — GLASS — CORRIGÉ */
+.inaricom-hero-right {
+  padding: 1.2rem 1.3rem;
+  background: rgba(16, 16, 20, 0.5);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.inaricom-hero-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+/* Stats */
+.inari-hero-stats {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  flex-wrap: wrap;
+}
+
+.inari-hero-stats .stat {
+  text-align: center;
+}
+
+.inari-hero-stats .stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--inari-white);
+}
+
+.inari-hero-stats .stat-label {
+  display: block;
+  font-size: 14px;
+  color: var(--inari-text-muted);
+  margin-top: 4px;
+}
+
+/* ===========================================
+   11. GRIDS
+   =========================================== */
+.services-grid,
+.shop-grid,
+.articles-grid {
+  display: grid;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.services-grid {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.shop-grid {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.articles-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* ===========================================
+   12. PRODUCT SPECIFICS
+   =========================================== */
+.product-card {
+  text-align: center;
+}
+
+.product-tag {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  padding: 6px 12px;
+  background: rgba(var(--inari-red-rgb), 0.15);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(var(--inari-red-rgb), 0.3);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--inari-red);
+  text-transform: uppercase;
+}
+
+.product-tag.best {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.3);
+  color: #FFD700;
+}
+
+.product-tag.new {
+  background: rgba(0, 255, 136, 0.15);
+  border-color: rgba(0, 255, 136, 0.3);
+  color: #00FF88;
+}
+
+.product-emoji {
+  font-size: 4rem;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.product-price {
+  font-size: 15px;
+  color: var(--inari-text-muted);
+  margin-bottom: 20px;
+}
+
+.product-price strong {
+  font-size: 1.5rem;
+  color: var(--inari-red);
+  font-weight: 700;
+}
+
+.btn-product {
+  display: inline-block;
+  width: 100%;
+  padding: 12px 20px;
+  background: transparent;
+  border: 2px solid var(--inari-border);
+  border-radius: var(--radius-sm);
+  color: var(--inari-white);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.btn-product:hover {
+  background: var(--inari-red);
+  border-color: var(--inari-red);
+}
+
+/* ===========================================
+   13. ARTICLE SPECIFICS
+   =========================================== */
+.article-category {
+  display: inline-block;
+  padding: 6px 12px;
+  background: rgba(var(--inari-red-rgb), 0.1);
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--inari-red);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.article-card h3 a {
+  color: var(--inari-white);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.article-card h3 a:hover {
+  color: var(--inari-red);
+}
+
+.article-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #6A6A7A;
+  margin-top: 20px;
+}
+
+.article-intro {
+  font-size: 1.2rem;
+  line-height: 1.8;
+  color: #E0E0E6;
+  border-left: 4px solid var(--inari-red);
+  padding-left: 20px;
+  margin: 0 0 40px;
+}
+
+/* ===========================================
+   14. RESOURCES BOX — GLASS — CORRIGÉ
+   =========================================== */
+.resources-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  background: rgba(22, 22, 28, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 24px;
+  padding: 60px;
+}
+
+.resources-title {
+  font-size: clamp(1.8rem, 3vw, 2.5rem);
+  font-weight: 700;
+  color: var(--inari-white);
+  margin: 20px 0 16px;
+}
+
+.resources-desc {
+  font-size: 1.05rem;
+  color: var(--inari-text-muted);
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+
+.resources-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.resources-list li {
+  padding: 8px 0;
+  font-size: 15px;
+  color: #E0E0E6;
+}
+
+/* ===========================================
+   15. FORMS — GLASS — CORRIGÉ
+   =========================================== */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select,
+.lead-form input[type="email"] {
+  padding: 18px 20px;
+  background: rgba(10, 10, 14, 0.6) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px;
+  color: var(--inari-text) !important;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+input:focus,
+textarea:focus,
+.lead-form input[type="email"]:focus {
+  border-color: rgba(var(--inari-red-rgb), 0.5) !important;
+  outline: none;
+  box-shadow: 0 0 20px rgba(var(--inari-red-rgb), 0.15);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #6A6A7A;
+}
+
+.btn-submit {
+  padding: 18px 32px;
+  background: var(--inari-red);
+  border: none;
+  border-radius: 10px;
+  color: var(--inari-white);
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-submit:hover {
+  background: var(--inari-red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(var(--inari-red-rgb), 0.4);
+}
+
+.form-note {
+  font-size: 13px;
+  color: #6A6A7A;
+  text-align: center;
+  margin: 0;
+}
+
+.lead-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ===========================================
+   16. WOOCOMMERCE — COMPLET — CORRIGÉ
+   =========================================== */
+
+/* === PRODUCT GRID === */
+.woocommerce ul.products li.product,
+.wc-block-grid__product {
+  background: rgba(22, 22, 28, 0.55) !important;
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.woocommerce ul.products li.product:hover,
+.wc-block-grid__product:hover {
+  border-color: var(--inari-red);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(var(--inari-red-rgb), 0.15);
+}
+
+/* Product images */
+.woocommerce ul.products li.product a img,
+.wc-block-grid__product-image img {
+  border-radius: var(--radius-sm);
+  transition: transform 0.3s ease;
+}
+
+.woocommerce ul.products li.product:hover a img {
+  transform: scale(1.02);
+}
+
+/* Product title */
+.woocommerce ul.products li.product .woocommerce-loop-product__title,
+.wc-block-grid__product-title {
+  color: var(--inari-white) !important;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 12px;
+}
+
+/* Product price */
+.woocommerce ul.products li.product .price,
+.wc-block-grid__product-price,
+.woocommerce .price {
+  color: var(--inari-red) !important;
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.woocommerce .price del {
+  color: var(--inari-text-muted) !important;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+
+.woocommerce .price ins {
+  text-decoration: none;
+  color: var(--inari-red) !important;
+}
+
+/* Sale badge */
+.woocommerce span.onsale,
+.wc-block-grid__product-onsale {
+  background: var(--inari-red) !important;
+  color: var(--inari-white) !important;
+  border-radius: var(--radius-full);
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+}
+
+/* Out of stock */
+.woocommerce .outofstock .stock,
+.woocommerce-variation-availability .stock.out-of-stock {
+  color: #FF6B6B !important;
+  font-weight: 600;
+}
+
+/* Star rating */
+.woocommerce .star-rating {
+  color: #FFD700 !important;
+}
+
+.woocommerce .star-rating::before {
+  color: rgba(255, 215, 0, 0.3);
+}
+
+/* === SINGLE PRODUCT === */
+.woocommerce div.product div.images {
+  background: rgba(22, 22, 28, 0.4);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.woocommerce div.product div.images img {
+  border-radius: var(--radius-md);
+}
+
+.woocommerce div.product .product_title {
+  color: var(--inari-white) !important;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.woocommerce div.product .woocommerce-product-details__short-description {
+  color: var(--inari-text-muted);
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+/* Quantity input */
+.woocommerce .quantity .qty {
+  background: rgba(10, 10, 15, 0.8) !important;
+  border: 1px solid var(--inari-border) !important;
+  border-radius: var(--radius-sm);
+  color: var(--inari-white) !important;
+  padding: 10px 12px;
+  width: 80px;
+  text-align: center;
+}
+
+/* Tabs */
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+  padding: 0;
+  margin: 0 0 20px;
+  border-bottom: 1px solid var(--inari-border);
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li {
+  background: transparent !important;
+  border: none !important;
+  margin: 0;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li a {
+  color: var(--inari-text-muted) !important;
+  padding: 12px 20px;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li.active a,
+.woocommerce div.product .woocommerce-tabs ul.tabs li a:hover {
+  color: var(--inari-red) !important;
+  border-bottom-color: var(--inari-red);
+}
+
+.woocommerce div.product .woocommerce-tabs .panel {
+  background: rgba(22, 22, 28, 0.3);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* === CART === */
+.woocommerce-cart-form,
+.woocommerce table.shop_table {
+  background: rgba(22, 22, 28, 0.4) !important;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05) !important;
+  overflow: hidden;
+}
+
+.woocommerce table.shop_table th {
+  background: rgba(10, 10, 15, 0.6);
+  color: var(--inari-white) !important;
+  font-weight: 600;
+  padding: 16px;
+  border-bottom: 1px solid var(--inari-border) !important;
+}
+
+.woocommerce table.shop_table td {
+  padding: 16px;
+  color: var(--inari-text) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+.woocommerce table.shop_table tbody tr:hover {
+  background: rgba(var(--inari-red-rgb), 0.05);
+}
+
+/* Cart totals */
+.woocommerce .cart_totals,
+.woocommerce-checkout-review-order-table {
+  background: rgba(22, 22, 28, 0.5) !important;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.woocommerce .cart_totals h2,
+.woocommerce .woocommerce-checkout h3 {
+  color: var(--inari-white) !important;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* Remove item link */
+.woocommerce a.remove {
+  color: #FF6B6B !important;
+  font-size: 1.5rem;
+  transition: transform 0.2s ease;
+}
+
+.woocommerce a.remove:hover {
+  background: transparent !important;
+  color: var(--inari-red) !important;
+  transform: scale(1.2);
+}
+
+/* Coupon */
+.woocommerce .coupon input.input-text {
+  background: rgba(10, 10, 15, 0.8) !important;
+  border: 1px solid var(--inari-border) !important;
+  border-radius: var(--radius-sm);
+  color: var(--inari-white) !important;
+  padding: 12px 16px;
+}
+
+/* === CHECKOUT === */
+.woocommerce form.checkout,
+.woocommerce-checkout {
+  color: var(--inari-text);
+}
+
+.woocommerce form .form-row label {
+  color: var(--inari-text) !important;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select,
+.select2-container--default .select2-selection--single {
+  background: rgba(10, 10, 15, 0.8) !important;
+  border: 1px solid var(--inari-border) !important;
+  border-radius: var(--radius-sm) !important;
+  color: var(--inari-white) !important;
+  padding: 12px 16px;
+}
+
+.woocommerce form .form-row input.input-text:focus,
+.woocommerce form .form-row textarea:focus {
+  border-color: var(--inari-red) !important;
+  box-shadow: 0 0 15px rgba(var(--inari-red-rgb), 0.15);
+}
+
+/* Select2 dropdown */
+.select2-container--default .select2-selection--single {
+  height: auto !important;
+  padding: 8px 12px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: var(--inari-white) !important;
+  line-height: 1.5;
+}
+
+.select2-dropdown {
+  background: var(--inari-black-alt) !important;
+  border: 1px solid var(--inari-border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.select2-container--default .select2-results__option {
+  color: var(--inari-text) !important;
+  padding: 10px 14px;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+  background: var(--inari-red) !important;
+  color: var(--inari-white) !important;
+}
+
+/* Order review */
+.woocommerce-checkout-review-order {
+  background: rgba(22, 22, 28, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Payment methods */
+.woocommerce-checkout #payment {
+  background: rgba(22, 22, 28, 0.4) !important;
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.woocommerce-checkout #payment ul.payment_methods {
+  padding: 20px !important;
+  border-bottom: 1px solid var(--inari-border) !important;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li {
+  background: transparent !important;
+  padding: 12px 0;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label {
+  color: var(--inari-text) !important;
+  font-weight: 500;
+}
+
+.woocommerce-checkout #payment div.payment_box {
+  background: rgba(10, 10, 15, 0.6) !important;
+  color: var(--inari-text-muted) !important;
+  border-radius: var(--radius-sm);
+  margin-top: 8px;
+}
+
+/* Place order button */
+.woocommerce #place_order {
+  width: 100%;
+  padding: 16px 32px !important;
+  font-size: 1.1rem !important;
+}
+
+/* === NOTICES === */
+.woocommerce-message,
+.woocommerce-info {
+  background: rgba(0, 255, 136, 0.1) !important;
+  border-left: 4px solid #00FF88 !important;
+  border-radius: var(--radius-sm);
+  color: #00FF88 !important;
+  padding: 16px 20px;
+}
+
+.woocommerce-error {
+  background: rgba(255, 107, 107, 0.1) !important;
+  border-left: 4px solid #FF6B6B !important;
+  border-radius: var(--radius-sm);
+  color: #FF6B6B !important;
+  padding: 16px 20px;
+}
+
+.woocommerce-message::before,
+.woocommerce-info::before {
+  color: #00FF88 !important;
+}
+
+.woocommerce-error::before {
+  color: #FF6B6B !important;
+}
+
+/* === MY ACCOUNT === */
+.woocommerce-MyAccount-navigation {
+  background: rgba(22, 22, 28, 0.5);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.woocommerce-MyAccount-navigation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.woocommerce-MyAccount-navigation ul li {
+  margin-bottom: 4px;
+}
+
+.woocommerce-MyAccount-navigation ul li a {
+  display: block;
+  padding: 12px 16px;
+  color: var(--inari-text) !important;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.woocommerce-MyAccount-navigation ul li a:hover,
+.woocommerce-MyAccount-navigation ul li.is-active a {
+  background: rgba(var(--inari-red-rgb), 0.1);
+  color: var(--inari-red) !important;
+}
+
+.woocommerce-MyAccount-content {
+  background: rgba(22, 22, 28, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* === MINI CART / WIDGET === */
+.widget_shopping_cart,
+.woocommerce-mini-cart {
+  background: rgba(10, 10, 15, 0.95);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--inari-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.woocommerce-mini-cart-item {
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.woocommerce-mini-cart-item a {
+  color: var(--inari-text) !important;
+}
+
+.woocommerce-mini-cart__total {
+  padding: 12px 0;
+  font-weight: 600;
+  color: var(--inari-white);
+}
+
+.woocommerce-mini-cart__buttons a {
+  display: block;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+/* ===========================================
+   17. FOOTER
+   =========================================== */
+footer,
+.site-footer,
+#colophon {
+  background: rgba(10, 10, 15, 0.9) !important;
+  border-top: 1px solid var(--inari-border);
+  color: var(--inari-text-muted);
+}
+
+/* ===========================================
+   18. CODE BLOCKS
+   =========================================== */
+pre, code {
+  background: #1A1A24;
+  border: 1px solid #2A2A35;
+  border-radius: 8px;
+  padding: 20px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  color: #00FF88;
+}
+
+.code-block {
+  background: #1A1A24;
+  border: 1px solid #2A2A35;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 24px 0;
+  max-width: 100%;
+}
+
+.code-header {
+  background: #12121A;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #6A6A7A;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid #2A2A35;
+}
+
+.code-block pre {
+  margin: 0;
+  padding: 20px;
+  background: transparent;
+  border: none;
+  overflow-x: auto;
+}
+
+.code-block code {
+  color: #00FF88;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.code-block pre,
+.code-block code {
+  text-align: left !important;
+  text-indent: 0 !important;
+  display: block !important;
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+}
+
+.code-comment {
+  color: #6A6A7A;
+  font-style: italic;
+}
+
+/* Code inline */
+li code,
+p code {
+  display: inline;
+  padding: 2px 8px;
+  margin: 0 2px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 4px;
+  font-family: 'Fira Code', 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #00FF88;
+  white-space: nowrap;
+  vertical-align: baseline;
+  line-height: inherit;
+}
+
+/* ===========================================
+   19. TABLES
+   =========================================== */
+.comparison-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 30px 0;
+  font-size: 15px;
+}
+
+.comparison-table th,
+.comparison-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid #2A2A35;
+}
+
+.comparison-table th {
+  background: #1A1A24;
+  color: var(--inari-white);
+  font-weight: 600;
+}
+
+.comparison-table td {
+  color: #C0C0C6;
+}
+
+.comparison-table tr:hover td {
+  background: rgba(var(--inari-red-rgb), 0.05);
+}
+
+/* ===========================================
+   20. ARTICLE CTA BOX
+   =========================================== */
+.article-cta-box {
+  background: linear-gradient(145deg, #1A1A24 0%, #12121A 100%);
+  border: 1px solid var(--inari-red);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  text-align: center;
+  margin: 50px 0;
+}
+
+.article-cta-box h3 {
+  font-size: 1.5rem;
+  color: var(--inari-white);
+  margin: 0 0 12px;
+}
+
+.article-cta-box p {
+  color: var(--inari-text-muted);
+  margin: 0 0 24px;
+}
+
+.article-cta-box .btn-primary,
+.article-cta-box .btn-secondary {
+  display: inline-block;
+  padding: 14px 28px;
+  margin: 8px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+/* ===========================================
+   21. SCROLLBAR & SELECTION
+   =========================================== */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--inari-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--inari-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--inari-red);
+}
+
+::selection {
+  background: var(--inari-red);
+  color: var(--inari-white);
+}
+
+/* ===========================================
+   22. UTILITY CLASSES
+   =========================================== */
+.text-red { color: var(--inari-red) !important; }
+.text-white { color: var(--inari-white) !important; }
+.text-muted { color: var(--inari-text-muted) !important; }
+.bg-dark { background: var(--inari-black) !important; }
+.bg-dark-alt { background: var(--inari-black-alt) !important; }
+.border-red { border-color: var(--inari-red) !important; }
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+}
+
+/* ===========================================
+   23. ANIMATIONS
+   =========================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.5; transform: translateX(-50%) scale(1); }
+  50% { opacity: 0.8; transform: translateX(-50%) scale(1.1); }
+}
+
+.animate-in {
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* ===========================================
+   24. ÉLÉMENTS INARICOM SPÉCIFIQUES
+   =========================================== */
+
+/* Logo chip glass */
+.inaricom-logo-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.4rem 0.9rem;
+  background: rgba(234, 222, 222, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: var(--radius-full);
+  margin-bottom: 2rem;
+  box-shadow: var(--shadow-subtle);
+}
+
+.inaricom-logo-chip img {
+  height: 40px;
+}
+
+/* Hero actions container */
+.inaricom-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+/* Typo H2 */
+.typo-h2 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--inari-white);
+}
+
+/* Page wrapper — TRANSPARENT pour canvas */
+.inaricom-page-wrapper {
+  padding: 4rem 1rem 4rem !important;
+  background: transparent !important;
+  position: relative;
+}
+
+/* Contenu au-dessus */
+.inaricom-page-wrapper > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===========================================
+   25. RESPONSIVE — BASE
+   =========================================== */
+@media (max-width: 960px) {
+  .inaricom-hero {
+    grid-template-columns: 1fr;
+  }
+  
+  .resources-box {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 40px 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .inari-hero-stats {
+    gap: 32px;
+  }
+  
+  .inari-hero-stats .stat-number {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 720px) {
+  .hero-section {
+    padding: 10px 16px !important;  /* Hero compact */
+  }
+  
+  .inari-services,
+  .inari-shop,
+  .inari-articles,
+  .inari-resources {
+    padding: 40px 20px;  /* Autres sections gardent un peu d'espace */
+  }
+}
+/* ============================================================
+   PARTIE 2 — BLOG, ARCHIVES, ARTICLES, WIDGETS
+   ============================================================ */
+
+/* ===========================================
+   26. BLOG & ARCHIVES — STRUCTURE GLOBALE
+   =========================================== */
+
+/* Body classes WordPress */
+.blog,
+.archive,
+.category,
+.tag,
+.author,
+.date,
+.search,
+.search-results,
+.single-post,
+.page,
+.error404 {
+  background: transparent !important;
+}
+
+/* Container principal articles */
+.site-main,
+.content-area,
+.main-content,
+main#main,
+main.site-main {
+  background: transparent !important;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0px 24px;
+}
+
+/* ===========================================
+   27. SINGLE POST — ARTICLE INDIVIDUEL
+   =========================================== */
+
+/* En-tête article */
+.single-post .entry-header,
+.post-header,
+.article-header {
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--inari-border);
+}
+
+.entry-title,
+.post-title,
+.article-title {
+  font-size: clamp(2rem, 4vw, 2.75rem) !important;
+  font-weight: 700 !important;
+  color: var(--inari-white) !important;
+  line-height: 1.2;
+  margin: 0 0 16px;
+}
+
+/* Métadonnées article */
+.entry-meta,
+.post-meta,
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-size: 14px;
+  color: var(--inari-text-muted);
+}
+
+.entry-meta a,
+.post-meta a {
+  color: var(--inari-text-muted);
+  transition: color 0.2s ease;
+}
+
+.entry-meta a:hover,
+.post-meta a:hover {
+  color: var(--inari-red);
+}
+
+.byline,
+.posted-on,
+.cat-links,
+.tags-links,
+.edit-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.byline::before { content: '👤'; font-size: 12px; }
+.posted-on::before { content: '📅'; font-size: 12px; }
+.cat-links::before { content: '📁'; font-size: 12px; }
+
+/* Contenu article */
+.entry-content,
+.post-content,
+.article-content {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--inari-text);
+}
+
+.entry-content p,
+.post-content p {
+  margin-bottom: 1.5em;
+}
+
+.entry-content h2,
+.entry-content h3,
+.entry-content h4 {
+  margin-top: 2em;
+  margin-bottom: 0.75em;
+  color: var(--inari-white) !important;
+}
+
+.entry-content ul,
+.entry-content ol {
+  margin: 1.5em 0;
+  padding-left: 1.5em;
+}
+
+.entry-content li {
+  margin-bottom: 0.5em;
+  color: var(--inari-text);
+}
+
+.entry-content blockquote {
+  margin: 2em 0;
+  padding: 24px 32px;
+  background: rgba(var(--inari-red-rgb), 0.08);
+  border-left: 4px solid var(--inari-red);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-style: italic;
+  color: var(--inari-text);
+}
+
+.entry-content blockquote p {
+  margin: 0;
+}
+
+/* Image à la une */
+.post-thumbnail,
+.entry-thumbnail,
+.featured-image {
+  margin-bottom: 32px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.post-thumbnail img,
+.entry-thumbnail img,
+.featured-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: var(--radius-lg);
+}
+
+/* Pied d'article */
+.entry-footer,
+.post-footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid var(--inari-border);
+  font-size: 14px;
+  color: var(--inari-text-muted);
+}
+
+.entry-footer .cat-links,
+.entry-footer .tags-links {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.entry-footer a {
+  color: var(--inari-red);
+}
+
+/* Tags */
+.tag-cloud-link,
+.post-tags a,
+.tags-links a {
+  display: inline-block;
+  padding: 6px 12px;
+  margin: 4px;
+  background: rgba(var(--inari-red-rgb), 0.1);
+  border: 1px solid rgba(var(--inari-red-rgb), 0.2);
+  border-radius: var(--radius-full);
+  font-size: 13px;
+  color: var(--inari-red) !important;
+  transition: all 0.2s ease;
+}
+
+.tag-cloud-link:hover,
+.post-tags a:hover,
+.tags-links a:hover {
+  background: var(--inari-red);
+  color: var(--inari-white) !important;
+}
+
+/* ===========================================
+   28. ARCHIVES & LISTINGS + KADENCE ENTRY-HERO — CORRIGÉ
+   =========================================== */
+
+/* --- Kadence Entry Hero (Shop, Archives, Catégories) --- */
+
+/* Section hero Kadence — fond transparent (ultra-spécifique) */
+.entry-hero,
+.entry-hero.product-archive-hero-section,
+.entry-hero.entry-hero-layout-standard,
+section.entry-hero,
+body .entry-hero,
+body.archive .entry-hero,
+body.category .entry-hero,
+body.post-type-archive .entry-hero,
+body.post-type-archive-product .entry-hero,
+body.tax-product_cat .entry-hero,
+.entry-hero[style],
+body .entry-hero[style] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+/* Overlay Kadence — supprimé (ultra-spécifique) */
+.entry-hero .hero-section-overlay,
+body .entry-hero .hero-section-overlay,
+.hero-section-overlay,
+.entry-hero .hero-section-overlay[style],
+body .entry-hero .hero-section-overlay[style] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  opacity: 0 !important;
+  display: none !important;
+}
+
+/* Container inner Kadence — style glass Inaricom — CORRIGÉ */
+.entry-hero .entry-hero-container-inner,
+.entry-hero-container-inner,
+body .entry-hero .entry-hero-container-inner,
+body.archive .entry-hero .entry-hero-container-inner,
+body.category .entry-hero .entry-hero-container-inner,
+body.tax-product_cat .entry-hero .entry-hero-container-inner,
+body.post-type-archive-product .entry-hero .entry-hero-container-inner,
+section.entry-hero .entry-hero-container-inner,
+.entry-hero.entry-hero-layout-standard .entry-hero-container-inner,
+.entry-hero .entry-hero-container-inner[style],
+body .entry-hero .entry-hero-container-inner[style] {
+  background: rgba(22, 22, 28, 0.55) !important;
+  background-color: rgba(22, 22, 28, 0.55) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.07) !important;
+  border-radius: 16px !important;
+  padding: 32px 40px !important;
+  margin: 20px auto !important;
+  max-width: 1200px !important;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+/* Titre Kadence entry-hero */
+.entry-hero .entry-title,
+.entry-hero h1 {
+  color: var(--inari-white) !important;
+  font-size: clamp(1.75rem, 3vw, 2.25rem) !important;
+  margin: 0 !important;
+}
+
+/* Breadcrumbs dans entry-hero */
+.entry-hero .kadence-breadcrumbs {
+  margin-bottom: 12px !important;
+  font-size: 14px;
+  color: var(--inari-text-muted) !important;
+}
+
+.entry-hero .kadence-breadcrumbs a {
+  color: var(--inari-text-muted) !important;
+}
+
+.entry-hero .kadence-breadcrumbs a:hover {
+  color: var(--inari-red) !important;
+}
+
+/* --- Fallback WordPress standard (si pas Kadence) — CORRIGÉ --- */
+.page-header,
+.archive-header {
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 32px 40px;
+  margin-bottom: 48px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.page-title,
+.archive-title {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  color: var(--inari-white) !important;
+  margin: 0 0 12px;
+}
+
+.archive-description,
+.taxonomy-description {
+  font-size: 1.05rem;
+  color: var(--inari-text-muted);
+  max-width: 700px;
+}
+
+/* Liste d'articles */
+.posts-list,
+.blog-posts,
+.archive-posts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 32px;
+}
+
+/* Article card dans les listes — SAUF homepage — CORRIGÉ */
+body:not(.home):not(.page-template-front-page) article.post,
+body:not(.home):not(.page-template-front-page) article.type-post,
+body:not(.home):not(.page-template-front-page) .hentry {
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+body:not(.home):not(.page-template-front-page) article.post:hover,
+body:not(.home):not(.page-template-front-page) article.type-post:hover {
+  background: rgba(26, 26, 32, 0.65);
+  border-color: rgba(var(--inari-red-rgb), 0.3);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(var(--inari-red-rgb), 0.15);
+}
+
+/* Article card inner */
+article.post .entry-header,
+article.type-post .entry-header {
+  padding: 24px 24px 0;
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+article.post .entry-content,
+article.type-post .entry-content {
+  padding: 0 24px;
+}
+
+article.post .entry-footer,
+article.type-post .entry-footer {
+  padding: 16px 24px 24px;
+  margin-top: 16px;
+  border-top: none;
+}
+
+/* Excerpt */
+.entry-summary,
+.post-excerpt {
+  font-size: 15px;
+  color: var(--inari-text-muted);
+  line-height: 1.6;
+}
+
+/* Read more link */
+.read-more,
+.more-link,
+.continue-reading {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--inari-red);
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  transition: gap 0.2s ease;
+}
+
+.read-more:hover,
+.more-link:hover {
+  gap: 12px;
+  color: var(--inari-red-light);
+}
+
+.read-more::after,
+.more-link::after {
+  content: '→';
+}
+
+/* ===========================================
+   29. PAGINATION
+   =========================================== */
+.pagination,
+.navigation.pagination,
+.posts-navigation,
+.post-navigation,
+.nav-links {
+  margin: 48px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.page-numbers,
+.nav-links a,
+.nav-links span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 16px;
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-sm);
+  color: var(--inari-text);
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.page-numbers:hover,
+.nav-links a:hover {
+  background: rgba(var(--inari-red-rgb), 0.15);
+  border-color: rgba(var(--inari-red-rgb), 0.4);
+  color: var(--inari-red);
+}
+
+.page-numbers.current,
+.nav-links .current {
+  background: var(--inari-red);
+  border-color: var(--inari-red);
+  color: var(--inari-white);
+}
+
+.page-numbers.dots {
+  background: transparent;
+  border: none;
+  color: var(--inari-text-muted);
+}
+
+/* Navigation article précédent/suivant */
+.post-navigation .nav-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.post-navigation .nav-previous,
+.post-navigation .nav-next {
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+.post-navigation .nav-previous:hover,
+.post-navigation .nav-next:hover {
+  border-color: rgba(var(--inari-red-rgb), 0.3);
+}
+
+.post-navigation .nav-previous a,
+.post-navigation .nav-next a {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.post-navigation .nav-subtitle {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--inari-text-muted);
+}
+
+.post-navigation .nav-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--inari-white);
+}
+
+/* ===========================================
+   30. SIDEBAR & WIDGETS — CORRIGÉ
+   =========================================== */
+.sidebar,
+.widget-area,
+#secondary {
+  background: transparent;
+}
+
+.widget {
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.widget-title,
+.widget h2 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--inari-white) !important;
+  margin: 0 0 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--inari-border);
+}
+
+.widget ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.widget li {
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.widget li:last-child {
+  border-bottom: none;
+}
+
+.widget a {
+  color: var(--inari-text);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.widget a:hover {
+  color: var(--inari-red);
+}
+
+/* Widget categories avec count */
+.widget_categories li,
+.widget_archive li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.widget_categories li a,
+.widget_archive li a {
+  flex: 1;
+}
+
+/* Widget recent posts */
+.widget_recent_entries li {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.widget_recent_entries .post-date {
+  font-size: 12px;
+  color: var(--inari-text-muted);
+}
+
+/* Widget search */
+.widget_search .search-form {
+  display: flex;
+  gap: 8px;
+}
+
+.widget_search .search-field {
+  flex: 1;
+  padding: 12px 16px !important;
+}
+
+.widget_search .search-submit {
+  padding: 12px 20px !important;
+  white-space: nowrap;
+}
+
+/* ===========================================
+   31. COMMENTAIRES — CORRIGÉ
+   =========================================== */
+.comments-area {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--inari-border);
+}
+
+.comments-title {
+  font-size: 1.5rem;
+  color: var(--inari-white) !important;
+  margin: 0 0 32px;
+}
+
+.comment-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.comment,
+.comment-body {
+  background: rgba(22, 22, 28, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  margin-bottom: 24px;
+}
+
+.comment .children {
+  list-style: none;
+  padding-left: 32px;
+  margin-top: 24px;
+}
+
+.comment-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.comment-author .avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+}
+
+.comment-author .fn {
+  font-weight: 600;
+  color: var(--inari-white);
+}
+
+.comment-author .fn a {
+  color: var(--inari-white);
+  text-decoration: none;
+}
+
+.comment-metadata {
+  font-size: 13px;
+  color: var(--inari-text-muted);
+  margin-bottom: 16px;
+}
+
+.comment-metadata a {
+  color: var(--inari-text-muted);
+}
+
+.comment-content {
+  color: var(--inari-text);
+  line-height: 1.7;
+}
+
+.comment-content p {
+  margin: 0 0 1em;
+}
+
+.reply a {
+  display: inline-block;
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--inari-border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--inari-text);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.reply a:hover {
+  background: rgba(var(--inari-red-rgb), 0.1);
+  border-color: rgba(var(--inari-red-rgb), 0.4);
+  color: var(--inari-red);
+}
+
+/* Formulaire commentaire — CORRIGÉ */
+.comment-respond {
+  background: rgba(22, 22, 28, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin-top: 48px;
+}
+
+.comment-reply-title {
+  font-size: 1.25rem;
+  color: var(--inari-white) !important;
+  margin: 0 0 24px;
+}
+
+.comment-form label {
+  display: block;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--inari-text);
+  margin-bottom: 8px;
+}
+
+.comment-form input[type="text"],
+.comment-form input[type="email"],
+.comment-form input[type="url"],
+.comment-form textarea {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.comment-form textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.comment-form .form-submit {
+  margin-top: 8px;
+}
+
+.comment-form .submit {
+  padding: 14px 32px !important;
+}
+
+/* ===========================================
+   32. PAGE RECHERCHE
+   =========================================== */
+.search-results .page-header {
+  margin-bottom: 48px;
+}
+
+.search-results .page-title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+}
+
+.search-results .search-query {
+  color: var(--inari-red);
+}
+
+.search-form {
+  display: flex;
+  gap: 12px;
+  max-width: 600px;
+}
+
+.search-form .search-field {
+  flex: 1;
+  padding: 14px 20px !important;
+}
+
+.search-form .search-submit {
+  padding: 14px 24px !important;
+  white-space: nowrap;
+}
+
+/* No results */
+.no-results,
+.not-found {
+  text-align: center;
+  padding: 80px 24px;
+}
+
+.no-results .page-title,
+.not-found .page-title {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.no-results p,
+.not-found p {
+  color: var(--inari-text-muted);
+  margin-bottom: 32px;
+}
+
+/* ===========================================
+   33. PAGE 404
+   =========================================== */
+.error-404 {
+  text-align: center;
+  padding: 100px 24px;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-404 .page-title {
+  font-size: clamp(4rem, 15vw, 8rem);
+  color: var(--inari-red) !important;
+  margin: 0 0 16px;
+  line-height: 1;
+}
+
+.error-404 .page-content h2 {
+  font-size: 1.5rem;
+  color: var(--inari-white);
+  margin-bottom: 16px;
+}
+
+.error-404 .page-content p {
+  color: var(--inari-text-muted);
+  max-width: 500px;
+  margin: 0 auto 32px;
+}
+
+/* ===========================================
+   34. GUTENBERG BLOCKS — COMPLET
+   =========================================== */
+
+/* Images */
+.wp-block-image {
+  margin: 2em 0;
+}
+
+.wp-block-image img {
+  border-radius: var(--radius-md);
+}
+
+.wp-block-image figcaption {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--inari-text-muted);
+  text-align: center;
+}
+
+/* Gallery */
+.wp-block-gallery {
+  gap: 16px !important;
+}
+
+.wp-block-gallery .wp-block-image {
+  margin: 0;
+}
+
+/* Quote */
+.wp-block-quote {
+  margin: 2em 0;
+  padding: 24px 32px;
+  background: rgba(var(--inari-red-rgb), 0.08);
+  border-left: 4px solid var(--inari-red);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+}
+
+.wp-block-quote p {
+  font-style: italic;
+  font-size: 1.1rem;
+  margin: 0 0 12px;
+}
+
+.wp-block-quote cite {
+  font-size: 14px;
+  color: var(--inari-text-muted);
+  font-style: normal;
+}
+
+.wp-block-quote.is-style-large {
+  padding: 32px 40px;
+}
+
+.wp-block-quote.is-style-large p {
+  font-size: 1.35rem;
+}
+
+/* Pullquote */
+.wp-block-pullquote {
+  border-top: 4px solid var(--inari-red);
+  border-bottom: 4px solid var(--inari-red);
+  padding: 32px 0;
+  margin: 2em 0;
+}
+
+.wp-block-pullquote blockquote {
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: none;
+}
+
+.wp-block-pullquote p {
+  font-size: 1.5rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+/* Columns */
+.wp-block-columns {
+  gap: 32px;
+}
+
+.wp-block-column {
+  background: rgba(22, 22, 28, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+/* Cover */
+.wp-block-cover {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 400px;
+}
+
+.wp-block-cover__inner-container {
+  color: var(--inari-white);
+}
+
+/* Separator */
+.wp-block-separator {
+  border: none;
+  height: 1px;
+  background: var(--inari-border);
+  margin: 48px 0;
+}
+
+.wp-block-separator.is-style-wide {
+  width: 100%;
+}
+
+.wp-block-separator.is-style-dots {
+  background: none;
+  text-align: center;
+}
+
+.wp-block-separator.is-style-dots::before {
+  content: '···';
+  font-size: 2rem;
+  letter-spacing: 1em;
+  color: var(--inari-text-muted);
+}
+
+/* Group */
+.wp-block-group {
+  padding: 32px;
+  background: rgba(22, 22, 28, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: var(--radius-lg);
+}
+
+/* Table */
+.wp-block-table {
+  margin: 2em 0;
+}
+
+.wp-block-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wp-block-table th,
+.wp-block-table td {
+  padding: 14px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--inari-border);
+}
+
+.wp-block-table th {
+  background: rgba(10, 10, 15, 0.6);
+  color: var(--inari-white);
+  font-weight: 600;
+}
+
+.wp-block-table td {
+  color: var(--inari-text);
+}
+
+.wp-block-table.is-style-stripes tbody tr:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+/* Video / Embed */
+.wp-block-video,
+.wp-block-embed {
+  margin: 2em 0;
+}
+
+.wp-block-video video,
+.wp-block-embed iframe {
+  border-radius: var(--radius-md);
+  width: 100%;
+}
+
+/* List */
+.wp-block-list {
+  padding-left: 1.5em;
+}
+
+.wp-block-list li {
+  margin-bottom: 0.5em;
+}
+
+/* File */
+.wp-block-file {
+  background: rgba(22, 22, 28, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+}
+
+.wp-block-file a:first-child {
+  color: var(--inari-white);
+  font-weight: 500;
+}
+
+.wp-block-file .wp-block-file__button {
+  padding: 10px 20px !important;
+  font-size: 14px !important;
+}
+
+/* Alignments */
+.alignwide {
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alignfull {
+  width: 100vw;
+  max-width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+}
+
+/* ===========================================
+   35. BREADCRUMBS
+   =========================================== */
+.breadcrumb,
+.breadcrumbs,
+.yoast-breadcrumb,
+.rank-math-breadcrumb,
+.woocommerce-breadcrumb {
+  font-size: 14px;
+  color: var(--inari-text-muted);
+  margin-bottom: 24px;
+  padding: 12px 0;
+}
+
+.breadcrumb a,
+.breadcrumbs a,
+.yoast-breadcrumb a,
+.rank-math-breadcrumb a,
+.woocommerce-breadcrumb a {
+  color: var(--inari-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.breadcrumb a:hover,
+.breadcrumbs a:hover,
+.yoast-breadcrumb a:hover,
+.rank-math-breadcrumb a:hover,
+.woocommerce-breadcrumb a:hover {
+  color: var(--inari-red);
+}
+
+.breadcrumb-separator,
+.breadcrumbs span.separator {
+  margin: 0 8px;
+  color: var(--inari-border);
+}
+
+/* ===========================================
+   36. AUTHOR BOX
+   =========================================== */
+.author-box,
+.author-bio {
+  display: flex;
+  gap: 24px;
+  background: rgba(22, 22, 28, 0.55);
+  backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin: 48px 0;
+}
+
+.author-avatar {
+  flex-shrink: 0;
+}
+
+.author-avatar img {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-full);
+}
+
+.author-info h4 {
+  font-size: 1.1rem;
+  color: var(--inari-white);
+  margin: 0 0 8px;
+}
+
+.author-info p {
+  color: var(--inari-text-muted);
+  font-size: 15px;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ===========================================
+   37. RELATED POSTS
+   =========================================== */
+.related-posts {
+  margin-top: 64px;
+  padding-top: 48px;
+  border-top: 1px solid var(--inari-border);
+}
+
+.related-posts h3 {
+  font-size: 1.5rem;
+  color: var(--inari-white);
+  margin: 0 0 32px;
+}
+
+.related-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+/* ===========================================
+   38. RESPONSIVE — COMPLÉMENTAIRE
+   =========================================== */
+@media (max-width: 768px) {
+  .posts-list,
+  .blog-posts,
+  .archive-posts {
+    grid-template-columns: 1fr;
+  }
+  
+  .post-navigation .nav-links {
+    grid-template-columns: 1fr;
+  }
+  
+  .author-box {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .comment .children {
+    padding-left: 16px;
+  }
+  
+  .wp-block-columns {
+    flex-direction: column;
+  }
+  
+  .entry-hero .entry-hero-container-inner {
+    padding: 24px !important;
+    margin: 10px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .entry-meta,
+  .post-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .pagination {
+    gap: 4px;
+  }
+  
+  .page-numbers {
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px;
+  }
+}
+
+/* ===========================================
+   39. LOGO — FILTRES DYNAMIQUES + LISERET BLANC
+   =========================================== */
+
+/* 
+ * Logo principal avec LISERET BLANC
+ * Le liseret blanc entoure le texte noir "INARI" pour le rendre visible
+ * sur le fond sombre, puis le halo coloré ajoute l'effet thème
+ */
+.custom-logo,
+.custom-logo-link img,
+.site-logo img,
+.inaricom-logo img,
+img.inaricom-brand-logo,
+.kb-header .site-branding img,
+header .custom-logo-link img,
+.site-branding img,
+.wp-block-site-logo img {
+  filter: var(--logo-filter) var(--logo-halo) !important;
+  transition: filter 0.4s ease !important;
+}
+
+/* Icônes thématiques */
+.theme-icon,
+.brand-icon,
+.inaricom-icon,
+.accent-icon {
+  filter: var(--logo-filter);
+  transition: filter 0.4s ease;
+}
+
+/* ============================================================
+   40. (DEPRECATED) — Theme switcher deplace dans le snippet 768
+   Voir : wp post 768 "Theme Switcher Mobile" pour la source de verite.
+   Section retiree pour supprimer l'override silencieux.
+   ============================================================ */
+
+/* ===========================================
+   41. TRANSITIONS GLOBALES — CHANGEMENT THÈME
+   =========================================== */
+
+/* Transition smooth lors du changement de thème */
+body,
+.site,
+.wp-site-blocks,
+a,
+button,
+.wp-block-button__link,
+.kb-button,
+.service-card,
+.product-card,
+.article-card,
+.inaricom-card,
+.glass-card,
+.section-badge,
+.inaricom-badge,
+.custom-logo,
+.site-logo img,
+h1 span,
+h2 span,
+.price,
+.woocommerce-Price-amount,
+.site-header,
+.kadence-header,
+.kb-header,
+input:focus,
+textarea:focus {
+  transition: 
+    color 0.4s ease,
+    background-color 0.4s ease,
+    background 0.4s ease,
+    border-color 0.4s ease,
+    box-shadow 0.4s ease,
+    filter 0.4s ease;
+}
+
+/* ===========================================
+   42. EFFETS SPÉCIAUX PAR THÈME
+   =========================================== */
+
+/* Thème Or — gradient doré sur les titres */
+[data-theme="or"] .hermes-title,
+[data-theme="or"] .gold-gradient-text {
+  background: linear-gradient(135deg, #C0C0C0 0%, #FFD700 50%, #B8860B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Thème Or — shimmer sur les cards */
+[data-theme="or"] .glass-card {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="or"] .glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.1), transparent);
+  transition: left 0.5s ease;
+  pointer-events: none;
+}
+
+[data-theme="or"] .glass-card:hover::before {
+  left: 100%;
+}
+
+/* Thème Bleu — glow tech sur les éléments code */
+[data-theme="bleu"] code,
+[data-theme="bleu"] pre,
+[data-theme="bleu"] .code-block,
+[data-theme="bleu"] .wp-block-code {
+  border-color: rgba(0, 212, 255, 0.3) !important;
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.1);
+}
+
+/* Thème Bleu — accent violet secondaire */
+[data-theme="bleu"] .secondary-accent,
+[data-theme="bleu"] .featured-tag {
+  background: rgba(139, 92, 246, 0.15);
+  border-color: rgba(139, 92, 246, 0.3);
+  color: #a78bfa;
+}
+
+/* ===========================================
+   FIN CSS UNIFIÉ v5.1 — INARICOM THÈMES DYNAMIQUES
+   Glassmorphism gris neutre corrigé
+   =========================================== */
+/* ============================================================
+   47. WOOCOMMERCE SHOP — HOVER ACTIONS (migré du Customizer #362)
+   Fix de repositionnement du bouton action au hover dans la grille produits
+   Source : ex-Customizer Additional CSS, 2026-04-19
+   ============================================================ */
+
+/* Fix: Le texte ne colle plus l'image au hover */
+.woocommerce ul.products.woo-archive-action-on-hover li.product:hover .entry-content-wrap,
+.woocommerce ul.products.woo-archive-action-on-hover li.product:focus-within .entry-content-wrap {
+    transform: translateY(0) !important;
+}
+
+/* Bouton sous le prix: position relative dans le flux */
+.woocommerce ul.products.woo-archive-action-on-hover li.product:hover .product-action-wrap,
+.woocommerce ul.products.woo-archive-action-on-hover li.product:focus-within .product-action-wrap {
+    position: relative !important;
+    bottom: auto !important;
+    opacity: 1 !important;
+    margin-top: 8px;
+    padding: 0 !important;
+}
+
+/* La carte s'agrandit pour contenir le bouton (overflow visible) */
+.woocommerce ul.products.woo-archive-action-on-hover li.product:hover,
+.woocommerce ul.products.woo-archive-action-on-hover li.product:focus-within {
+    overflow: visible !important;
+}
+
+/* ============================================================
+   47b. CTA BOX BUTTON (.i-cta-box__btn) — par thème
+   Migré du Customizer #362
+   ============================================================ */
+
+/* === Bouton "Nous contacter" (.i-cta-box__btn) adapté par thème === */
+
+/* Thème OR */
+[data-theme="or"] .i-cta-box__btn {
+    background: #FFD700 !important;
+    color: #0a0a0f !important;
+    box-shadow: 0 8px 32px rgba(255,215,0,0.25) !important;
+}
+[data-theme="or"] .i-cta-box__btn:hover {
+    background: #B8860B !important;
+    box-shadow: 0 8px 32px rgba(255,215,0,0.4) !important;
+}
+
+/* Thème BLEU */
+[data-theme="bleu"] .i-cta-box__btn {
+    background: #00D4FF !important;
+    color: #0a0a0f !important;
+    box-shadow: 0 8px 32px rgba(0,212,255,0.25) !important;
+}
+[data-theme="bleu"] .i-cta-box__btn:hover {
+    background: #00A8CC !important;
+    box-shadow: 0 8px 32px rgba(0,212,255,0.4) !important;
+}
+
+/* Thème VERT */
+[data-theme="vert"] .i-cta-box__btn {
+    background: #10B981 !important;
+    color: #0a0a0f !important;
+    box-shadow: 0 8px 32px rgba(16,185,129,0.25) !important;
+}
+[data-theme="vert"] .i-cta-box__btn:hover {
+    background: #059669 !important;
+    box-shadow: 0 8px 32px rgba(16,185,129,0.4) !important;
+}
+
+/* Thème ROUGE */
+[data-theme="rouge"] .i-cta-box__btn {
+    background: #E31E24 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 32px rgba(227,30,36,0.25) !important;
+}
+[data-theme="rouge"] .i-cta-box__btn:hover {
+    background: #B01218 !important;
+    box-shadow: 0 8px 32px rgba(227,30,36,0.4) !important;
+}
+
+/* ============================================================
+   43. EXCEPTIONS THÈME — texte sombre sur boutons or/bleu/vert
+   
+   Les sections 1-42 utilisent var(--inari-red) qui se recolore
+   automatiquement selon [data-theme="or|bleu|vert"] via les variables
+   definies section 1b/1c/1d.
+   
+   SEULE exception : le CONTRASTE TEXTE des boutons change.
+   - Thème rouge (defaut) : texte BLANC sur rouge (WCAG OK)
+   - Thème or/bleu/vert    : texte NOIR sur couleur claire (WCAG OK)
+   
+   Note : les effets speciaux par theme (shimmer or, glow bleu tech)
+   sont conserves section 42.
+   ============================================================ */
+
+[data-theme="or"] .wp-block-button__link,
+[data-theme="or"] .kb-button,
+[data-theme="or"] button[type="submit"],
+[data-theme="or"] input[type="submit"],
+[data-theme="or"] .btn-primary,
+[data-theme="or"] .btn-primary-large,
+[data-theme="or"] .btn-submit,
+[data-theme="or"] .inaricom-btn-primary,
+[data-theme="or"] .header-cta,
+[data-theme="or"] .header-button,
+[data-theme="or"] .woocommerce a.button,
+[data-theme="or"] .woocommerce button.button,
+[data-theme="or"] .btn-product:hover,
+[data-theme="or"] .inari-hero-cta .btn-primary,
+[data-theme="or"] .shop-cta .btn-primary-large,
+[data-theme="or"] .woocommerce span.onsale,
+[data-theme="or"] .kb-btns-wrap .kb-button,
+[data-theme="or"] .kt-btn-wrap .kt-button,
+[data-theme="bleu"] .wp-block-button__link,
+[data-theme="bleu"] .kb-button,
+[data-theme="bleu"] button[type="submit"],
+[data-theme="bleu"] input[type="submit"],
+[data-theme="bleu"] .btn-primary,
+[data-theme="bleu"] .btn-primary-large,
+[data-theme="bleu"] .btn-submit,
+[data-theme="bleu"] .inaricom-btn-primary,
+[data-theme="bleu"] .header-cta,
+[data-theme="bleu"] .header-button,
+[data-theme="bleu"] .woocommerce a.button,
+[data-theme="bleu"] .woocommerce button.button,
+[data-theme="bleu"] .btn-product:hover,
+[data-theme="bleu"] .inari-hero-cta .btn-primary,
+[data-theme="bleu"] .shop-cta .btn-primary-large,
+[data-theme="bleu"] .woocommerce span.onsale,
+[data-theme="bleu"] .kb-btns-wrap .kb-button,
+[data-theme="bleu"] .kt-btn-wrap .kt-button,
+[data-theme="vert"] .wp-block-button__link,
+[data-theme="vert"] .kb-button,
+[data-theme="vert"] button[type="submit"],
+[data-theme="vert"] input[type="submit"],
+[data-theme="vert"] .btn-primary,
+[data-theme="vert"] .btn-primary-large,
+[data-theme="vert"] .btn-submit,
+[data-theme="vert"] .inaricom-btn-primary,
+[data-theme="vert"] .header-cta,
+[data-theme="vert"] .header-button,
+[data-theme="vert"] .woocommerce a.button,
+[data-theme="vert"] .woocommerce button.button,
+[data-theme="vert"] .btn-product:hover,
+[data-theme="vert"] .inari-hero-cta .btn-primary,
+[data-theme="vert"] .shop-cta .btn-primary-large,
+[data-theme="vert"] .woocommerce span.onsale,
+[data-theme="vert"] .kb-btns-wrap .kb-button,
+[data-theme="vert"] .kt-btn-wrap .kt-button {
+  color: #0A0A0F !important;
+}
+
+/* Thème rouge (defaut) : texte BLANC */
+[data-theme="rouge"] .wp-block-button__link,
+[data-theme="rouge"] .kb-button,
+[data-theme="rouge"] button[type="submit"],
+[data-theme="rouge"] input[type="submit"],
+[data-theme="rouge"] .btn-primary,
+[data-theme="rouge"] .btn-primary-large,
+[data-theme="rouge"] .btn-submit,
+[data-theme="rouge"] .btn-product:hover,
+:root .btn-primary-large,
+:root .btn-primary,
+:root .btn-submit {
+  color: #FFFFFF !important;
+}
+
+/* Icones SVG Kadence — couleur theme active */
+[data-theme="or"] .kb-svg-icon-wrap svg,
+[data-theme="or"] .kt-svg-icon-list-item-wrap svg,
+[data-theme="bleu"] .kb-svg-icon-wrap svg,
+[data-theme="bleu"] .kt-svg-icon-list-item-wrap svg,
+[data-theme="vert"] .kb-svg-icon-wrap svg,
+[data-theme="vert"] .kt-svg-icon-list-item-wrap svg {
+  color: var(--inari-red) !important;
+  fill: var(--inari-red) !important;
+}
+
+/* FIN SECTION 43 */
+
+/* ===========================================
+   49. PATCH LARGEUR — LAYOUT ÉLARGI (Cloudflare-style)
+   =========================================== */
+
+/* Container global — passage à 1440px */
+.inari-hero-content,
+.inari-container,
+.inaricom-container,
+.site-header .site-container,
+.header-container,
+.kadence-header-container,
+.site-main,
+.content-area,
+.main-content,
+main#main,
+main.site-main,
+.entry-hero .entry-hero-container-inner {
+  max-width: 1440px !important;
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+/* Hero sections — encore plus large */
+.inaricom-hero,
+.hero-section,
+.inari-hero {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Grilles articles — cards plus larges */
+.posts-list,
+.blog-posts,
+.archive-posts,
+.articles-grid {
+  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  gap: 40px;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+/* ===========================================
+   50. MOBILE BURGER — RESET TRANSPARENT
+   =========================================== */
+.mobile-toggle-open-container .menu-toggle-open,
+.mobile-toggle-open,
+button.menu-toggle-open,
+.kadence-menu-toggle-open {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: none !important;
+  padding: 8px !important;
+  box-shadow: none !important;
+}
+
+.mobile-toggle-open-container .menu-toggle-open:hover,
+.mobile-toggle-open:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Icône burger blanche */
+.mobile-toggle-open .menu-toggle-icon,
+.menu-toggle-open svg,
+.menu-toggle-open span {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+/* ===========================================
+   51. MOBILE HEADER — LOGO CENTRÉ + BURGER DROITE
+   =========================================== */
+@media (max-width: 1024px) {
+  
+  /* Header wrapper — pleine largeur */
+  .site-header-wrap,
+  .site-header-inner-wrap,
+  header.site-header {
+    width: 100% !important;
+    position: relative !important;
+  }
+  
+  /* Header row — centré */
+  .site-header-row-container-inner,
+  .site-header-inner-wrap,
+  .kadence-header-row {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    position: relative !important;
+    width: 100% !important;
+    padding: 0 16px !important;
+  }
+  
+  /* Logo container */
+  .site-branding,
+  .custom-logo-link,
+  .kadence-site-branding {
+    flex: 0 0 auto !important;
+  }
+  
+  /* Logo image */
+  .custom-logo,
+  .site-branding img,
+  .kadence-site-branding img {
+    max-height: 55px !important;
+    width: auto !important;
+    max-width: 280px !important;
+  }
+  
+  /* Burger — FIXÉ À DROITE DE L'ÉCRAN */
+  .mobile-toggle-open-container,
+  .kadence-mobile-trigger {
+    position: fixed !important;  /* ← FIXED au lieu de absolute */
+    right: 16px !important;
+    top: 20px !important;  /* ← Ajuste selon hauteur header */
+    transform: none !important;
+    z-index: 9999 !important;
+  }
+  
+}
+/* ===========================================
+   52. MOBILE — ORDRE HERO STYLE CLOUDFLARE
+   =========================================== */
+@media (max-width: 1024px) {
+  
+  .hero-section {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+  
+  /* 1. Badge */
+  .hero-section > .inari-hero-badge-wrapper {
+    order: 1 !important;
+  }
+  
+  /* 2. Contenu (titre + sous-titre + CTA) */
+  .hero-section > .inari-hero-content {
+    order: 2 !important;
+  }
+  
+  /* 3. Canvas — RÉDUIT L'ESPACE, REMONTE LE RENARD */
+  .hero-section > #fox-canvas-container {
+    margin-top: 0 !important;   /* ← RÉDUIT de 2rem à 0.5rem */
+    margin-bottom: 0 !important;      /* ← SUPPRIMÉ */
+  }
+  
+  /* 4. Stats EN DERNIER */
+  .hero-section > .inari-hero-stats-wrapper {
+    order: 4 !important;
+	margin-top: 1rem !important;  
+  }
+  
+  /* Éléments de fond */
+  .hero-section > .inari-hero-bg,
+  .hero-section > .inari-hero-visual {
+    order: 99 !important;
+  }
+  
+}
+/* ===========================================
+   53. MOBILE — TAILLES CLOUDFLARE-STYLE
+   =========================================== */
+
+@media (max-width: 1024px) {
+  
+  /* CONTENEURS GLOBAUX — padding réduit mobile */
+  .inari-hero-content,
+  .inari-container,
+  .inaricom-container,
+  .site-container,
+  .header-container,
+  .site-main,
+  .content-area,
+  .main-content,
+  main#main,
+  main.site-main {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+  }
+   
+  /* HERO — remonter + padding symétrique */
+  .hero-section {
+    padding-top: 10px !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+  }
+  
+  /* BADGE — plus discret, remonté */
+  .hero-section .inari-hero-badge-wrapper {
+  margin-top: 0 !important;
+  margin-bottom: 1.20rem !important;
+  max-width: 100% !important;
+  padding: 0 16px !important;
+}
+  
+  .hero-section .inari-hero-badge-wrapper .inari-hero-badge {
+  font-size: 0.75rem !important;
+  padding: 8px 16px !important;
+  letter-spacing: 0.5px !important;
+  white-space: nowrap !important;
+}
+	/* CONTENU — pleine largeur mobile */
+.hero-section .inari-hero-content {
+  max-width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+  margin-bottom: 0 !important;      
+  padding-bottom: 0 !important;    
+}
+  
+  /* TITRE */
+  .hero-section .inari-hero-content .inari-hero-title,
+  .hero-section h1.inari-hero-title {
+    font-size: 2.25rem !important;
+    line-height: 1.15 !important;
+    margin-bottom: 0.75rem !important;
+  }
+  
+  /* SOUS-TITRE */
+  .hero-section .inari-hero-content .inari-hero-subtitle,
+  .hero-section p.inari-hero-subtitle {
+    font-size: 1rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 1.25rem !important;
+  }
+  
+  /* CTA CONTAINER */
+  .hero-section .inari-hero-content .inari-hero-cta {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    align-items: flex-start !important;
+    margin-bottom: 0 !important; 
+  }
+  
+  /* BOUTONS — taille AUTO (s'adapte au texte) */
+  .hero-section .inari-hero-cta a.btn-primary,
+  .hero-section .inari-hero-cta a.btn-secondary,
+  .inari-hero-cta .btn-primary,
+  .inari-hero-cta .btn-secondary {
+    width: auto !important;
+    min-width: unset !important;
+    max-width: unset !important;
+    padding: 12px 24px !important;
+    font-size: 0.95rem !important;
+    border-radius: 6px !important;
+    display: inline-block !important;
+	  
+  }
+	  /* Dernier bouton — pas de marge */
+  .hero-section .inari-hero-cta a:last-child {
+    margin-bottom: 0 !important;
+  }
+  
+}
+
+/* Petit mobile */
+@media (max-width: 480px) {
+  
+  .hero-section .inari-hero-content .inari-hero-title,
+  .hero-section h1.inari-hero-title {
+    font-size: 1.875rem !important;
+  }
+  
+  /* Supprimer marge haute du badge */
+  .hero-section .inari-hero-badge-wrapper {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  
+  /* Supprimer marge basse du header */
+  .site-header,
+  #masthead,
+  header.header {
+    margin-bottom: 0 !important;
+  }
+}	
+/* Fix toggle sous-menu mobile - carré vert → transparent */
+.mobile-navigation .drawer-sub-toggle,
+.drawer-navigation .drawer-sub-toggle {
+  background: transparent !important;
+  border: 1px solid rgba(255,255,255,0.3) !important;
+  border-radius: 4px !important;
+}
+
+.mobile-navigation .drawer-sub-toggle svg,
+.drawer-navigation .drawer-sub-toggle svg {
+  fill: #FFFFFF !important;
+}
+
+.mobile-navigation .drawer-sub-toggle:hover,
+.drawer-navigation .drawer-sub-toggle:hover {
+  background: rgba(255,255,255,0.1) !important;
+}
+
