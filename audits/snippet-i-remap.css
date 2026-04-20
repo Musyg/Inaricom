@@ -1,0 +1,179 @@
+/* ============================================================
+   REMAP DESIGN SYSTEM .i-* → .inari-* (fiches produits & composants)
+   
+   CRITIQUE : le remap DOIT utiliser les classes .theme-rouge/or/bleu/vert
+   sur <body> (pas [data-theme] sur <html>), car :
+   1. Les redéfinitions --inari-red dans le 347 sections 1b/1c/1d sont
+      faites sur .theme-* (classe body via body_class filter PHP)
+   2. [data-theme] est posé par un script inline JS APRES le render initial,
+      ce qui crée des race conditions et re-match des sélecteurs pouvant
+      être imprévisibles
+   3. Les CSS custom properties cascadent parent→enfant uniquement : poser
+      --i-red sur <html> ne peut pas lire --inari-red redéfini sur <body>
+   ============================================================ */
+
+.theme-rouge,
+.theme-or,
+.theme-bleu,
+.theme-vert {
+  /* Accent thème */
+  --i-red: var(--inari-red);
+  --i-red-hover: var(--inari-red-light);
+  
+  /* Surfaces */
+  --i-black: var(--inari-black);
+  --i-dark: #0d0d0d;
+  --i-card: var(--inari-black-alt);
+  --i-card-hover: var(--inari-black-light);
+  
+  /* Textes */
+  --i-white: var(--inari-white);
+  --i-gray: var(--inari-text-muted);
+  --i-gray-dark: #6e6e73;
+  --i-gray-light: var(--inari-text-soft);
+  
+  /* Bordures */
+  --i-border: var(--inari-border);
+  --i-border-light: rgba(255, 255, 255, 0.14);
+  
+  /* Vert succès (sémantique fixe) */
+  --i-green: #30d158;
+}
+
+/* ============================================================
+   60b. OVERRIDES CIBLES (rgba/hex hardcodes du plugin externe)
+   
+   IMPORTANT : utilise .theme-* pour matcher au render initial.
+   Le texte noir sur or/bleu/vert, blanc sur rouge = contraste WCAG AA.
+   ============================================================ */
+
+/* Icones push-pin des cards .i-desc-card */
+.i-desc-card__icon {
+  background: rgba(var(--inari-red-rgb), 0.08) !important;
+  border-color: rgba(var(--inari-red-rgb), 0.12) !important;
+}
+
+/* Bouton CTA "Besoin de conseils" par thème (sélecteurs .theme-* prioritaires) */
+.theme-rouge .i-cta-box__btn {
+  background: #E31E24 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 32px rgba(227, 30, 36, 0.25) !important;
+}
+.theme-rouge .i-cta-box__btn:hover {
+  background: #B01218 !important;
+  box-shadow: 0 8px 32px rgba(227, 30, 36, 0.4) !important;
+}
+
+.theme-or .i-cta-box__btn {
+  background: #FFD700 !important;
+  color: #0A0A0F !important;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.25) !important;
+}
+.theme-or .i-cta-box__btn:hover {
+  background: #B8860B !important;
+  box-shadow: 0 8px 32px rgba(255, 215, 0, 0.4) !important;
+}
+
+.theme-bleu .i-cta-box__btn {
+  background: #00D4FF !important;
+  color: #0A0A0F !important;
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.25) !important;
+}
+.theme-bleu .i-cta-box__btn:hover {
+  background: #00A8CC !important;
+  box-shadow: 0 8px 32px rgba(0, 212, 255, 0.4) !important;
+}
+
+.theme-vert .i-cta-box__btn {
+  background: #10B981 !important;
+  color: #0A0A0F !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.25) !important;
+}
+.theme-vert .i-cta-box__btn:hover {
+  background: #059669 !important;
+  box-shadow: 0 8px 32px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* ============================================================
+   60c. HOVER CARDS PRODUITS SIMILAIRES (Kadence markup)
+   ============================================================ */
+
+.related.products ul.products li.product,
+.woocommerce ul.products.product-archive li.product,
+ul.products.content-wrap li.product {
+  border: 1px solid transparent;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.related.products ul.products li.product:hover,
+.woocommerce ul.products.product-archive li.product:hover,
+ul.products.content-wrap li.product:hover {
+  border-color: var(--inari-red) !important;
+  box-shadow: 0 12px 40px rgba(var(--inari-red-rgb), 0.2) !important;
+  transform: translateY(-3px);
+}
+
+/* ============================================================
+   60d. TITRES SECTIONS EN GRADIENT THEME ACTIF
+   ============================================================ */
+
+.i-section__title span {
+  background: var(--inari-gradient) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
+}
+
+/* ============================================================
+   60e. LOGO SWAP via background-image sur parent .brand
+   
+   Le <img class="custom-logo"> a un srcset qui bat content:url() CSS.
+   Approche : masquer l'<img> + background-image sur <a.brand> parent.
+   
+   FIX TAILLE : les dimensions Kadence natives sont contrôlées par les
+   règles existantes du thème (classe .site-branding.site-brand-logo-only).
+   On ne force pas min-width/min-height, on laisse le parent suivre sa
+   taille naturelle et l'<img> garde ses dimensions pour préserver le
+   layout. On affiche juste un background dessus via l'<img> lui-même.
+   ============================================================ */
+
+/* Masquer l'<img> natif dans thèmes non-rouge + afficher le bon logo en background dessus */
+.theme-or img.custom-logo,
+.theme-bleu img.custom-logo,
+.theme-vert img.custom-logo {
+  /* Garde les dimensions natives (348x126) mais rend l'image native invisible */
+  opacity: 0;
+}
+
+/* Afficher le bon logo en background sur le parent direct <a.brand> */
+.theme-or .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-16.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+}
+
+.theme-bleu .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-13.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+}
+
+.theme-vert .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-15.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+}
+
+/* Thème rouge (défaut) : garder le logo natif visible avec halo */
+.theme-rouge .site-branding .brand.has-logo-image img.custom-logo {
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
+}
+
+/* FIN SECTION 60 */
