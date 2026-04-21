@@ -71,78 +71,30 @@ La homepage sera faite en Phase 2.1 (session suivante).
 
 ## Commandes a executer (dans l'ordre)
 
-### 0. Cleanup reliquats logo (a faire AVANT setup React)
+### 0. [SECTION OBSOLETE] Cleanup reliquats logo — NE PAS EXECUTER
 
-Le logo est desormais unifie. Ces 4 fichiers PNG et les regles CSS associees sont obsoletes :
-
-**a. Retirer du snippet 63 (theme-neutre)** — editer `audits/snippet-63-theme-neutre.css` :
-
-Supprimer ces blocs :
-
-```css
-/* Logo : version argentee (Design-sans-titre-17.png) via content: url(...) */
-[data-theme="neutre"] .site-logo img,
-[data-theme="neutre"] .custom-logo {
-  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
-}
-
-.theme-neutre img.custom-logo {
-  opacity: 0;
-}
-
-.theme-neutre .site-branding .brand.has-logo-image {
-  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
-  ...
-}
-```
-
-Remplacer par (un seul halo commun) :
-
-```css
-/* Logo : le logo rouge natif reste sur theme-neutre, avec halo renforce */
-body.theme-neutre .site-logo img,
-body.theme-neutre .custom-logo {
-  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
-}
-```
-
-**b. Retirer aussi les swaps logo des autres themes** (si presents dans le 347) :
-
-Chercher `[data-theme="or"] .site-logo img`, `[data-theme="bleu"] ...`, `[data-theme="vert"] ...` dans le 347 et supprimer les regles `content: url(...)` + les `.theme-X img.custom-logo { opacity: 0 }` + les background-image sur `.site-branding`. Garder uniquement le logo natif rouge avec drop-shadow standard.
-
-**c. Rebuild + push 347** :
-
-```bash
-cd ~/Desktop/Inaricom
-python scripts/_build_347.py
-scp audits/347-REFACTORED-B5.css inaricom:/tmp/
-ssh inaricom 'bash /tmp/_push_b5_nokses.sh && bash /tmp/_force_resync.sh'
-```
-
-**d. Supprimer les PNG obsoletes sur le serveur** :
-
-```bash
-ssh inaricom 'rm /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-13*.png /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-15*.png /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-16*.png /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-17*.png'
-```
-
-**e. Verification via Chrome integration** :
-
-Via l'integration Chrome deja active (credentials staging memorises), Claude Code peut :
-1. Naviguer sur https://staging.inaricom.com/
-2. Inspecter le DOM pour verifier la balise `<img class="custom-logo">` et son `src`
-3. Faire de meme sur /shop/ , /articles/ , /contact/
-4. Confirmer que le logo rouge natif (`cropped-LogoLong4White-1.png`) s'affiche partout
-
-**f. Commit cleanup** :
-
-```bash
-git add audits/snippet-63-theme-neutre.css audits/347-REFACTORED-B5.css audits/347-REFACTORED-B4-PLUS-IREMAP.css
-git commit -m "Cleanup reliquats logo variants (theme-neutre + 4 PNG obsoletes)"
-git push origin main
-```
-
-Une fois ces etapes faites, on peut passer au setup Vite.
+> **Cette section entiere est obsolete et ne doit pas etre executee.**
+>
+> Elle etait basee sur une regle fausse (« logo unique rouge partout, supprimer
+> les variantes or/vert/bleu/neutre ») qui a depuis ete corrigee.
+>
+> La vraie regle : **5 logos thematiques immutables** avec swap via
+> `content: url()` selon `[data-theme]`, sans filtre CSS de recoloration.
+> Voir `.claude/rules/logo-immutable.md` (version mise a jour le 21/04/2026).
+>
+> Ne pas executer :
+> - les modifications du snippet 63 theme-neutre (suppression du swap argente),
+> - les suppressions de swap or/bleu/vert dans le 347,
+> - la commande `ssh inaricom 'rm ...Design-sans-titre-*.png'`
+>   qui supprimerait les 4 PNG thematiques du serveur staging,
+> - le commit « Cleanup reliquats logo variants ».
+>
+> Le commit `af24375` (issu de cette section) a ete revert par `b8bd982` le
+> 21 avril 2026. Si une session Claude Code anterieure a deja applique une
+> partie de ces changements sur le staging, la restauration est traitee dans
+> un plan separe (Axe B/C).
+>
+> Passer directement a la section 1.
 
 ---
 

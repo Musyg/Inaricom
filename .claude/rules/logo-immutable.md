@@ -1,89 +1,118 @@
-# Regle : Logo Inaricom IMMUTABLE
+# Règle : Logo Inaricom IMMUTABLE
 
-> Regle chargee automatiquement. Contrainte absolue non-negociable.
-> Derniere MAJ : 21 avril 2026 (Gilles — Phase 2 cadrage)
+> Règle chargée automatiquement. Contrainte absolue non-négociable.
+> Dernière MAJ : 21 avril 2026 (correction d'une règle fausse précédente)
 
 ## Principe central
 
-**Le logo actuel d'Inaricom est definitif. Claude Code NE DOIT PAS :**
+Le logo Inaricom existe en **5 variantes thématiques** (rouge, or, vert, bleu, argent/neutre).
+Ces 5 fichiers sont **IMMUTABLES**. Claude Code NE DOIT PAS :
 
-- ❌ Creer un nouveau logo
-- ❌ Regenerer le logo via Pillow, Canva, IA, SVG ou tout outil
-- ❌ Modifier le logo existant (couleur, forme, stroke, proportions)
-- ❌ Proposer un "logo alternatif" ou "logo v2"
-- ❌ Faire des variantes thematiques (or, vert, bleu, argent, etc.)
-- ❌ Appliquer des filtres CSS pour "recolorer" le logo
-- ❌ Suggerer un redesign de logo, meme en pretexte "moderniser"
+- ❌ Créer un nouveau logo ou une variante supplémentaire
+- ❌ Régénérer, modifier, resampler un des 5 logos existants (couleur, forme, stroke, proportions)
+- ❌ Dupliquer ou renommer un des fichiers
+- ❌ Proposer un « logo v2 » ou « logo alternatif »
+- ❌ Appliquer des filtres CSS de recoloration (`hue-rotate`, `grayscale`, `invert`, `brightness != 1`, etc.)
+- ❌ Supprimer les règles CSS de swap par thème (`[data-theme="X"] .site-logo img { content: url(...) }`)
+- ❌ Supprimer un des 5 fichiers PNG du serveur ou du repo
 
-**Le logo EST ce qu'il est. On l'utilise tel quel partout.**
+**Les 5 logos EXISTENT et DOIVENT RESTER TELS QU'ILS SONT.**
 
-## Fichier logo de reference unique
+**Le swap entre eux via CSS selon `[data-theme]` est le comportement VOULU, pas un reliquat à nettoyer.**
 
-Le seul et unique logo a utiliser sur tout le site :
+## Les 5 fichiers logos de référence
 
-- **Chemin WordPress** : `/wp-content/uploads/2024/01/cropped-LogoLong4White-1.png`
-- **Attachment ID WP** : 600
-- **Dimensions natives** : 348×126 px
-- **Format** : PNG avec transparence
-- **Copie locale de reference** : `assets/logo-rouge-original.png`
+| Thème | Section | Fichier | Sélecteur CSS |
+|---|---|---|---|
+| **default (rouge)** | Sécurité / Red Team / pentest | `cropped-LogoLong4White-1.png` (attachment WP 600, `/wp-content/uploads/2024/01/`) | pas de `[data-theme]` (défaut) |
+| **or** | IA (services + boutique hardware + tutos IA) | `Design-sans-titre-16.png` (`/wp-content/uploads/2026/01/`) | `[data-theme="or"]` |
+| **vert** | Blog / ressources / savoir général | `Design-sans-titre-15.png` (`/wp-content/uploads/2026/01/`) | `[data-theme="vert"]` |
+| **bleu** | Institutionnel (à propos, contact, légal) | `Design-sans-titre-13.png` (`/wp-content/uploads/2026/01/`) | `[data-theme="bleu"]` |
+| **neutre** | Homepage (argenté) | `Design-sans-titre-17.png` (`/wp-content/uploads/2026/01/`) | `[data-theme="neutre"]` |
 
-Ce fichier est **la source de verite unique**. Claude Code ne doit pas le dupliquer, le renommer, le resampler, ou en creer des "versions".
+Copie locale de référence (immuable aussi) : `assets/logo-rouge-original.png`.
 
-## Usage autorise
+## Mécanisme de swap (OBLIGATOIRE, à préserver)
 
-### En CSS
-Le logo s'utilise via la classe WordPress native `.custom-logo` (rendu par `the_custom_logo()` de Kadence/WP).
+Le swap se fait **uniquement** via `content: url()` en CSS, jamais via filtre de recoloration.
 
 ```css
-/* Halo blanc subtil — SEUL effet autorise sur le logo */
-.custom-logo {
+/* Défaut (rouge) : aucune règle, le logo natif est rendu par WP/Kadence via .custom-logo */
+
+[data-theme="or"] .site-logo img,
+[data-theme="or"] .custom-logo {
+  content: url('/wp-content/uploads/2026/01/Design-sans-titre-16.png');
+}
+
+[data-theme="vert"] .site-logo img,
+[data-theme="vert"] .custom-logo {
+  content: url('/wp-content/uploads/2026/01/Design-sans-titre-15.png');
+}
+
+[data-theme="bleu"] .site-logo img,
+[data-theme="bleu"] .custom-logo {
+  content: url('/wp-content/uploads/2026/01/Design-sans-titre-13.png');
+}
+
+[data-theme="neutre"] .site-logo img,
+[data-theme="neutre"] .custom-logo {
+  content: url('/wp-content/uploads/2026/01/Design-sans-titre-17.png');
+}
+```
+
+### Seul effet CSS autorisé sur le logo : le halo blanc
+
+```css
+.custom-logo,
+.site-logo img {
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
 }
 ```
 
-**Rien d'autre sur le logo. Pas de hue-rotate, pas de grayscale, pas de invert, pas de content: url() de substitution.**
+Rien d'autre. Pas de `hue-rotate`, `grayscale`, `invert`, `brightness != 1`, `opacity < 1`, etc.
 
-### En React islands
-Le logo est rendu cote WordPress (header Kadence). Les islands React **ne doivent pas** contenir de logo. Si un island a besoin de reference visuelle de la marque, il utilise le nom textuel "Inaricom" avec la typo Instrument Serif, pas une image.
+## En React islands
 
-## Anciens logos a IGNORER / SUPPRIMER
+Les islands React **ne rendent pas le logo**. Le logo est rendu côté WordPress (header Kadence via `the_custom_logo()` + règles CSS de swap ci-dessus). Si un island a besoin d'une référence visuelle de marque, il utilise le nom textuel « Inaricom » avec la typo Instrument Serif, pas une image.
 
-Les 5 fichiers suivants uploades dans `/wp-content/uploads/2026/01/` sont des **reliquats** de l'ancienne strategie "logo variant par theme" **abandonnee** :
+## Pourquoi cette règle
 
-- ❌ `Design-sans-titre-13.png` (bleu) — a supprimer, ne plus referencer
-- ❌ `Design-sans-titre-15.png` (vert) — a supprimer, ne plus referencer
-- ❌ `Design-sans-titre-16.png` (or) — a supprimer, ne plus referencer
-- ❌ `Design-sans-titre-17.png` (argent) — a supprimer, ne plus referencer
+1. **Identité de marque cohérente par univers** : un logo dédié par thématique (sécu / IA / blog / institutionnel / homepage), créé manuellement dans Canva (brand kit `kAG6uk9Uvbs`) pour garantir des couleurs brand exactes.
+2. **Pas de filtre CSS de recoloration** : les filtres dénaturent les couleurs. Les 5 fichiers séparés garantissent la fidélité colorimétrique.
+3. **Simplicité opérationnelle** : 5 fichiers, 5 règles CSS, zéro logique conditionnelle côté JS.
+4. **Décision propriétaire** : les 5 variantes sont validées par Kevin Meunier.
 
-Le snippet 63 (theme-neutre) qui swappait le logo vers l'argent **doit etre nettoye** : retirer les regles `[data-theme="neutre"] .site-logo img { content: url(...) }` et `.theme-neutre img.custom-logo { opacity: 0 }`.
+## Historique : ancienne règle fausse (à ne plus suivre)
 
-Les regles similaires dans les autres themes (`[data-theme="or"]`, `[data-theme="bleu"]`, `[data-theme="vert"]`) sont aussi **a supprimer** — le logo unique rouge s'affiche partout, point.
+Une version antérieure de ce fichier instruisait par erreur :
 
-## Pourquoi cette regle
+> « Le logo unique rouge s'affiche partout, supprimer les variantes or / vert / bleu / neutre et les 4 PNG `Design-sans-titre-*.png` du serveur. »
 
-1. **Identite de marque** : le logo actuel est l'identite Inaricom, pas un placeholder
-2. **Coherence** : un logo unique = reconnaissance, pas de confusion
-3. **Simplicite** : moins de fichiers a gerer, moins de swap logic
-4. **Priorite Kevin** : arbitrage proprietaire valide 21 avril 2026
+**Cette instruction était FAUSSE.** Elle a conduit à :
 
-## Si un utilisateur demande de modifier le logo
+- un commit git `af24375` supprimant 174 lignes de swap CSS dans les fichiers `audits/` (revert par `b8bd982` le 21 avril 2026),
+- un brief `docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md` qui planifiait `ssh inaricom 'rm ...Design-sans-titre-*.png'` sur le staging (heureusement skippé par Claude Code en Phase 2.0).
 
-**Refuser poliment** et renvoyer vers Kevin Meunier (proprietaire Inaricom) :
+Toutes les sections « Étape 0 cleanup logo variants » dans les briefs, prompts et logs Phase 2.0 sont basées sur cette fausse règle et sont **OBSOLÈTES**. Elles doivent être ignorées et ne jamais être réexécutées.
 
-> "Le logo actuel est verrouille par decision du proprietaire (Kevin Meunier). Toute modification du logo doit passer par lui directement, pas par Claude Code."
+## Si un utilisateur demande de modifier un logo
 
-## Cas autorises (par exception)
+Refuser poliment et renvoyer vers Kevin Meunier :
 
-Seulement sur demande explicite de **Kevin Meunier** :
+> « Les 5 logos actuels sont verrouillés par décision du propriétaire (Kevin Meunier). Toute modification doit passer par lui directement. »
 
-- Creation d'un favicon derive (format `.ico`, mais toujours base sur le logo actuel)
-- Creation d'une version Open Graph (export PNG 1200×630 avec padding)
-- Creation d'une version email signature (resampling PNG basse-res, pas modification)
+## Cas autorisés (par exception, sur demande explicite de Kevin Meunier)
 
-Meme dans ces cas, **le logo lui-meme n'est jamais modifie visuellement**.
+- Création d'un favicon dérivé (`.ico`), basé sur un des 5 logos existants
+- Création d'une version Open Graph (export PNG 1200×630 avec padding), basée sur un des 5 logos
+- Création d'une version email signature (PNG basse résolution), basée sur un des 5 logos
 
-## A retenir
+Même dans ces cas, **les 5 logos originaux ne sont jamais modifiés visuellement**.
 
-- **Le logo est sacro-saint.** On ne le touche pas.
-- **Un fichier, partout.** Pas de variantes thematiques.
-- **Si tentation de "creer un logo"**, STOP et relire cette regle.
+## À retenir
+
+- **5 logos. 5 thèmes. Un par univers.**
+- **Fichiers immuables.** On ne les modifie pas, on ne les supprime pas, on n'en crée pas d'autres.
+- **Swap CSS par `[data-theme]` = comportement voulu**, pas un reliquat.
+- **Pas de filtres CSS de recoloration.** Halo blanc (`drop-shadow`) autorisé.
+- **Si tentation d' « uniformiser » ou « nettoyer » les logos**, STOP et relire cette règle.
