@@ -1,0 +1,69 @@
+/* ============================================================
+   61. HERO HOMEPAGE — Fox canvas mobile + full-width desktop
+   
+   Migre depuis snippets 442 (Fox Canvas Container) + 508 (Centrage
+   Hero page d'accueil) le 2026-04-21 dans le cadre du refactor B.5.
+   
+   Les snippets 442 et 508 sont mis en "draft" apres migration pour
+   rollback facile si besoin (wp post update 442 --post_status=draft).
+   
+   61a. Fox canvas en fond centre sur mobile (opacite 0.35)
+   61b. Hero full-width desktop (sortie du conteneur WP)
+   ============================================================ */
+
+/* 61a. Canvas renard en fond centre sur mobile */
+@media (max-width: 768px) {
+  #fox-canvas-container {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 1 !important;
+    pointer-events: none !important;
+    opacity: 0.35 !important;
+    background: transparent !important;
+  }
+
+  #fox-canvas {
+    width: 100% !important;
+    height: 100% !important;
+    display: block !important;
+  }
+
+  .hero-section,
+  .inari-hero {
+    background: linear-gradient(180deg, #0a0a0b 0%, #12121a 100%) !important;
+    position: relative !important;
+    z-index: 1 !important;
+    min-height: 100vh !important;
+    overflow: hidden !important;
+  }
+
+  .hero-section > .inari-hero-badge-wrapper,
+  .hero-section > .inari-hero-content,
+  .hero-section > .inari-hero-stats-wrapper {
+    position: relative !important;
+    z-index: 3 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  #fox-canvas-container {
+    opacity: 0.30 !important;  /* Plus discret sur petit ecran */
+  }
+}
+
+/* 61b. Hero full-width desktop (sortir du conteneur WP) */
+@media (min-width: 1025px) {
+  .hero-section {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: calc(-50vw + 50%) !important;
+    position: relative;
+    left: 0;
+  }
+}
+
+/* FIN SECTION 61 */
