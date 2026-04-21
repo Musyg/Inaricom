@@ -4,6 +4,21 @@ description: Suite of tools for creating elaborate, multi-component claude.ai HT
 license: Complete terms in LICENSE.txt
 ---
 
+> ⚠️ **INARICOM PROJECT-SPECIFIC WARNING** (added 2026-04-21)
+>
+> This skill is **NOT suitable** for the Inaricom `react-islands/` project (Phase 2+).
+> It is designed for **claude.ai artifacts** (single HTML file bundled via Parcel).
+> 
+> The Inaricom project is a **production Vite application** that builds to
+> `plugins/inaricom-core/assets/react/` and is loaded by WordPress at runtime.
+> 
+> **Do NOT** run `scripts/init-artifact.sh` or `scripts/bundle-artifact.sh`.
+> **Do** use `npm create vite@latest react-islands --template react-ts` instead.
+> 
+> If the user asks for a Claude.ai artifact (standalone demo, shareable prototype),
+> this skill is still valid. For all Inaricom production work, see
+> `@docs/SKILLS_USAGE_PHASE_2.md` and `@docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md`.
+
 # Web Artifacts Builder
 
 To build powerful frontend claude.ai artifacts, follow these steps:

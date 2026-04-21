@@ -277,6 +277,26 @@ Audit baseline 17/04/2026 confirme : HSTS 1 an + preload, CSP stricte, X-Frame D
 - JAMAIS le rouge marque pour semantic errors (utiliser amber `#F59E0B`)
 - JAMAIS de secrets en dur dans le code (toujours `.env` + gitignore)
 - JAMAIS d'auto-update WP Core sans review (filter `WP_AUTO_UPDATE_CORE => 'minor'`)
+- JAMAIS utiliser `web-artifacts-builder` skill pour le projet `react-islands/` (il est pour Claude.ai artifacts, pas Vite prod — voir `@docs/SKILLS_USAGE_PHASE_2.md`)
+- JAMAIS charger silencieusement un skill sans le mentionner — annoncer son usage pour validation Gilles
+
+---
+
+## SKILLS — REGLES D'USAGE
+
+Le repo contient 60+ skills installes (`.claude/skills/` et `.claude/skills/external/`). Tous ne doivent pas etre actives simultanement.
+
+**Guide complet** : `@docs/SKILLS_USAGE_PHASE_2.md`
+
+**Regles d'or** :
+1. Activer **uniquement** les skills pertinents pour la tache en cours (max 4-5 simultanement)
+2. **Invocation explicite** : Claude Code annonce chaque skill qu'il charge et pourquoi
+3. **Piege connu** : `web-artifacts-builder` a un trigger qui matche "React + Tailwind + shadcn/ui" mais est **inadapte** au projet `react-islands/` (c'est pour les artifacts Claude.ai). Si ce skill se propose de se charger, **ignorer** et continuer avec Vite standard.
+4. Par phase :
+   - **Phase 2.0** (setup) : `react-best-practices` seul
+   - **Phase 2.1** (homepage) : `frontend-design` + `web-design-guidelines` + `modern-web-design` + `react-best-practices`
+   - **Phase 2.4** (QA) : `webapp-testing` + `impeccable` (/audit /critique)
+   - **Phase 2.6** (3D configurator) : `react-three-fiber` + `threejs-webgl`
 
 ---
 
