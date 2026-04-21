@@ -4,9 +4,10 @@
 > Charge `@docs/phase2-react-islands.md` pour le contexte complet.  
 > Charge `@CLAUDE.md` pour les regles projet.  
 > Charge `@.claude/rules/logo-immutable.md` pour la regle logo.  
-> Charge `@.claude/rules/palette-locked.md` pour la regle palette.
+> Charge `@.claude/rules/palette-locked.md` pour la regle palette.  
+> Charge `@.claude/rules/npm-security.md` pour la regle supply chain.
 
-Date : 2026-04-21  
+Date : 2026-04-21 (MAJ securite supply chain)  
 Sous-agent responsable : `frontend-kadence`
 
 ---
@@ -30,6 +31,15 @@ Cette session installe l'infra React. Meme si aucun code applicatif n'est ecrit 
 - ✅ **Autorise** : creation de nuances derivees (`rgba(var(--inari-red-rgb), 0.15)`)
 - Voir regle complete : `.claude/rules/palette-locked.md`
 
+### 🔒 Securite supply chain npm — PNPM obligatoire
+- **Interdiction d'utiliser `npm install`** pour installer des dependances projet
+- **Utiliser `pnpm` exclusivement** (v10.33.0+ deja installe sur Phoenix2)
+- pnpm bloque les `postinstall` scripts par defaut (vecteur attaque Axios 31 mars 2026)
+- Config globale deja en place : `ignore-scripts=true`, `min-release-age=7j`, `strict-dep-builds=true`
+- **Versions pinees exactes** dans `package.json` (pas de `^` ni `~`)
+- **Audit obligatoire** apres install : `pnpm audit --prod`
+- Voir regle complete : `.claude/rules/npm-security.md`
+
 ### 🔒 Pas de hex hardcodes
 - Tous les couleurs via tokens `--inari-*` mappes en classes Tailwind
 - Pas de `#FF3A40` ou `#FFD700` ecrit en dur dans les composants
@@ -52,6 +62,7 @@ Mettre en place le dossier `react-islands/` operationnel avec :
 - Tailwind v4 avec tokens `--inari-*` heritant des CSS custom properties WP
 - shadcn/ui initialise
 - HMR fonctionnel en dev
+- **pnpm comme package manager** (pas npm)
 
 **Pas de code applicatif cette session** — uniquement l'infra.  
 La homepage sera faite en Phase 2.1 (session suivante).
@@ -115,19 +126,18 @@ ssh inaricom 'bash /tmp/_push_b5_nokses.sh && bash /tmp/_force_resync.sh'
 ssh inaricom 'rm /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-13*.png /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-15*.png /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-16*.png /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-17*.png'
 ```
 
-**e. Verification** :
+**e. Verification via Chrome integration** :
 
-```bash
-# Visiter / , /shop/ , /articles/ , /contact/ sur staging
-# Le logo rouge doit apparaitre partout, identique, avec halo blanc
-curl -s -u 'staging:InaStg-Kx7m9vR2@pL' https://staging.inaricom.com/ | grep -c 'cropped-LogoLong4White'
-# Doit retourner >= 1
-```
+Via l'integration Chrome deja active (credentials staging memorises), Claude Code peut :
+1. Naviguer sur https://staging.inaricom.com/
+2. Inspecter le DOM pour verifier la balise `<img class="custom-logo">` et son `src`
+3. Faire de meme sur /shop/ , /articles/ , /contact/
+4. Confirmer que le logo rouge natif (`cropped-LogoLong4White-1.png`) s'affiche partout
 
 **f. Commit cleanup** :
 
 ```bash
-git add audits/snippet-63-theme-neutre.css audits/347-REFACTORED-B5.css
+git add audits/snippet-63-theme-neutre.css audits/347-REFACTORED-B5.css audits/347-REFACTORED-B4-PLUS-IREMAP.css
 git commit -m "Cleanup reliquats logo variants (theme-neutre + 4 PNG obsoletes)"
 git push origin main
 ```
@@ -136,34 +146,56 @@ Une fois ces etapes faites, on peut passer au setup Vite.
 
 ---
 
-### 1. Creer le dossier et initialiser Vite
+### 1. Creer le dossier et initialiser Vite (via pnpm)
 
 ```bash
 cd ~/Desktop/Inaricom
-npm create vite@latest react-islands -- --template react-ts
+pnpm create vite@latest react-islands --template react-ts
 cd react-islands
 ```
 
-### 2. Installer les dependances
+**Note securite** : `pnpm create` respecte `min-release-age` global (7j). Si Vite est ultra-recent (<7j), pnpm prendra la version precedente stable. C'est le comportement voulu.
+
+### 2. Figer les versions AVANT install
+
+**Pinner toutes les deps** dans `package.json` (pas de `^` ni `~`). Editer le `package.json` genere pour remplacer :
+- `"react": "^19.x.x"` → `"react": "19.1.0"` (verifier la version stable actuelle via `pnpm view react version`)
+- Idem pour `react-dom`, `@vitejs/plugin-react`, `vite`, `typescript`, `@types/*`
+
+### 3. Installer les dependances avec pnpm (deps critiques seulement)
 
 ```bash
-# Core
-npm install
+# Core (deja dans package.json genere)
+pnpm install
 
-# Tailwind v4
-npm install -D tailwindcss @tailwindcss/vite
+# Audit immediat apres install
+pnpm audit --prod
+# Doit retourner 0 vulnerability (sinon STOP et analyser)
 
-# shadcn/ui (init apres Tailwind configure)
-# -> on fait en etape 6
+# Tailwind v4 (versions pinees)
+pnpm add -D tailwindcss@4.0.0 @tailwindcss/vite@4.0.0
+# Verifier les versions reellement installees (pnpm peut ajuster via min-release-age)
 
-# Data fetching + anim
-npm install @tanstack/react-query framer-motion lucide-react
+# Data fetching + animations
+pnpm add @tanstack/react-query framer-motion lucide-react
 
 # Utilitaires shadcn
-npm install class-variance-authority clsx tailwind-merge
+pnpm add class-variance-authority clsx tailwind-merge
 ```
 
-### 3. Configurer Vite pour multi-entry + output vers inaricom-core
+**IMPORTANT — Verification explicite apres chaque `pnpm add`** :
+
+```bash
+# Check absence packages compromis (Axios attack 31 mars 2026)
+grep -E "axios@1\.14\.1|axios@0\.30\.4|plain-crypto-js" pnpm-lock.yaml
+# Doit retourner RIEN (exit code 1). Si ca matche -> STOP, rollback, alerter Gilles.
+
+# Audit complet
+pnpm audit --prod --audit-level=moderate
+# Doit retourner "No known vulnerabilities found"
+```
+
+### 4. Configurer Vite pour multi-entry + output vers inaricom-core
 
 Remplacer `vite.config.ts` par :
 
@@ -201,7 +233,7 @@ export default defineConfig({
 });
 ```
 
-### 4. Configurer `tsconfig.json` pour les alias
+### 5. Configurer `tsconfig.json` pour les alias
 
 Ajouter dans `compilerOptions` :
 
@@ -216,7 +248,17 @@ Ajouter dans `compilerOptions` :
 }
 ```
 
-### 5. Creer `src/styles/globals.css` avec Tailwind v4 + tokens Inaricom
+### 6. Creer `.npmrc` projet (redondance securite)
+
+Creer `react-islands/.npmrc` :
+
+```
+ignore-scripts=true
+min-release-age=10080
+audit-level=moderate
+```
+
+### 7. Creer `src/styles/globals.css` avec Tailwind v4 + tokens Inaricom
 
 ```css
 @import "tailwindcss";
@@ -236,9 +278,6 @@ Ajouter dans `compilerOptions` :
   --color-inari-border: #2A2A35;
   
   /* Accent — suit le theme WP courant via CSS custom property */
-  /* Quand body.theme-neutre : --inari-red = #FFFFFF */
-  /* Quand body.theme-rouge : --inari-red = #E31E24 */
-  /* etc. */
   --color-inari-accent: var(--inari-red);
   
   /* Fonts */
@@ -265,11 +304,13 @@ Ajouter dans `compilerOptions` :
 }
 ```
 
-### 6. Initialiser shadcn/ui
+### 8. Initialiser shadcn/ui (via pnpm dlx)
 
 ```bash
-npx shadcn@latest init
+pnpm dlx shadcn@latest init
 ```
+
+**Note** : `pnpm dlx` remplace `npx`. Il respecte aussi `ignore-scripts`.
 
 Repondre aux prompts :
 - Style : **New York** (le plus moderne)
@@ -277,7 +318,7 @@ Repondre aux prompts :
 - CSS variables : **Yes**
 - Path alias : `@/components` (deja configure)
 
-### 7. Creer la structure de dossiers
+### 9. Creer la structure de dossiers
 
 ```bash
 mkdir -p src/islands
@@ -289,7 +330,7 @@ mkdir -p src/hooks
 mkdir -p src/lib
 ```
 
-### 8. Creer un island minimal de test
+### 10. Creer un island minimal de test
 
 Fichier `src/islands/homepage.tsx` :
 
@@ -314,7 +355,7 @@ if (rootEl) {
 }
 ```
 
-### 9. Creer `index.html` de preview (dev only)
+### 11. Creer `index.html` de preview (dev only)
 
 Remplacer `index.html` genere par Vite avec :
 
@@ -327,17 +368,16 @@ Remplacer `index.html` genere par Vite avec :
     <title>Inaricom — React islands dev</title>
   </head>
   <body class="theme-neutre" style="margin:0;background:#0A0A0F;">
-    <!-- On simule le <body class="theme-neutre"> + data-theme que pose ThemeMapper PHP -->
     <div id="inari-homepage-root"></div>
     <script type="module" src="/src/islands/homepage.tsx"></script>
   </body>
 </html>
 ```
 
-### 10. Lancer le dev server
+### 12. Lancer le dev server
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Ouvrir `http://localhost:5173` → doit afficher :
@@ -346,10 +386,10 @@ Ouvrir `http://localhost:5173` → doit afficher :
 - Sous-titre "React island setup OK..."
 - HMR actif (modifier le texte → update instantane sans reload)
 
-### 11. Tester le build
+### 13. Tester le build
 
 ```bash
-npm run build
+pnpm build
 ```
 
 Verifier que :
@@ -357,7 +397,7 @@ Verifier que :
 - Il contient `manifest.json`, `js/homepage-XXX.js`, `css/XXX.css`
 - Pas d'erreurs TypeScript
 
-### 12. Ajouter au `.gitignore`
+### 14. Ajouter au `.gitignore`
 
 A la racine du repo Inaricom, ajouter dans `.gitignore` :
 
@@ -368,20 +408,24 @@ react-islands/dist/
 react-islands/.vite/
 ```
 
-### 13. Commit + push
+### 15. Commit + push
 
 ```bash
 cd ~/Desktop/Inaricom
 git add react-islands/ plugins/inaricom-core/assets/react/ .gitignore
-git commit -m "Phase 2.0: setup Vite + React 19 + Tailwind v4 + shadcn/ui
+git commit -m "Phase 2.0: setup Vite + React 19 + Tailwind v4 + shadcn/ui (pnpm-secure)
 
 - Creation react-islands/ avec template Vite React-TS
+- Package manager : pnpm (ignore-scripts, min-release-age 7j, strict-dep-builds)
+- Versions toutes pinees (pas de ^ ni ~) dans package.json
+- pnpm-lock.yaml committed pour reproductibilite
 - Tailwind v4 via @tailwindcss/vite
 - @theme heritant des tokens --inari-* du snippet 347 WP
 - shadcn/ui initialise (style New York, Neutral)
 - Multi-entry Vite, output vers plugins/inaricom-core/assets/react/
 - Island test homepage montrant que l'infra fonctionne
-- HMR valide en dev"
+- HMR valide en dev
+- pnpm audit : 0 vulnerability"
 git push origin main
 ```
 
@@ -390,13 +434,17 @@ git push origin main
 ## Livrables attendus fin de session
 
 - [x] `react-islands/` initialise et fonctionnel
+- [x] `pnpm-lock.yaml` committed (pas package-lock.json)
+- [x] `.npmrc` projet-level present
 - [x] `vite.config.ts` configure pour multi-entry + output WP
 - [x] `src/styles/globals.css` avec `@theme` et tokens Inaricom
 - [x] shadcn/ui initialise (`components.json` present)
 - [x] Structure de dossiers prete pour Phase 2.1
 - [x] Island test `homepage.tsx` minimal qui monte
-- [x] `npm run dev` fonctionne sur localhost:5173
-- [x] `npm run build` genere les bundles dans `inaricom-core/assets/react/`
+- [x] `pnpm dev` fonctionne sur localhost:5173
+- [x] `pnpm build` genere les bundles dans `inaricom-core/assets/react/`
+- [x] `pnpm audit --prod` retourne 0 vulnerability
+- [x] Aucune mention de `axios@1.14.1`, `axios@0.30.4`, `plain-crypto-js` dans le lockfile
 - [x] Commit pushed sur main
 
 ---
@@ -425,6 +473,22 @@ Tous les composants devront respecter :
 3. **Ne PAS Google Fonts via CDN** — Geist et Instrument Serif doivent etre self-hostes (deja dans kadence-child/assets/fonts/)
 4. **Ne PAS hardcoder les couleurs** dans les composants React — toujours classes Tailwind avec tokens `--inari-*`
 5. **Ne PAS importer GSAP dans les bundles React** — Framer Motion pour les animations UI cote React, GSAP reste cote WP
+6. **Ne JAMAIS utiliser `npm install`** — toujours `pnpm` (voir `.claude/rules/npm-security.md`)
+7. **Ne JAMAIS `pnpm install <package>@latest`** — toujours version pinee exacte
+
+---
+
+## En cas de probleme supply chain
+
+Si `pnpm add` refuse un package pour `min-release-age` :
+- NE PAS forcer avec `--ignore-min-release-age`
+- Prendre la version N-1 stable (celle d'il y a plus de 7 jours)
+- Logger l'incident dans `.claude/logs/phase2-0-issues.md`
+
+Si `pnpm audit` trouve une vulnerabilite :
+- CRITICAL/HIGH : STOP immediat, rollback, alerter Gilles dans un report
+- MODERATE : logger, continuer SEULEMENT si override possible sans impact prod
+- LOW : logger, continuer
 
 ---
 
@@ -433,6 +497,9 @@ Tous les composants devront respecter :
 - `@docs/phase2-react-islands.md` — plan complet Phase 2
 - `@docs/architecture.md` — decisions structurelles projet
 - `@CLAUDE.md` — regles projet + guardrails
+- `@.claude/rules/npm-security.md` — regle supply chain
+- pnpm docs : https://pnpm.io
 - Vite docs : https://vite.dev
 - Tailwind v4 : https://tailwindcss.com/docs/installation/using-vite
 - shadcn/ui : https://ui.shadcn.com/docs/installation/vite
+- CISA Axios advisory : https://www.cisa.gov/news-events/alerts/2026/04/20/supply-chain-compromise-impacts-axios-node-package-manager

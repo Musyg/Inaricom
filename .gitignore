@@ -137,3 +137,9 @@ PWstagingmysql.txt
 backups/
 _temp_*
 tmp_*
+
+# React islands (Phase 2)
+react-islands/node_modules/
+react-islands/dist/
+react-islands/.vite/
+react-islands/package-lock.json

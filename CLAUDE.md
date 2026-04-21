@@ -1,4 +1,4 @@
-# CLAUDE.md — Inaricom Refactoring Pipeline (v3)
+﻿# CLAUDE.md — Inaricom Refactoring Pipeline (v3)
 
 > Brief Claude Code pour la refonte complete du site inaricom.com.
 > **Pivot strategique** : positionnement cybersecurite-first (Red Team) + IA.
@@ -277,6 +277,9 @@ Audit baseline 17/04/2026 confirme : HSTS 1 an + preload, CSP stricte, X-Frame D
 - JAMAIS le rouge marque pour semantic errors (utiliser amber `#F59E0B`)
 - JAMAIS de secrets en dur dans le code (toujours `.env` + gitignore)
 - JAMAIS d'auto-update WP Core sans review (filter `WP_AUTO_UPDATE_CORE => 'minor'`)
+- JAMAIS utiliser `npm install` sur un projet Inaricom - toujours `pnpm` (voir `.claude/rules/npm-security.md`)
+- JAMAIS de versions floating (`^1.2.0`, `~1.2.0`) dans `package.json` - toujours versions EXACTES
+- JAMAIS ignorer un `pnpm audit` CRITICAL ou HIGH - STOP immediat et rollback
 
 ---
 
