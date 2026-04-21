@@ -1,0 +1,148 @@
+# .claudeignore - Inaricom (optimise tokens Phase 2)
+# Exclut les dossiers/fichiers que Claude Code ne doit pas scanner
+# Objectif : reduire le contexte de base de ~30k tokens a ~8k tokens
+
+# === Archives fox-animation (22 MB, 34 fichiers historiques) ===
+fox-animation/
+# On garde seulement fox-animation-current/ ou fox-animation-v28/ si besoin explicite
+
+# === Legacy claudedesignskills non-actif (11 MB, 1027 fichiers) ===
+claudedesignskills/
+
+# === Skills externes + archives (44 MB au total dans .claude/skills) ===
+.claude/skills/external/
+.claude/skills/_archive/
+.claude/skills/*.zip
+# Skills non-actifs Phase 2 : heritage freshtechbro (20+ skills 3D/animation)
+# Seuls les 14 actifs Phase 2 restent indexes
+.claude/skills/aframe-webxr/
+.claude/skills/animejs/
+.claude/skills/babylonjs-engine/
+.claude/skills/barba-js/
+.claude/skills/blender-web-pipeline/
+.claude/skills/gsap-scrolltrigger/
+.claude/skills/lightweight-3d-effects/
+.claude/skills/locomotive-scroll/
+.claude/skills/lottie-animations/
+.claude/skills/modern-web-design/
+.claude/skills/pixijs-2d/
+.claude/skills/playcanvas-engine/
+.claude/skills/react-spring-physics/
+.claude/skills/react-three-fiber/
+.claude/skills/rive-interactive/
+.claude/skills/scroll-reveal-libraries/
+.claude/skills/spline-interactive/
+.claude/skills/substance-3d-texturing/
+.claude/skills/threejs-webgl/
+.claude/skills/web3d-integration-patterns/
+.claude/skills/animated-component-libraries/
+.claude/skills/impeccable/
+.claude/skills/skill-creator/
+.claude/skills/using-superpowers/
+.claude/skills/webapp-testing/
+
+# === Assets binaires non-indexables ===
+assets/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.woff
+*.woff2
+*.ttf
+*.otf
+*.mp4
+*.webm
+*.pdf
+*.zip
+*.tar.gz
+*.7z
+*.rar
+
+# === Node / build ===
+node_modules/
+dist/
+build/
+.vite/
+*.map
+.next/
+.turbo/
+.cache/
+
+# === Lockfiles (immenses et non-lisibles par un humain) ===
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lockb
+
+# === WordPress uploads / cache / backups ===
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backup*/
+
+# === Logs & backups ===
+*.log
+logs/
+.claude/logs/*.log
+*.bak
+*.old
+*.backup
+*.orig
+
+# === Snapshots BDD ===
+*.sql
+*.sql.gz
+*.dump
+
+# === Git internals ===
+.git/
+.github/workflows/*.log
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# === Config sensibles (bonus: protection) ===
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+*.crt
+
+# === Archives audits historiques (on n'a plus besoin des versions anterieures) ===
+audits/347-REFACTORED-B0*.css
+audits/347-REFACTORED-B1*.css
+audits/347-REFACTORED-B2*.css
+audits/347-REFACTORED-B3*.css
+audits/*.bak
+audits/plugins-discovered/*.zip
+# Garde seulement audits/347-REFACTORED-B4-PLUS-IREMAP.css et B5.css (actuels)
+# Garde audits/snippet-63-theme-neutre.css (actuel)
+# Garde audits/plugins-discovered/inaricom-security*.* (reference actuelle)
+
+# === Fichiers de snippets historiques ===
+snippets/*.bak
+snippets/v*/
+snippets/archive/
+
+# === Scripts temp / one-shot deja utilises ===
+scripts/_patch_*.py
+scripts/_add_*.py
+scripts/_update_*.py
+
+# === Fichiers project root non-essentiels pour Claude ===
+PLAN_REFONTE_INARICOM.md
+*.excalidraw
+*.drawio

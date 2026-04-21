@@ -1,6 +1,13 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-mcp.json",
   "mcpServers": {
+    "context-mode": {
+      "command": "cmd",
+      "args": ["/c", "context-mode"],
+      "env": {
+        "CONTEXT_MODE_SANDBOX": "1"
+      }
+    },
     "filesystem": {
       "command": "cmd",
       "args": [

@@ -1,7 +1,28 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "autoMemoryEnabled": false,
-  "defaultModel": "sonnet",
+  "defaultModel": "claude-opus-4-7",
+  "model": "claude-opus-4-7",
+  "env": {
+    "ANTHROPIC_MODEL": "claude-opus-4-7",
+    "ANTHROPIC_SMALL_FAST_MODEL": "claude-opus-4-7",
+    "TOKEN_OPTIMIZER_READ_CACHE": "1",
+    "TOKEN_OPTIMIZER_READ_CACHE_MODE": "warn",
+    "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:\\Users\\gimu8\\.rtk\\bin\\rtk.exe hook claude --ultra-compact"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Read",
@@ -10,17 +31,33 @@
       "Grep",
       "Glob",
       "Bash(git:*)",
+      "Bash(pnpm:*)",
       "Bash(npm:*)",
       "Bash(composer:*)",
       "Bash(wp:*)",
       "Bash(rsync:*)",
       "Bash(ssh:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(node:*)",
+      "Bash(rtk:*)"
     ],
     "deny": [
       "Bash(rm -rf:*)",
       "Bash(wp db:*)",
-      "Bash(wp search-replace:* --no-dry-run:*)"
+      "Bash(wp search-replace:* --no-dry-run:*)",
+      "Bash(npm install*)",
+      "Bash(npm i *)",
+      "Bash(yarn add*)",
+      "Bash(bun add*)"
     ]
   }
 }
