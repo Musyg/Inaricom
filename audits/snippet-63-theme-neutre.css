@@ -8,7 +8,7 @@
    - Accent principal = BLANC (au lieu de rouge/or/vert/bleu)
    - Surfaces glassmorphism neutres (pas de teinte chaude/froide)
    - Halos discrets, crème au lieu de couleur forte
-   - Logo : version argentee (Design-sans-titre-17.png) au lieu du rouge
+   - Logo : logo rouge natif partout (variantes thematiques supprimees)
    - Les couleurs thematiques (rouge/or/vert) restent accessibles via
      classes explicites sur les cards piliers (Phase 2).
    ============================================================ */
@@ -44,26 +44,10 @@ body.theme-neutre {
   --inari-gradient: linear-gradient(135deg, #0A0A0F 0%, #12121A 50%, rgba(239, 235, 232, 0.04) 100%);
 }
 
-/* Logo : version argentee (Design-sans-titre-17.png) via content: url(...)
-   Pattern identique aux autres themes (or/bleu/vert) */
-[data-theme="neutre"] .site-logo img,
-[data-theme="neutre"] .custom-logo {
-  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
-}
-
-/* Masquer le logo rouge natif sur theme-neutre (meme pattern que or/bleu/vert) */
-.theme-neutre img.custom-logo {
-  opacity: 0;
-}
-
-/* Et re-afficher via background-image le logo argente (pattern existant sur or/bleu/vert) */
-.theme-neutre .site-branding .brand.has-logo-image {
-  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
+/* Logo : le logo rouge natif reste sur theme-neutre, avec halo renforce */
+body.theme-neutre .site-logo img,
+body.theme-neutre .custom-logo {
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
 }
 
 /* Boutons primary sur theme-neutre : fond blanc, texte noir */

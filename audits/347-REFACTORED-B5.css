@@ -100,13 +100,6 @@
   --inari-gradient: linear-gradient(135deg, #FFD700 0%, #B8860B 100%);
 }
 
-/* Logo Or - swap image */
-[data-theme="or"] .site-logo img,
-[data-theme="or"] .custom-logo {
-  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-16.png');
-  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
-}
-
 /* ===========================================
    1c. THÈME BLEU / TECH
    =========================================== */
@@ -132,13 +125,6 @@
   
   /* Gradient cyan */
   --inari-gradient: linear-gradient(135deg, #00d4ff 0%, #00A8CC 100%);
-}
-
-/* Logo Bleu - swap image */
-[data-theme="bleu"] .site-logo img,
-[data-theme="bleu"] .custom-logo {
-  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-13.png');
-  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
 }
 
 /* Box-sizing global */
@@ -170,13 +156,6 @@
   
   /* Gradient émeraude */
   --inari-gradient: linear-gradient(135deg, #10B981 0%, #059669 100%);
-}
-
-/* Logo Vert - swap image */
-[data-theme="vert"] .site-logo img,
-[data-theme="vert"] .custom-logo {
-  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-15.png');
-  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
 }
 
 /* ===========================================
@@ -3652,53 +3631,15 @@ ul.products.content-wrap li.product:hover {
 }
 
 /* ============================================================
-   60e. LOGO SWAP via background-image sur parent .brand
-   
-   Le <img class="custom-logo"> a un srcset qui bat content:url() CSS.
-   Approche : masquer l'<img> + background-image sur <a.brand> parent.
-   
-   FIX TAILLE : les dimensions Kadence natives sont contrôlées par les
-   règles existantes du thème (classe .site-branding.site-brand-logo-only).
-   On ne force pas min-width/min-height, on laisse le parent suivre sa
-   taille naturelle et l'<img> garde ses dimensions pour préserver le
-   layout. On affiche juste un background dessus via l'<img> lui-même.
+   60e. LOGO — logo rouge natif unique partout
+
+   Variantes thematiques supprimees (decision Kevin 21/04/2026).
+   Seul effet autorise : halo blanc via drop-shadow.
    ============================================================ */
 
-/* Masquer l'<img> natif dans thèmes non-rouge + afficher le bon logo en background dessus */
-.theme-or img.custom-logo,
-.theme-bleu img.custom-logo,
-.theme-vert img.custom-logo {
-  /* Garde les dimensions natives (348x126) mais rend l'image native invisible */
-  opacity: 0;
-}
-
-/* Afficher le bon logo en background sur le parent direct <a.brand> */
-.theme-or .site-branding .brand.has-logo-image {
-  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-16.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
-}
-
-.theme-bleu .site-branding .brand.has-logo-image {
-  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-13.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
-}
-
-.theme-vert .site-branding .brand.has-logo-image {
-  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-15.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: left center;
-  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
-}
-
-/* Thème rouge (défaut) : garder le logo natif visible avec halo */
-.theme-rouge .site-branding .brand.has-logo-image img.custom-logo {
+/* Logo natif unique : halo blanc sur tous les themes */
+.custom-logo,
+.site-logo img {
   filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.6));
 }
 
@@ -4025,7 +3966,7 @@ body .search-results .loop-entry .entry-title {
    - Accent principal = BLANC (au lieu de rouge/or/vert/bleu)
    - Surfaces glassmorphism neutres (pas de teinte chaude/froide)
    - Halos discrets, crème au lieu de couleur forte
-   - Logo : version argentee (Design-sans-titre-17.png) au lieu du rouge
+   - Logo : logo rouge natif partout (variantes thematiques supprimees)
    - Les couleurs thematiques (rouge/or/vert) restent accessibles via
      classes explicites sur les cards piliers (Phase 2).
    ============================================================ */
@@ -4061,26 +4002,10 @@ body.theme-neutre {
   --inari-gradient: linear-gradient(135deg, #0A0A0F 0%, #12121A 50%, rgba(239, 235, 232, 0.04) 100%);
 }
 
-/* Logo : version argentee (Design-sans-titre-17.png) via content: url(...)
-   Pattern identique aux autres themes (or/bleu/vert) */
-[data-theme="neutre"] .site-logo img,
-[data-theme="neutre"] .custom-logo {
-  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
-}
-
-/* Masquer le logo rouge natif sur theme-neutre (meme pattern que or/bleu/vert) */
-.theme-neutre img.custom-logo {
-  opacity: 0;
-}
-
-/* Et re-afficher via background-image le logo argente (pattern existant sur or/bleu/vert) */
-.theme-neutre .site-branding .brand.has-logo-image {
-  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.55));
+/* Logo : le logo rouge natif reste sur theme-neutre, avec halo renforce */
+body.theme-neutre .site-logo img,
+body.theme-neutre .custom-logo {
+  filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.55));
 }
 
 /* Boutons primary sur theme-neutre : fond blanc, texte noir */
