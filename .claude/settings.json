@@ -5,7 +5,7 @@
   "model": "claude-opus-4-7",
   "env": {
     "ANTHROPIC_MODEL": "claude-opus-4-7",
-    "ANTHROPIC_SMALL_FAST_MODEL": "claude-opus-4-7",
+    "ANTHROPIC_SMALL_FAST_MODEL": "claude-haiku-4-5-20251001",
     "TOKEN_OPTIMIZER_READ_CACHE": "1",
     "TOKEN_OPTIMIZER_READ_CACHE_MODE": "warn",
     "PATH": "C:\\Users\\gimu8\\.rtk\\bin;C:\\Users\\gimu8\\AppData\\Local\\pnpm;C:\\Users\\gimu8\\AppData\\Roaming\\npm;C:\\Program Files\\nodejs;C:\\Program Files\\Git\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\gimu8\\.cargo\\bin;C:\\Users\\gimu8\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\gimu8\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;C:\\Windows\\System32;C:\\Windows"
