@@ -3,7 +3,8 @@
 > Document d'execution pour Claude Code.  
 > Charge `@docs/phase2-react-islands.md` pour le contexte complet.  
 > Charge `@CLAUDE.md` pour les regles projet.  
-> Charge `@.claude/rules/logo-immutable.md` pour la regle logo.
+> Charge `@.claude/rules/logo-immutable.md` pour la regle logo.  
+> Charge `@.claude/rules/palette-locked.md` pour la regle palette.
 
 Date : 2026-04-21  
 Sous-agent responsable : `frontend-kadence`
@@ -20,6 +21,14 @@ Cette session installe l'infra React. Meme si aucun code applicatif n'est ecrit 
 - **Ne PAS creer de variantes thematiques** (pas de logo or/vert/bleu/argent)
 - **Ne PAS inclure de logo dans les components React** — le logo est rendu cote WordPress (header Kadence)
 - Voir regle complete : `.claude/rules/logo-immutable.md`
+
+### 🔒 Palette 5 themes VERROUILLEE
+- 5 couleurs d'accent arbitrees par Kevin : **neutre (argent), rouge (secu), or (IA), vert (blog), bleu (institutionnel)**
+- **Ne PAS introduire** de nouvelle couleur (violet, orange, cyan custom, rose)
+- **Ne PAS utiliser** les Tailwind defaults (`red-500`, `amber-400`, `emerald-500`) pour les accents de marque
+- ✅ **Autorise** : gradients, halos, glows, opacites **a partir des 5 couleurs**
+- ✅ **Autorise** : creation de nuances derivees (`rgba(var(--inari-red-rgb), 0.15)`)
+- Voir regle complete : `.claude/rules/palette-locked.md`
 
 ### 🔒 Pas de hex hardcodes
 - Tous les couleurs via tokens `--inari-*` mappes en classes Tailwind

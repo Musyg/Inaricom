@@ -56,11 +56,14 @@ Avant toute creation de composant React, Claude Code DOIT integrer ces regles :
 - Regle complete : `.claude/rules/logo-immutable.md`
 - Guardrail : `CLAUDE.md` section "GUARDRAILS ABSOLUS"
 
-**2. COULEURS — 5 themes existants**
-- Les tokens `--inari-*` sont la source de verite
+**2. COULEURS — 5 themes VERROUILLES**
+- Les tokens `--inari-*` sont la source de verite unique
 - Les classes Tailwind doivent utiliser `var(--inari-*)` via `@theme`
 - Pas de hex hardcodes dans les composants React
-- 5 themes : neutre (homepage), rouge (secu), or (IA), vert (blog), bleu (institutionnel)
+- 5 themes : neutre (homepage, argent/blanc), rouge (secu), or (IA), vert (blog), bleu (institutionnel)
+- **Ne pas introduire de 6e couleur** (violet, orange, rose, cyan non-bleu — interdit)
+- **Gradients et halos autorises** tant qu'ils composent ces 5 couleurs + noirs + textes
+- Regle complete : `.claude/rules/palette-locked.md`
 
 **3. TYPOGRAPHIE — Geist + Instrument Serif**
 - Body/UI : Geist Sans (self-hoste)
