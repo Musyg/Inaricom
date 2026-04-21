@@ -1,61 +1,225 @@
 /* ============================================================
-   61. HERO HOMEPAGE — Fox canvas mobile + full-width desktop
+   61. HERO HOMEPAGE — Mobile clean + full-width desktop + Icones cards
    
-   Migre depuis snippets 442 (Fox Canvas Container) + 508 (Centrage
-   Hero page d'accueil) le 2026-04-21 dans le cadre du refactor B.5.
+   Migre depuis snippets 442 + 508 le 2026-04-21 (refactor B.5).
    
-   Les snippets 442 et 508 sont mis en "draft" apres migration pour
-   rollback facile si besoin (wp post update 442 --post_status=draft).
-   
-   61a. Fox canvas en fond centre sur mobile (opacite 0.35)
-   61b. Hero full-width desktop (sortie du conteneur WP)
+   MAJ 2026-04-21 (user feedback iteratif) :
+   - Mobile : fox canvas + site-title retires
+   - Mobile : badge fix overflow
+   - Mobile : stats empilees en colonne
+   - Mobile : espace vide sous stats ELIMINE
+   - Mobile : cards services/boutique pleine largeur
+   - Desktop + Mobile : icones service-icon centrees + plus grandes (style packages)
    ============================================================ */
 
-/* 61a. Canvas renard en fond centre sur mobile */
+/* 61c. ICONES CARDS SERVICES : centrees et plus grandes (desktop + mobile) */
+.service-card {
+  text-align: center !important;
+}
+
+.service-card .service-icon {
+  font-size: 3.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  margin: 0 auto 24px !important;
+  line-height: 1 !important;
+  text-align: center !important;
+}
+
+/* Les SVG inline ou balises img dans .service-icon sont aussi centres */
+.service-card .service-icon svg,
+.service-card .service-icon img {
+  width: 64px !important;
+  height: 64px !important;
+  display: block !important;
+  margin: 0 auto !important;
+}
+
+/* Les h3 restent alignes au centre pour coherence visuelle */
+.service-card h3 {
+  text-align: center !important;
+}
+
+/* Le paragraphe reste justifie / aligne-gauche pour lisibilite texte long */
+.service-card p {
+  text-align: left !important;
+}
+
+/* Le lien "Voir les packages" reste aligne gauche en bas (Call to Action) */
+.service-card .service-link {
+  text-align: left !important;
+}
+
+/* Sur mobile, icones encore plus grandes puisque card = pleine largeur */
 @media (max-width: 768px) {
-  #fox-canvas-container {
-    position: absolute !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1 !important;
-    pointer-events: none !important;
-    opacity: 0.35 !important;
-    background: transparent !important;
+  .service-card .service-icon {
+    font-size: 4rem !important;
+    margin-bottom: 20px !important;
   }
+  .service-card .service-icon svg,
+  .service-card .service-icon img {
+    width: 72px !important;
+    height: 72px !important;
+  }
+}
 
+@media (max-width: 768px) {
+  /* Fox canvas retire sur mobile */
+  #fox-canvas-container,
   #fox-canvas {
-    width: 100% !important;
-    height: 100% !important;
-    display: block !important;
+    display: none !important;
   }
 
-  .hero-section,
-  .inari-hero {
+  /* Titre site "Inaricom" redondant avec le logo */
+  .mobile-site-branding .site-title-wrap,
+  .mobile-site-branding .site-title {
+    display: none !important;
+  }
+
+  /* Hero mobile : HAUTEUR AUTO */
+  body section.hero-section,
+  body section.hero-section[style],
+  body .inari-hero {
     background: linear-gradient(180deg, #0a0a0b 0%, #12121a 100%) !important;
     position: relative !important;
     z-index: 1 !important;
-    min-height: 100vh !important;
+    min-height: auto !important;
+    height: auto !important;
     overflow: hidden !important;
+    padding-bottom: 1rem !important;
+    padding-top: 10px !important;
   }
 
-  .hero-section > .inari-hero-badge-wrapper,
-  .hero-section > .inari-hero-content,
-  .hero-section > .inari-hero-stats-wrapper {
+  .hero-section .inari-hero-badge-wrapper,
+  .hero-section .inari-hero-content,
+  .hero-section .inari-hero-stats-wrapper {
     position: relative !important;
     z-index: 3 !important;
   }
-}
 
-@media (max-width: 480px) {
-  #fox-canvas-container {
-    opacity: 0.30 !important;  /* Plus discret sur petit ecran */
+  /* Badge "WEB INFRASTRUCTURE BLOCKCHAIN" */
+  .hero-section .inari-hero-badge-wrapper .inari-hero-badge {
+    white-space: normal !important;
+    font-size: 0.7rem !important;
+    padding: 8px 14px !important;
+    letter-spacing: 0.3px !important;
+    max-width: calc(100% - 32px) !important;
+    line-height: 1.3 !important;
+    text-align: center !important;
+  }
+
+  /* Stats wrapper */
+  .hero-section .inari-hero-stats-wrapper {
+    margin-top: 1.5rem !important;
+    margin-bottom: 0 !important;
+    padding: 0 16px !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Stats en colonne */
+  .hero-section .inari-hero-stats-wrapper .inari-hero-stats,
+  body .inari-hero-stats-wrapper .inari-hero-stats {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 1.25rem !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    grid-template-columns: none !important;
+  }
+
+  .hero-section .inari-hero-stats-wrapper .inari-hero-stats .stat,
+  body .inari-hero-stats-wrapper .inari-hero-stats .stat {
+    flex: none !important;
+    width: 100% !important;
+    max-width: 280px !important;
+    text-align: center !important;
+    display: block !important;
+    grid-column: auto !important;
+  }
+
+  .hero-section .inari-hero-stats-wrapper .inari-hero-stats .stat-number,
+  body .inari-hero-stats-wrapper .inari-hero-stats .stat-number {
+    font-size: 1.75rem !important;
+    line-height: 1.1 !important;
+    display: block !important;
+  }
+
+  .hero-section .inari-hero-stats-wrapper .inari-hero-stats .stat-label,
+  body .inari-hero-stats-wrapper .inari-hero-stats .stat-label {
+    font-size: 0.8rem !important;
+    line-height: 1.4 !important;
+    margin-top: 4px !important;
+    display: block !important;
+    white-space: normal !important;
+  }
+
+  .hero-section .inari-hero-stats-wrapper .inari-hero-stats .stat:last-child,
+  body .inari-hero-stats-wrapper .inari-hero-stats .stat:last-child {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  /* Cards mobile : pleine largeur */
+  body .inari-services,
+  body .inari-shop,
+  body .inari-articles,
+  body .inari-resources {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  body .inari-container,
+  body .inari-services .inari-container,
+  body .inari-shop .inari-container,
+  body .inari-articles .inari-container,
+  body .inari-resources .inari-container {
+    padding-left: 8px !important;
+    padding-right: 8px !important;
+    max-width: 100% !important;
+  }
+
+  body .services-grid,
+  body .shop-grid,
+  body .articles-grid {
+    gap: 16px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  body .service-card,
+  body .product-card,
+  body .article-card {
+    padding: 24px 20px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 }
 
-/* 61b. Hero full-width desktop (sortir du conteneur WP) */
+@media (max-width: 400px) {
+  body .inari-container,
+  body .inari-services .inari-container,
+  body .inari-shop .inari-container,
+  body .inari-articles .inari-container,
+  body .inari-resources .inari-container {
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+
+  body .service-card,
+  body .product-card,
+  body .article-card {
+    padding: 20px 16px !important;
+  }
+}
+
+/* 61b. Hero full-width desktop */
 @media (min-width: 1025px) {
   .hero-section {
     width: 100vw !important;
