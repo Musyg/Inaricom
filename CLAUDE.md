@@ -1,8 +1,10 @@
-# CLAUDE.md — Inaricom Refactoring Pipeline (v2)
+# CLAUDE.md — Inaricom Refactoring Pipeline (v3)
 
 > Brief Claude Code pour la refonte complete du site inaricom.com.
 > **Pivot strategique** : positionnement cybersecurite-first (Red Team) + IA.
-> Stack : WordPress + WooCommerce + Kadence + React islands (Phase 2).
+> **Phase 2 React islands DEMARRE** (Q2 2026, avance d un an sur plan initial).
+> Stack : WordPress backend + React 19/Tailwind v4 islands pour zones premium.
+> Derniere MAJ : 21 avril 2026.
 
 ---
 
@@ -34,12 +36,13 @@
 
 ---
 
-## SYSTEME DE COULEURS — 4 THEMES
+## SYSTEME DE COULEURS — 5 THEMES
 
 ### Mapping semantique (LOGIQUE = THEMATIQUE, pas type de page)
 
 | Theme | Section | Accent | Dark | Light | RGB |
 |-------|---------|--------|------|-------|-----|
+| **neutre** | **Homepage** (equite entre piliers, pas de dominance) | `#FFFFFF` | `#E0E0E0` | `#FFFFFF` | `255, 255, 255` |
 | **rouge** (defaut) | Securite / Red Team / pentest / cybersec | `#E31E24` | `#B8161B` | `#FF3A40` | `227, 30, 36` |
 | **or** | IA (services + boutique hardware + tutos IA) | `#FFD700` | `#B8860B` | `#FFE55C` | `255, 215, 0` |
 | **vert** | Blog / ressources / savoir general | `#10B981` | `#059669` | `#34D399` | `16, 185, 129` |
@@ -115,17 +118,29 @@
 - **SEO** : Rank Math Free (llms.txt natif)
 - **Multilingue** : Polylang Pro (sous-repertoires `/fr/`, `/en/`)
 
-### Phase 2 (Q1-Q3 2027) — React islands + Next.js headless
-- **WordPress Interactivity API** (IAPI) pour tabs, filtres, add-to-cart
-- **Ilots React** pour configurateur hardware 3D et zones interactives riches
-- **Next.js 16** (App Router, RSC, Cache Components) pour frontend premium
+### Phase 2 (Q2 2026 — DEMARRE) — React islands sur WordPress
+- **React 19 + TypeScript + Vite** dans `react-islands/` (dev), buildé vers `plugins/inaricom-core/assets/react/` (prod)
+- **Tailwind CSS v4** : tokens `--inari-*` via `@theme`, heritage des CSS custom properties WP
+- **shadcn/ui** (Radix, WCAG par defaut) + **lucide-react** + **Framer Motion**
+- **@tanstack/react-query** pour fetch WP REST API
+- **Islands cibles** : homepage (actuelle), AI Tool Finder (2.5), Hardware Config 3D (2.6), AI Mastery Hub (2.7), pages services cybersec (2.8)
+- **WordPress Interactivity API** (IAPI) : envisage Phase 3 pour tabs/filtres WooCommerce (pas prioritaire)
+- **Next.js 16 headless** : reporte en Phase 3+ (uniquement si besoin reel)
+- Plan detaille : `@docs/phase2-react-islands.md`
 
 ### Animation / 3D
-- **Fox animation** : migration Canvas 2D -> **OGL + Polyline + glow additif HDR** (15 KB, 60fps mobile)
+
+**Cote WordPress (pages classiques)**
+- **Fox animation** : migration Canvas 2D v28 -> **OGL + Polyline + glow additif HDR** (15 KB, 60fps mobile)
 - **GSAP 3.13+** (gratuit depuis 2025, tous plugins inclus)
 - **Lenis** smooth scroll
-- **Three.js + R3F** uniquement pour configurateur hardware (Phase 2)
 - **Fallback statique** : SVG inline + `filter: drop-shadow()` multicouches (visuellement ~90% de l'animation)
+
+**Cote React islands**
+- **Framer Motion 11+** pour anim UI React (entrées, transitions, micro-interactions)
+- **React Three Fiber v9** (Phase 2.6) pour configurateur hardware 3D
+- **Three.js + WebGPU** pour R3F (fallback WebGL2)
+- Respect `prefers-reduced-motion` obligatoire cote WP **et** React
 
 ### Hebergement & infra
 - **Hebergeur** : Infomaniak (Geneve/Zurich) — nLPD native, ISO 27001
@@ -285,12 +300,15 @@ Invocation : `/agents` dans Claude Code ou delegation auto.
 ## FICHIERS & DOCS CLES
 
 - `@docs/architecture.md` — decisions structurelles
-- `@docs/backlog.md` — plan consolide 7 phases
+- `@docs/backlog.md` — plan consolide 8 phases
 - `@docs/tech-debt.md` — dette technique suivie
 - `@docs/session-log.md` — journal sessions (3-5 bullets/jour)
 - `@docs/runbooks/` — procedures incident/rollback/DR
-- `@PLAN_REFONTE_INARICOM.md` — plan execution detaille
+- `@docs/phase2-react-islands.md` — plan complet React islands (NEW)
+- `@docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md` — brief setup Vite pour Claude Code (NEW)
+- `@PLAN_REFONTE_INARICOM.md` — plan execution detaille v3
 - `.mcp.json` — configuration MCP servers
+- `react-islands/` — projet React/Tailwind (NEW Phase 2)
 
 ---
 

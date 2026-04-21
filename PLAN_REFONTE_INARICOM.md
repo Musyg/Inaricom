@@ -1,349 +1,278 @@
-# PLAN REFONTE INARICOM.COM — v2 (pivot securite-first)
+# PLAN REFONTE INARICOM.COM — v3 (Phase 2 React islands demarree)
 
-> Plan consolide integrant le pivot strategique cybersecurite et les 5 deep searches validees.
-> Remplace PLAN_REFONTE_INARICOM.v1.md (archive, IA-first).
-> Derniere MAJ : 17 avril 2026
-> Progression globale : ~30% (revision apres pivot)
+> Plan consolide integrant le pivot strategique cybersecurite et l'acceleration Phase 2 React islands.
+> v2 archive (~17 avril 2026) pour historique.
+> Derniere MAJ : 21 avril 2026
+> Progression globale : ~50%
 
 ---
 
 ## VISION
 
-Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones** (Suisse romande + FR + BE + LU), tout en conservant la verticale IA. Site premium dark + 4 themes semantiques + sous-agents Claude Code + hardening exemplaire.
+Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones** (Suisse romande + FR + BE + LU), tout en conservant la verticale IA. 
+
+**Site premium dark** + 5 themes semantiques (neutre/rouge/or/vert/bleu) + WordPress backend solide + **React islands pour zones premium** + hardening exemplaire.
+
+### Fil rouge editorial
+**"L'IA et la cybersecurite, sans boite noire."**  
+*Des audits que vous comprenez. Des systemes IA que vous controlez. Des ressources gratuites pour decider.*
 
 ### 3 differenciateurs uniques marche FR
-1. **Transparence tarifaire** (grilles CHF/EUR publiques)
+1. **Transparence pedagogique** : "sans boite noire" — audits, systemes et contenus lisibles
 2. **Convergence IA + cybersec offensif** (pentest LLM / OWASP LLM Top 10)
-3. **Swiss trust stack** (FADP/nFADP + FINMA + NIS2 + ISO 27001/27018)
+3. **Local-first + souverainete** : Ollama, Mistral self-hosted, data residency CH
 
 ---
 
 ## PHASE 0 — FONDATIONS INFRA
 
-### 0.1 Repo + Claude Code
+### Status : 85%
+
+**Fait**
 - [x] Git repo initialise + lie GitHub `Musyg/Inaricom`
 - [x] 23 skills claudedesignskills installes
 - [x] CLAUDE.md v2 (pivot securite-first)
 - [x] `.claude/agents/` (5 sous-agents)
-- [x] `.claude/settings.json`
-- [x] `.mcp.json`
-- [x] `docs/` (architecture, backlog, tech-debt, session-log)
-- [ ] `.claude/commands/` slash commands (deploy-staging, visual-qa, security-scan, etc.)
-- [ ] `.claude/rules/` regles fixes
-- [ ] `.gitignore` propre (secrets, node_modules, vendor)
+- [x] `.claude/settings.json` + `.mcp.json`
+- [x] `.claude/rules/` (security-first, css-custom-properties, surgical-fixes)
+- [x] `docs/` (architecture, backlog, tech-debt, session-log, runbooks, deployment)
+- [x] Staging Infomaniak provisionne (clone prod + DB anonymisee)
+- [x] mu-plugin `staging-hardening.php` (noindex + banner + mail-block)
+- [x] Scripts deploy (`sync-from-prod.sh`, `db-backup.sh`, `db-clone-prod-to-staging.sh`)
+- [x] Cles API hors Desktop (`C:\Users\gimu8\.secrets\`)
+- [x] `.gitignore` propre
+- [x] SSH alias `inaricom` + WP-CLI 2.12.0 serveur
 
-### 0.2 Decisions techniques verrouillees
-- [x] Theme : **Kadence Classic** (pas FSE avant 2027)
-- [x] SEO : **Rank Math Free**
-- [x] Hebergeur : **Infomaniak** (Geneve/Zurich, nLPD native)
-- [x] Animation fox : migration **Canvas 2D -> OGL + glow additif** (15 KB, 60fps mobile)
-- [x] Fonts : **Geist Sans + Geist Mono + Instrument Serif** (gratuits, self-hostes)
-- [x] Pipeline : **GitHub Actions + SSH/rsync + atomic symlinks**
-
-### 0.3 Securite des cles (P1)
-- [ ] Deplacer `C:\Users\gimu8\Desktop\API KEYS` vers `C:\Users\gimu8\.secrets\` (masque)
-- [ ] Exclure de OneDrive/backup cloud
-- [ ] Verifier exclusion git-ignore
-- [ ] (Optionnel) Mettre en place 1Password CLI
-
-### 0.4 Staging Infomaniak
-- [ ] Provisionner staging.inaricom.com (ou subdomain Infomaniak)
-- [ ] Configurer SSH avec cle dedieee staging
-- [ ] Configurer SSH prod read-only
-- [ ] Test connexion via `.mcp.json`
-
-### 0.5 GitHub Actions
-- [ ] `.github/workflows/security.yml` (WPScan daily)
-- [ ] `.github/workflows/lighthouse.yml` (sur PRs)
-- [ ] `.github/workflows/playwright.yml` (visual regression)
-- [ ] `.github/workflows/deploy.yml` (staging + prod manuel)
-- [ ] GitHub Secrets : SSH_PRIVATE_KEY, SSH_HOST, WPSCAN_API_TOKEN, SLACK_WEBHOOK
-
-**Status Phase 0 : 60%**
+**Reste**
+- [ ] `.claude/commands/` slash commands custom (deploy-staging, visual-qa, security-scan)
+- [ ] GitHub Actions : `security.yml`, `lighthouse.yml`, `playwright.yml`, `deploy.yml`
+- [ ] GitHub Secrets : SSH_PRIVATE_KEY, SSH_HOST, WPSCAN_API_TOKEN
+- [ ] Cloudflare DNS + WAF
+- [ ] MCP prod read-only (staging existe deja)
+- [ ] Upgrade chiffrement cles API (7-Zip ou Bitwarden)
 
 ---
 
-## PHASE 1 — DESIGN SYSTEM + HOMEPAGE RED OPS
+## PHASE 1 — DESIGN SYSTEM + INFRA WORDPRESS
 
-### 1.1 Child theme Kadence enrichi
-- [x] `kadence-child/style.css` scaffold minimal
-- [x] `kadence-child/functions.php` scaffold minimal (fox canvas)
-- [ ] Integrer **design tokens complets** `--inari-*` dans `style.css`
-- [ ] Integrer **4 themes** `[data-theme="or|vert|bleu"]` (defaut rouge)
-- [ ] Integrer **palette semantic** (`--semantic-error: #F59E0B` separe du rouge brand)
-- [ ] Integrer **rayons + ombres + glass tokens**
-- [ ] Integrer **swap logo** `content: url()` par theme
+### Status : 85% — infra solide, on peut s'appuyer dessus pour Phase 2
 
-### 1.2 Plugin `inaricom-core`
-- [ ] Scaffold : `inaricom-core.php` + `composer.json` + `includes/`
-- [ ] `class-theme-mapper.php` : body_class + data-theme selon categorie/CPT
-- [ ] `class-security.php` : headers, CSP, wp-config helpers
-- [ ] `class-schema.php` : JSON-LD Service, LocalBusiness, TechArticle
-- [ ] `class-webhooks.php` : integration Slack/Sentry
+**Plugin inaricom-core v0.1 (fait)**
+- [x] Scaffold PSR-4 + composer.json + phpcs.xml.dist
+- [x] 3 CPT : `inaricom_resource`, `inaricom_case_study`, `inaricom_service`
+- [x] Taxonomy `inaricom_pillar` avec 4 piliers seedes auto
+- [x] `ThemeMapper.php` : injection `data-theme` + body class (5 themes : rouge/or/vert/bleu/neutre)
+- [x] `SchemaInjector.php` : JSON-LD Organization, Service, Article, BlogPosting
+- [x] `AdminMenu.php` : menu parent "Inaricom" consolide
+- [x] Multisite ready (`Network: true`)
 
-### 1.3 Hero Homepage Red Ops
-- [ ] Refonte titre : pivot **securite + IA** (remplace "L'IA qui s'adapte")
-- [ ] Sub-headline Inter Geist + CTA primaire rouge + CTA secondaire ghost
-- [ ] Fox animation OGL integree (voir Phase 1.5)
-- [ ] Noise overlay SVG 4% opacity `mix-blend-mode: overlay`
-- [ ] Radial glow rouge top-center (rgba(227,30,36,0.10) fading)
-- [ ] Aurora mesh subtile drift 30s GSAP
-- [ ] Cursor-follow spotlight (ROI eleve, 20 lignes JS)
-- [ ] Ligne mono `> inaricom scan --deep --ai` (typing effect)
+**Design tokens (fait)**
+- [x] Snippet 347 DB : tokens `--inari-*` complets + 4 themes via `[data-theme]`
+- [x] Section 61 : hero + icones cards
+- [x] Section 62 : blog cards titles
+- [x] Section 63 : theme-neutre homepage (Phase 1.B 2026-04-21)
+- [x] Script `_build_347.py` : build section par section
 
-### 1.4 Sections homepage (3 piliers)
-- [ ] **Section Securite** (theme rouge) : Pentest / Red Team / Audit
-- [ ] **Section IA** (theme or) : Services / Hardware / Tutos
-- [ ] **Section Ressources** (theme vert) : Guides / Checklists / Blog
-- [ ] Bentogrid 6-9 cards asymetriques (borders `rgba(227,30,36,0.12)` + glow hover)
-- [ ] Glass cards premium (backdrop-blur 20px + saturate 180%)
-- [ ] Swiss trust signals footer (FADP/nFADP, FINMA, NIS2, ISO 27001)
+**Assets visuels (fait)**
+- [x] Logo 4 variantes themes (Design-sans-titre-13 bleu / 15 vert / 16 or + natif rouge)
+- [x] Logo argente v2 (Design-sans-titre-17) genere via Pillow
+- [x] Fox animation Canvas 2D v28 : 5 themes supportes
+- [x] Self-host Inter fonts (child theme, nLPD compliant)
 
-### 1.5 Fox animation OGL (migration Canvas 2D)
-- [ ] Etape 1 : bootstrap WebGL parallele via `?engine=webgl` (1 jour)
-- [ ] Etape 2 : Polyline OGL + theme bindings (1-2 jours)
-- [ ] Etape 3 : animation one-shot `uHead` 0->1 (1-2 jours)
-- [ ] Etape 4 : desktop-only bloom 2-pass (1-2 jours)
-- [ ] Etape 5 : polish + IntersectionObserver + FPS check (1 jour)
-- [ ] Fallback SVG inline + `drop-shadow` stacked
+**Plugin securite must-use (fait par Gilles, ne pas toucher)**
+- [x] `inaricom-security.php` v1.2 : HSTS, CSP, X-Frame-Options, rate-limit login, REST user enum lockdown, version hiding (189 lignes)
 
-### 1.6 Theme switcher
-- [x] Theme switcher bottom-left fixe (existant)
-- [ ] Integrer 4 themes : rouge/or/vert/bleu (actuellement rouge seulement)
-- [ ] Persistence localStorage
-- [ ] Transition smooth via `@property --accent`
+**Plugin DigiKey (fait)**
+- [x] `inaricom-digikey` : OAuth fonctionnel, prix temps reel (backup Mouser a venir)
 
-### 1.7 Footer
-- [x] Structure footer Kadence basique
-- [ ] 3 colonnes (A propos / Liens / Contact + newsletter)
-- [ ] Liens legaux (Mentions, CGV, Confidentialite nLPD)
-- [ ] Swiss trust signals (logos conformite)
-- [ ] Copyright "(c) 2026 Inaricom"
-
-### 1.8 Optimisations homepage
-- [ ] Lighthouse Performance 95+ (mobile et desktop)
-- [ ] Images AVIF + lazy loading + fetchpriority LCP
-- [ ] Minify CSS/JS
-- [ ] SEO : meta title/description/OG
-- [ ] Responsive QA 375/768/1440
-
-**Status Phase 1 : 40%**
+**Reste (Phase 1.C)**
+- [ ] Fox animation : migration Canvas 2D v28 -> OGL + glow additif HDR (6-8 jours, P2 dette tech)
+- [ ] Noise overlay SVG 4% sur hero des autres pages
+- [ ] Cursor-follow spotlight sur pages services
+- [ ] Swiss trust-signal footer
+- [ ] Section "Preuves techniques" landing cybersec
+- [ ] Fox paths JSON : migrer de raw.githubusercontent vers self-hosted (P3)
 
 ---
 
-## PHASE 2 — STRUCTURE CONTENU SECURITE-FIRST
+## PHASE 2 — REACT ISLANDS SUR WORDPRESS (Q2 2026 — DEMARRE)
 
-### 2.1 Nouvelle arborescence
-- [ ] Creer sections `/securite/` avec 6 sous-categories
-- [ ] Creer sections `/ia/` (conserver existant + `/ia/securite/` bridge)
-- [ ] Creer section `/ressources/`
-- [ ] Conserver `/a-propos/`, `/contact/`, pages legales
+### Status : 0% — setup en cours cette semaine
 
-### 2.2 Redirections 301
-- [ ] Remapping anciennes URLs vers nouvelle arbo
-- [ ] Configurer via Rank Math Redirections (gratuit)
+**Avance d'un an sur le plan initial.** Le backend WP est mature (Phase 1 a 85%), on passe directement au front premium.
 
-### 2.3 CPT + Taxonomies
-- [ ] CPT `cve` + champs ACF (severity, CVSS, vendor)
-- [ ] CPT `etudes-de-cas` + taxonomies secteur/tech
-- [ ] CPT `outils` + github-url/langage
-- [ ] Taxonomies transverses : niveau, secteur, tech, format, geo, conformite
+**Plan detaille complet** : `docs/phase2-react-islands.md`
 
-### 2.4 Mapping couleurs PHP
-- [ ] Filter `body_class` selon categorie/CPT
-- [ ] Injection `data-theme` sur `<html>` via `wp_head`
-- [ ] Badge `.theme-badge` visible sur articles (thematique)
+### Phase 2.0 — Setup Vite + React + Tailwind v4
+**Effort** : 2-3h  
+**Livrable** : `react-islands/` operationnel avec HMR
 
-### 2.5 Categories blog existantes
-- [x] IA Locale, Materiel IA, Cloud & Hybride, Tutoriels, LLMs & Modeles, IA Business, Actualites IA (existent)
-- [ ] Rebrancher sur nouvelle arbo `/ia/*`
-- [ ] Creer nouvelles categories securite : Pentest, Red Team, Audit, Conformite, Menaces, IR
+- [ ] `npm create vite@latest react-islands` (template React-TS)
+- [ ] Installer Tailwind v4 + `@tailwindcss/vite`
+- [ ] Installer shadcn/ui (Radix + lucide-react)
+- [ ] Installer `@tanstack/react-query`, `framer-motion`
+- [ ] Configurer `vite.config.ts` entries multiples + build vers `plugins/inaricom-core/assets/react/`
+- [ ] Configurer `tailwind.config.ts` avec tokens `--inari-*`
+- [ ] Creer `src/styles/globals.css` avec `@theme` heritant des tokens WP
+- [ ] Premier composant minimal en dev + HMR valide
 
-### 2.6 Template article premium
-- [ ] Hero article (titre Instrument Serif + meta + theme badge)
-- [ ] Sommaire sticky a gauche
-- [ ] Typographie lecture optimisee (Geist body 18px, line-height 1.7)
-- [ ] Zone "Articles similaires" (thematique)
-- [ ] CTA service contextuel (Pentest apres article pentest, etc.)
-- [ ] Schema.org TechArticle + Person (author)
+### Phase 2.1 — Homepage island complete
+**Effort** : 2-3 sessions  
+**Livrable** : Homepage visuelle prete en dev mode
 
-**Status Phase 2 : 30%**
+- [ ] `HeroNeutral.tsx` : titre fil rouge (d) + sous-titre + scroll indicator
+- [ ] `PillarCard.tsx` : component generique rouge/or/vert + animations survol + CTA
+- [ ] Section 3 cards piliers : Cybersecurite / IA Locale / Ressources
+- [ ] `WhySection.tsx` : 4 points-cles local-first / PME-friendly / methodologie / couplage
+- [ ] `ArticleCard.tsx` + `useWPPosts.ts` : 3 derniers articles via REST API
+- [ ] `FinalCTA.tsx` : "Parlons de votre projet" vers /contact/
+- [ ] Respect `prefers-reduced-motion` sur tout
+- [ ] Responsive 375/768/1280/1920 valide
+
+### Phase 2.2 — Integration WordPress
+**Effort** : 1 session  
+**Livrable** : React island montable via shortcode WP
+
+- [ ] `inaricom-core/src/React/ReactLoader.php` : enqueue bundles Vite avec manifest
+- [ ] `inaricom-core/src/React/ReactMountPoints.php` : shortcode `[inari_island name="homepage"]`
+- [ ] Skeleton HTML dans shortcode (pas de CLS, LCP < 1s)
+- [ ] CSP adaptee pour charger bundles React depuis `/wp-content/plugins/inaricom-core/assets/react/`
+- [ ] Fallback HTML si bundle 404
+- [ ] Tests : montage React sur page staging brouillon
+
+### Phase 2.3 — Swap homepage production
+**Effort** : 1 session  
+**Livrable** : `/` est la nouvelle React homepage
+
+- [ ] Creer page WP "Accueil Inaricom" en brouillon
+- [ ] Ajouter shortcode `[inari_island name="homepage"]`
+- [ ] Meta title/description SEO optimises
+- [ ] Deplacer page 985 "Accueil Cybersecurite" vers slug `/accueil-cybersecurite/`
+- [ ] Changer `page_on_front` WP vers nouvelle page
+- [ ] Update menu principal
+- [ ] Tests : homepage = React, `/accueil-cybersecurite/` = contenu preserve
+
+### Phase 2.4 — QA + polish
+**Effort** : 1-2 sessions  
+**Livrable** : Homepage prod-ready, metrics validees
+
+- [ ] Lighthouse Performance 95+ mobile + desktop
+- [ ] Core Web Vitals : LCP < 2.5s, INP < 200ms, CLS < 0.1
+- [ ] Bundle JS critique < 80 KB gzipped
+- [ ] axe-core : 0 violation accessibilite
+- [ ] Visual regression tests Playwright
+- [ ] Check data-theme transitions (MutationObserver React)
+
+### Phase 2.5+ — Roadmap post-homepage
+
+Une fois homepage sortie, on itere sur les autres islands :
+- **Phase 2.5** (Q3 2026) : AI Tool Finder (questionnaire interactif)
+- **Phase 2.6** (Q3-Q4 2026) : Hardware Configurator 3D (R3F + WebGPU)
+- **Phase 2.7** (Q4 2026) : AI Mastery Hub (tutoriels interactifs)
+- **Phase 2.8** (Q1 2027) : Pages services cybersec premium (pentest/red-team/audit)
 
 ---
 
-## PHASE 3 — BOUTIQUE WOOCOMMERCE HARDWARE IA
+## PHASE 3 — STRUCTURE CONTENU SECURITE-FIRST
 
-### 3.1 Configuration
-- [x] Devise EUR/CHF
-- [x] Frais de port basiques
-- [x] Pages obligatoires (Panier, Compte)
-- [ ] Passerelle Stripe (+ Twint pour CH)
+### Status : 40%
+
+**A creer**
+- [ ] Silo `/securite/pentest/` pillar + 5 clusters
+- [ ] Silo `/securite/red-team/` pillar + 5 clusters
+- [ ] Silo `/securite/conformite/` pillar + clusters nLPD/FINMA/NIS2/DORA
+- [ ] Silo `/securite/ia/` pillar + clusters OWASP LLM/MITRE ATLAS (bridge)
+- [ ] CPT `cve` + taxonomies severity/vendor
+- [ ] CPT `outils` + champs github-url/langage/license
+- [ ] Template article premium (hero + sommaire sticky + CTA + articles similaires)
+
+**A rebrancher**
+- [ ] Remapper categories IA sur `/ia/*` + categories securite sur `/securite/*`
+- [ ] Redirections 301 des anciennes URLs vers nouvelle arbo
+
+---
+
+## PHASE 4 — BOUTIQUE WOOCOMMERCE HARDWARE IA
+
+### Status : 15%
+
+- [x] DigiKey API OAuth fonctionnel (plugin `inaricom-digikey`)
+- [ ] Passerelle Stripe + Twint (CH specifique)
 - [ ] Emails automatiques (commande/expedition/livraison)
-
-### 3.2 Produits prioritaires
-- [ ] Jetson Orin Nano (via DigiKey API existante)
-- [ ] Jetson Orin NX
-- [ ] Jetson Orin AGX
-- [ ] Raspberry Pi 5 + kits IA
-- [ ] Mini-PC IA preconfigures
+- [ ] Produits Jetson Orin (Nano/NX/AGX)
+- [ ] Produits Raspberry Pi 5 + kits IA
+- [ ] Stations IA preconfigurees
 - [ ] Templates Shopiweb (downloads numeriques)
-- [ ] Packs "IA Starter" et "IA Pro"
-
-### 3.3 Design shop
-- [ ] Dark theme WooCommerce (hooks via Code Snippets)
-- [ ] Grille produits premium (theme or)
-- [ ] Stock badges dynamiques
-- [ ] Prix temps reel via API fournisseurs (DigiKey OAuth fonctionnel)
-- [ ] Filtres produits (prix, categorie, stock)
-
-### 3.4 SEO produits
-- [ ] Meta title/description par produit
-- [ ] Schema.org Product + Offer + AggregateRating
-- [ ] Breadcrumbs configures
-
-**Status Phase 3 : 10%**
+- [ ] Packs "IA Starter" + "IA Pro"
+- [ ] Mouser API backup
+- [ ] Dark theme WooCommerce custom (hooks, theme-or via body class)
+- [ ] Prix temps reel via API fournisseurs
 
 ---
 
-## PHASE 4 — ARTICLES PREMIUM
+## PHASE 5 — ARTICLES PREMIUM
 
-### 4.1 Piliers securite (nouveau pivot)
-- [ ] P1 : Guide complet pentest PME suisses 2026 (4500 mots)
-- [ ] P2 : Red Team vs Pentest vs Audit (3000 mots)
-- [ ] P3 : nLPD et cybersec 2026 (4500 mots)
-- [ ] P4 : Securite applications IA / pentest LLM (4000 mots) [bridge]
+### Status : 20% — 3/15 articles
 
-### 4.2 Articles IA existants
-- [x] Article 1 : IA locale vs cloud
-- [x] Article 2 : Raspberry Pi 5 + IA
-- [x] Article 3 : Jetson Orin comparatif
-- [ ] Article 4 : Benchmarks IA locale Pi vs Orin
-- [ ] Article 5 : Guide assistant IA complet local
-- [ ] Article 6 : Installer LLM local (Qwen/Mistral/DeepSeek)
-- [ ] Article 7 : Architecture IA hybride PME
-- [ ] Article 8 : **UPGRADE** IA locale securite RGPD nLPD Cloud Act
-- [ ] Article 9 : Assistant vocal IA offline
-- [ ] Article 10 : LLMs 4-bit meilleurs modeles
+**Priorite 1 — Piliers SEO cybersec (post-pivot)**
+- [ ] Pillar 1 : "Guide complet du pentest pour PME suisses 2026" (4500 mots)
+- [ ] Pillar 2 : "Red Team vs Pentest vs Audit : quelle difference ?" (3000 mots)
+- [ ] Pillar 3 : "nLPD et cybersec : obligations PME suisses 2026" (4500 mots)
+- [ ] Pillar 4 : "Securite des applications IA : guide pentest LLM" (4000 mots) [bridge]
 
-### 4.3 Articles e-commerce (reporte Q2 2027)
-- [ ] IA pour Shopify best practices
-- [ ] Templates Shopiweb IA-ready
-- [ ] Automatiser 40% business ecommerce
-- [ ] IA pour TikTok Ads strategie
-- [ ] IA & SEO moderne
-
-**Status Phase 4 : 20%**
+**Priorite 2 — Articles IA**
+- [x] Articles 1-3 (IA locale vs cloud, Raspberry Pi 5, Jetson Orin)
+- [ ] Articles 4-10 : benchmarks, assistant IA local, LLMs, architecture hybride PME
 
 ---
 
-## PHASE 5 — LEAD MAGNETS + INSTITUTIONNEL
+## PHASE 6 — LEAD MAGNETS + INSTITUTIONNEL
 
-### 5.1 PDF lead magnets
-- [ ] PDF 1 : Guide complet IA locale 2026 (20-30 pages)
-- [ ] PDF 2 : Checklist nLPD pour PME 2026 (nouveau, pivot secu)
-- [ ] PDF 3 : Pipeline e-commerce automatise
-- [ ] Design PDFs premium (Canva brand kit `kAG6uk9Uvbs`)
+### Status : 20%
 
-### 5.2 Automation
-- [x] Formulaire WPForms cree + integre
-- [ ] Automation email (lien download)
-- [ ] Double opt-in RGPD/nLPD
-- [ ] Tracking conversions
-
-### 5.3 Pages legales + institutionnelles
-- [ ] Mentions legales
-- [ ] CGV
-- [ ] Politique confidentialite nLPD (responsable Inaricom + sous-traitant Infomaniak)
-- [ ] Politique cookies (consent mode)
+- [ ] PDF 1 : "Guide complet IA locale 2026" (20-30 pages)
+- [ ] PDF 2 : "Checklist nLPD pour PME 2026" (lead magnet cybersec)
+- [ ] PDF 3 : "Pipeline e-commerce automatise"
+- [ ] WPForms + automation email (lien download + double opt-in)
+- [ ] Pages legales (Mentions, CGV, Confidentialite nLPD)
 - [ ] `/politique-divulgation-responsable/`
-- [ ] `security.txt` (RFC 9116 + PGP key)
-- [ ] Accessibility statement FR (EAA juin 2025)
-
-**Status Phase 5 : 20%**
+- [ ] `security.txt` RFC 9116 + PGP key
+- [ ] Accessibility statement FR/DE/IT
 
 ---
 
-## PHASE 6 — HARDENING SECURITE (obligatoire avant prod)
+## PHASE 7 — HARDENING SECURITE
 
-### 6.1 wp-config
-- [ ] `DISALLOW_FILE_EDIT`
-- [ ] `DISALLOW_FILE_MODS`
-- [ ] `FORCE_SSL_ADMIN`
-- [ ] `WP_AUTO_UPDATE_CORE => 'minor'`
-- [ ] `WP_DEBUG` + `WP_DEBUG_DISPLAY` a false
-- [ ] `WP_HTTP_BLOCK_EXTERNAL` + allowlist
-- [ ] Salts regeneres
-- [ ] `table_prefix` custom (jamais `wp_`)
-- [ ] `chmod 600 wp-config.php`
+### Status : 30% — headers deja en place, reste infra
 
-### 6.2 Headers
-- [ ] CSP Report-Only (2 semaines de log)
-- [ ] CSP enforce avec nonces
-- [ ] HSTS avec preload
-- [ ] X-Frame-Options SAMEORIGIN
-- [ ] X-Content-Type-Options nosniff
-- [ ] Referrer-Policy strict-origin-when-cross-origin
-- [ ] Permissions-Policy
-
-### 6.3 WAF Cloudflare
-- [ ] Rate-limit `/wp-login.php` (5 req/min)
-- [ ] Block `/xmlrpc.php` (sauf si usage justifie)
-- [ ] Admin whitelist IPs CH/FR/BE/LU
-- [ ] Bot fight mode ON
-- [ ] Challenge countries hors EU
-- [ ] Managed rules OWASP
-
-### 6.4 Monitoring
-- [ ] Wordfence Premium ($149/an)
-- [ ] UpdraftPlus Premium ou BlogVault (backups chiffres GPG)
-- [ ] Rotation 30j/12m/7y + test restore
+- [x] `inaricom-security.php` must-use : headers complets + rate-limit + version hiding
+- [ ] `wp-config.php` durci (checklist complete)
+- [ ] Cloudflare WAF rules custom
+- [ ] Wordfence Premium
+- [ ] UpdraftPlus Premium + rotation backups + chiffrement GPG
 - [ ] WPScan daily cron + Slack alerts
 - [ ] Sentry PHP + JS
 - [ ] UptimeRobot 5 URLs cles
-- [ ] Cloudflare Analytics
 - [ ] Dependabot + Renovate
-
-### 6.5 Pentest interne
-- [ ] Scan WPScan complet
-- [ ] Audit via `security-redteam` agent
-- [ ] Review headers (securityheaders.com target A+)
-- [ ] Review CSP (csp-evaluator.withgoogle.com)
-- [ ] Review SSL (ssllabs.com target A+)
-
-**Status Phase 6 : 0%**
 
 ---
 
-## PHASE 7 — PUBLICATION FINALE
+## PHASE 8 — PUBLICATION FINALE
 
-### 7.1 Checklist technique
-- [ ] Lighthouse 95+ mobile + desktop
+### Status : 0%
+
+- [ ] Lighthouse 95+ toutes pages principales (homepage React deja validee Phase 2.4)
 - [ ] GTmetrix A grade
-- [ ] Responsive all devices (BrowserStack ou Playwright)
-- [ ] SSL + HTTPS redirect actif
-- [ ] Vitesse chargement < 2s
-
-### 7.2 Checklist SEO
-- [ ] Meta title/description toutes pages
-- [ ] Open Graph + Twitter Cards
+- [ ] Responsive all devices
+- [ ] SSL + HTTPS redirect + HSTS preload
 - [ ] Sitemap XML submitted Search Console
-- [ ] robots.txt + llms.txt + llms-full.txt
-- [ ] Schema.org validates Google Rich Results
-
-### 7.3 Checklist contenu
-- [x] Homepage publiee (a refondre Phase 1)
-- [ ] Boutique active (produits charges)
-- [ ] Blog avec 10+ articles premium
-- [ ] Lead magnets actifs
-- [ ] Pages legales publiees
-
-### 7.4 Publication
+- [ ] robots.txt + llms.txt publies
+- [ ] Meta titles/descriptions toutes pages
+- [ ] Open Graph + Twitter Cards
+- [ ] Schema.org validates (Rich Results Test)
 - [ ] Desactiver maintenance mode
-- [ ] Annonce reseaux sociaux (LinkedIn prioritaire Suisse)
-- [ ] Google Analytics / Matomo self-hosted
+- [ ] Annonce LinkedIn Suisse prioritaire
 - [ ] Monitorer conversions 30j
-
-**Status Phase 7 : 0%**
 
 ---
 
@@ -351,27 +280,41 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 
 | Phase | Nom | Status | Progression |
 |-------|-----|--------|-------------|
-| 0 | Fondations infra | ~ | 60% |
-| 1 | Design System + Homepage Red Ops | ~ | 40% |
-| 2 | Contenu securite-first | ~ | 30% |
-| 3 | Boutique WooCommerce | ~ | 10% |
-| 4 | Articles premium | ~ | 20% |
-| 5 | Lead magnets + Institutionnel | ~ | 20% |
-| 6 | Hardening securite | - | 0% |
-| 7 | Publication finale | - | 0% |
+| 0 | Fondations infra | ~ | 85% |
+| 1 | Design System + Infra WP | ~ | 85% |
+| **2** | **React islands (Q2 2026)** | **~** | **0% — DEMARRE** |
+| 3 | Contenu securite-first | ~ | 40% |
+| 4 | Boutique WooCommerce | ~ | 15% |
+| 5 | Articles premium | ~ | 20% |
+| 6 | Lead magnets + Institutionnel | ~ | 20% |
+| 7 | Hardening securite | ~ | 30% |
+| 8 | Publication finale | - | 0% |
 
-**PROGRESSION TOTALE : ~30%**
+**PROGRESSION TOTALE : ~50%**
 
 ---
 
 ## CHECKPOINTS MILESTONES
 
-- **M1 (Semaine 2)** : Fondations infra 100%, pipeline deploy staging operationnel
-- **M2 (Semaine 6)** : Homepage Red Ops en staging avec fox OGL et 4 themes
-- **M3 (Semaine 14)** : Structure contenu securite-first complete, 4 piliers publies
-- **M4 (Semaine 18)** : Hardening securite complete, Cloudflare + Wordfence + backups
-- **M5 (Semaine 22)** : Boutique operationnelle, 10+ produits, Stripe actif
-- **M6 (Semaine 26)** : Publication prod, Lighthouse 95+, annonce reseaux
+- **M1** (fait) : Fondations infra + staging operationnel
+- **M2** (fait) : Plugin inaricom-core v0.1 + design tokens 4 themes + infra tokens 5 themes
+- **M3** (cette semaine) : **Phase 2.0-2.3 terminees, homepage React en prod**
+- **M4** (Q3 2026) : Structure contenu securite-first complete, 4 piliers publies
+- **M5** (Q3-Q4 2026) : AI Tool Finder + Hardware Configurator livres
+- **M6** (Q4 2026) : Boutique operationnelle, 10+ produits, Stripe+Twint actifs
+- **M7** (Q1 2027) : Hardening securite complet, Cloudflare + Wordfence + backups
+- **M8** (Q1-Q2 2027) : Publication prod officielle, Lighthouse 95+, annonce LinkedIn
+
+---
+
+## REGLE D'OR (rappel)
+
+**Tout outil / page / fonctionnalite doit :**
+- reduire un cout, OU
+- reduire une dependance, OU
+- permettre une decision claire.
+
+Sinon, on ne le construit pas.
 
 ---
 
@@ -379,5 +322,5 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 
 - [x] : fait et valide
 - [ ] : todo
-- [~] : en cours  
+- [~] : en cours
 - [!] : bloqueur
