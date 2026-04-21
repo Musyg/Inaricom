@@ -1,0 +1,154 @@
+@import "tailwindcss";
+
+/*
+ * Inaricom — globals.css
+ * Tailwind v4 @theme : expose les tokens --inari-* en utilitaires Tailwind.
+ * Les valeurs de base sont declarees cote WordPress (theme Kadence child / plugin inaricom-core).
+ * Ici on FOURNIT les fallbacks pour dev standalone (pnpm dev) hors WP.
+ *
+ * Palette VERROUILLEE : 5 themes (neutre/rouge/or/vert/bleu).
+ * Voir .claude/rules/palette-locked.md — JAMAIS de nouvelle couleur sans arbitrage Kevin.
+ */
+
+/* ============================================================ */
+/*  Fallbacks (quand hors WordPress, ex: vite dev)              */
+/* ============================================================ */
+
+:root {
+  /* Noirs & surfaces — IMMUTABLE */
+  --inari-black: #0A0A0F;
+  --inari-black-alt: #12121A;
+  --inari-black-light: #1A1A24;
+  --inari-black-lighter: #242430;
+
+  /* Textes — IMMUTABLE */
+  --inari-white: #FFFFFF;
+  --inari-text: #F0F0F5;
+  --inari-text-soft: #B6B0B4;
+  --inari-text-muted: #8A8A9A;
+
+  /* Bordures & glass — IMMUTABLE */
+  --inari-border: #2A2A35;
+  --glass-bg: rgba(18, 18, 22, 0.6);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 16px;
+  --glass-blur-heavy: 24px;
+
+  /* Semantic UI — IMMUTABLE */
+  --semantic-error: #F59E0B;
+  --semantic-success: #10B981;
+  --semantic-warning: #F59E0B;
+  --semantic-info: #00D4FF;
+
+  /* Theme default : rouge (securite / Red Team) */
+  --inari-red: #E31E24;
+  --inari-red-dark: #B8161B;
+  --inari-red-light: #FF3A40;
+  --inari-red-rgb: 227, 30, 36;
+
+  /* Radius & shadows */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-full: 9999px;
+  --shadow-soft: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Theme neutre — Homepage (equite piliers) */
+[data-theme="neutre"] {
+  --inari-red: #FFFFFF;
+  --inari-red-dark: #E0E0E0;
+  --inari-red-light: #FFFFFF;
+  --inari-red-rgb: 255, 255, 255;
+}
+
+/* Theme or — IA */
+[data-theme="or"] {
+  --inari-red: #FFD700;
+  --inari-red-dark: #B8860B;
+  --inari-red-light: #FFE55C;
+  --inari-red-rgb: 255, 215, 0;
+}
+
+/* Theme vert — Blog / ressources */
+[data-theme="vert"] {
+  --inari-red: #10B981;
+  --inari-red-dark: #059669;
+  --inari-red-light: #34D399;
+  --inari-red-rgb: 16, 185, 129;
+}
+
+/* Theme bleu — Institutionnel */
+[data-theme="bleu"] {
+  --inari-red: #00D4FF;
+  --inari-red-dark: #00A8CC;
+  --inari-red-light: #4DE8FF;
+  --inari-red-rgb: 0, 212, 255;
+}
+
+/* ============================================================ */
+/*  @theme inline : expose les tokens en utilitaires Tailwind   */
+/* ============================================================ */
+
+@theme inline {
+  --color-inari-black: var(--inari-black);
+  --color-inari-black-alt: var(--inari-black-alt);
+  --color-inari-black-light: var(--inari-black-light);
+  --color-inari-black-lighter: var(--inari-black-lighter);
+
+  --color-inari-white: var(--inari-white);
+  --color-inari-text: var(--inari-text);
+  --color-inari-text-soft: var(--inari-text-soft);
+  --color-inari-text-muted: var(--inari-text-muted);
+
+  --color-inari-border: var(--inari-border);
+
+  --color-inari-accent: var(--inari-red);
+  --color-inari-accent-dark: var(--inari-red-dark);
+  --color-inari-accent-light: var(--inari-red-light);
+
+  --color-semantic-error: var(--semantic-error);
+  --color-semantic-success: var(--semantic-success);
+  --color-semantic-warning: var(--semantic-warning);
+  --color-semantic-info: var(--semantic-info);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-full: var(--radius-full);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Instrument Serif", ui-serif, Georgia, serif;
+}
+
+/* ============================================================ */
+/*  Base                                                         */
+/* ============================================================ */
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background: var(--inari-black);
+  color: var(--inari-text);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

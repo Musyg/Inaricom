@@ -101,6 +101,8 @@ System Volume Information/
 logs/
 *.log
 pnpm-debug.log*
+!.claude/logs/
+!.claude/logs/**
 
 # === Archives ===
 *.zip
@@ -143,3 +145,6 @@ react-islands/node_modules/
 react-islands/dist/
 react-islands/.vite/
 react-islands/package-lock.json
+
+# React build artifacts (regeneres par CI ou pnpm build local)
+plugins/inaricom-core/assets/react/
