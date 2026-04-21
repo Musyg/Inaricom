@@ -82,8 +82,8 @@
 ### Regles CSS absolues
 - **Variable `--inari-red` change selon theme actif** via `[data-theme]` — le code utilise toujours `var(--inari-red)`, jamais les hex en dur
 - **Pour opacites** : `rgba(var(--inari-red-rgb), x.x)`
-- **Jamais de filtres CSS** pour recolorer le logo — fichiers SVG separes par theme (swap via `content: url()`)
-- **Liseret blanc systematique** sur logo : `filter: drop-shadow(0 0 2px rgba(255,255,255,0.6))`
+- **Logo IMMUTABLE** : un seul logo rouge (`cropped-LogoLong4White-1.png`, attachment WP 600) partout sur le site. Pas de variantes thematiques. Pas de recreation. Voir `.claude/rules/logo-immutable.md` pour la regle complete.
+- **Seul effet autorise sur logo** : liseret blanc via `filter: drop-shadow(0 0 2px rgba(255,255,255,0.6))` — rien d'autre.
 
 ---
 
@@ -263,6 +263,8 @@ Audit baseline 17/04/2026 confirme : HSTS 1 an + preload, CSP stricte, X-Frame D
 - JAMAIS d'ecriture directe sur prod (tout via pipeline Git -> Actions -> rsync)
 - JAMAIS de hex en dur apres les design tokens
 - JAMAIS de filtre CSS pour recolorer le logo
+- JAMAIS creer, modifier, regenerer ou proposer un nouveau logo (voir `.claude/rules/logo-immutable.md`)
+- JAMAIS de variantes thematiques du logo (pas de logo or/vert/bleu/argent — un seul logo partout)
 - JAMAIS de refactor complet d'un code qui fonctionne
 - JAMAIS `wp search-replace` sans `--dry-run` + backup
 - JAMAIS Google Fonts via CDN (risque €250 000)
