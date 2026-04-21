@@ -1,88 +1,108 @@
-# Activation des skills - Inaricom
+# Activation des skills - Inaricom Phase 2
 
-> Derniere MAJ : 21 avril 2026 (ajout 13 skills premium pour construire Inaricom)
+> Tous les skills actifs sont charges automatiquement par Claude Code.
+> Derniere MAJ : 21 avril 2026
 
-## Skills actifs pour Inaricom (20 au total)
+## Skills actifs (14 pour Phase 2 Inaricom)
 
-Ces skills sont directement sous `.claude/skills/<nom>/SKILL.md` et sont automatiquement detectes et charges par Claude Code quand le contexte matche leur trigger.
+### Direction esthetique (2)
 
-### Tier 1 — Les premium installes le 21/04/2026 (13 skills)
+| Skill | Source | Role |
+|-------|--------|------|
+| `taste-skill` | Leonxlnx/taste-skill | 3 molettes DESIGN_VARIANCE / MOTION_INTENSITY / VISUAL_DENSITY, anti-slop |
+| `frontend-design` | anthropics-skills | Anti-AI slop, bold aesthetic direction |
 
-Ultra-specifiques au projet Inaricom (WordPress + React + animations + design premium).
+### Setup technique React 19 + Tailwind v4 (3)
 
-| Skill | Source | Usage principal |
-|-------|--------|-----------------|
-| `taste-skill` | [Leonxlnx](https://github.com/Leonxlnx/taste-skill) | Direction esthetique avec 3 molettes (VARIANCE, MOTION, DENSITY). Anti-slop. |
-| `motion-dev` | [199-biotechnologies](https://github.com/199-biotechnologies/motion-dev-animations-skill) | Motion.dev 120fps GPU, spring physics, scroll effects. |
-| `design-motion-principles` | [kylezantos](https://github.com/kylezantos/design-motion-principles) | Audit motion forme sur Kowalski/Krehel/Tompkins. |
-| `r3f-best-practices` | [emalorenzo](https://github.com/emalorenzo/three-agent-skills) | 70+ regles React Three Fiber pour Phase 2.6 configurator. |
-| `three-best-practices` | emalorenzo (bonus) | Three.js patterns (gestion memoire, shaders). |
-| `webgpu-threejs-tsl` | [dgreenheck](https://github.com/dgreenheck/webgpu-claude-skill) | WebGPU shaders, backgrounds premium, particle systems. |
-| `tailwind-v4-shadcn` | [secondsky](https://github.com/secondsky/claude-skills) | Setup Tailwind v4 + shadcn/ui sans erreur (production-tested). |
-| `woocommerce-backend-dev` | secondsky | Hooks WooCommerce, data integrity, DI, unit tests. |
-| `wordpress-plugin-core` | secondsky | Structure plugin WordPress pro. |
-| `design-system-creation` | secondsky | Creation design system. |
-| `interaction-design` | secondsky | Micro-interactions. |
-| `web-design-guidelines` | vercel-labs (deja dans external/, active ici) | 100+ regles UX/a11y (Apple HIG + Material 3 + WCAG 2.2). |
-| `react-best-practices` | vercel-labs (deja dans external/, active ici) | 62 regles perf React/Next.js. |
+| Skill | Source | Role |
+|-------|--------|------|
+| `tailwind-v4-shadcn` | secondsky/claude-skills | @theme inline, CSS vars hsl(), previent 8 erreurs v4 |
+| `react-best-practices` | vercel-labs/agent-skills | 70 regles perf React/Next.js en 8 categories |
+| `web-design-guidelines` | vercel-labs/agent-skills | 100+ regles UX/a11y (Apple HIG + Material 3 + WCAG 2.2) |
 
-### Tier 2 — Skills deja actifs avant (installes le 17/04/2026)
+### Animations (3)
 
-| Skill | Source | Usage principal |
-|-------|--------|----------------|
-| `frontend-design` | anthropics-skills | Anti-AI slop officiel Anthropic. Complement taste-skill. |
-| `impeccable` | pbakaus-impeccable | 18 slash commands (/polish /audit /critique /overdrive). |
-| `using-superpowers` | obra-superpowers | Meta-skill methodo (TDD, brainstorming, subagents). |
-| `webapp-testing` | anthropics-skills | Playwright E2E + visual regression (Phase 2.4 QA). |
-| `modern-web-design` | (claudedesignskills) | Patterns 2025-2026. |
+| Skill | Source | Role |
+|-------|--------|------|
+| `motion-dev` | 199-biotechnologies/motion-dev-animations-skill | Motion.dev 120fps, spring physics, scroll effects |
+| `motion-framer` | freshtechbro/claudedesignskills | Framer Motion classique |
+| `design-motion-principles` | kylezantos/design-motion-principles | Audit motion forme sur Emil Kowalski, Jakub Krehel, Jhey Tompkins |
 
-Plus les 22 skills claudedesignskills (threejs-webgl, gsap-scrolltrigger, motion-framer, etc.) deja installes.
+### 3D / WebGPU (reserve Phase 2.6) (3)
 
----
+| Skill | Source | Role |
+|-------|--------|------|
+| `r3f-best-practices` | emalorenzo/three-agent-skills | 70+ regles React Three Fiber |
+| `three-best-practices` | emalorenzo/three-agent-skills | Three.js patterns production |
+| `webgpu-threejs-tsl` | dgreenheck/webgpu-claude-skill | WebGPU shaders, compute, post-processing |
 
-## Skills disponibles mais non-actifs
+### WordPress / WooCommerce (2)
 
-### Dans `.claude/skills/external/`
-Repos clones entiers (anthropics, vercel, obra-superpowers, pbakaus-impeccable, garrytan-gstack, ui-ux-pro-max, shannon-pentest). A activer individuellement si besoin en copiant leur dossier vers `.claude/skills/<nom>/`.
+| Skill | Source | Role |
+|-------|--------|------|
+| `wordpress-plugin-core` | secondsky/claude-skills | Structure plugin WP pro |
+| `woocommerce-backend-dev` | secondsky/claude-skills | Hooks, data integrity, DI, unit tests WC |
 
-### Dans `.claude/skills/` mais avec .zip equivalent
-Les 22 skills claudedesignskills ont tous un .zip equivalent (dupliques par l'installeur original). On peut les supprimer pour gagner de l'espace mais ce n'est pas critique.
+### Design system (1)
 
----
+| Skill | Source | Role |
+|-------|--------|------|
+| `design-system-creation` | secondsky/claude-skills | Creation design system complet |
+| `interaction-design` | secondsky/claude-skills | Micro-interactions |
 
-## Installation manuelle d'un skill supplementaire
+## Autres skills actifs (deja presents, heritage freshtechbro/claudedesignskills et divers)
 
-```bash
-# Cloner le repo source
-cd .claude\skills
-git clone --depth 1 <url> _tmp_nom
-# Inspecter la structure
-dir /B _tmp_nom
-# Copier uniquement le dossier skill pertinent
-xcopy /E /I /Q /Y _tmp_nom\<path>\<skill> <nom>\
-# Verifier SKILL.md present
-dir /B <nom>\SKILL.md
-# Cleanup
-rmdir /S /Q _tmp_nom
-# Supprimer .git si le repo est present
-rmdir /S /Q <nom>\.git 2>nul
+Ces 20+ skills 3D/animation restent disponibles mais ne sont PAS prioritaires Phase 2 :
+- Animations : animejs, lottie-animations, rive-interactive, react-spring-physics, barba-js, locomotive-scroll, scroll-reveal-libraries, animated-component-libraries
+- 3D : aframe-webxr, babylonjs-engine, playcanvas-engine, pixijs-2d, lightweight-3d-effects, threejs-webgl, react-three-fiber (doublon avec r3f-best-practices), gsap-scrolltrigger, blender-web-pipeline, spline-interactive, substance-3d-texturing, web3d-integration-patterns
+- Meta : modern-web-design, skill-creator, impeccable, using-superpowers, webapp-testing
+
+## Usage par phase
+
+### Phase 2.0 (setup Vite + cleanup logo)
+Prioritaires : `tailwind-v4-shadcn`, `react-best-practices`
+
+### Phase 2.1 (homepage island)
+Prioritaires : `taste-skill`, `frontend-design`, `motion-dev`, `motion-framer`, `design-motion-principles`, `web-design-guidelines`, `react-best-practices`
+
+### Phase 2.6 (Hardware Configurator 3D)
+Prioritaires : `r3f-best-practices`, `three-best-practices`, `webgpu-threejs-tsl`
+
+### Tout moment
+`taste-skill` pour garder la direction esthetique "premium pas slop".
+
+## Reglages recommandes taste-skill pour Inaricom
+
+Dans `.claude/skills/taste-skill/SKILL.md` (ou override via prompt) :
+- **DESIGN_VARIANCE: 7** (asymetrique moderne, pas chaos, pas centre-centre)
+- **MOTION_INTENSITY: 6** (animations soignees, pas cinematiques)
+- **VISUAL_DENSITY: 4** (aere, respire, premium)
+
+## Bibliotheque externe (dans `.claude/skills/external/`)
+
+Non actifs par defaut, a copier individuellement vers `.claude/skills/<nom>/` si besoin :
+- `anthropics-skills/` - 17 skills Anthropic (docx, pdf, pptx, xlsx, claude-api, mcp-builder, algorithmic-art, canvas-design...)
+- `vercel-agent-skills/` - 5 skills restants (composition-patterns, react-view-transitions, react-native-skills, deploy-to-vercel, vercel-cli-with-tokens)
+- `obra-superpowers/` - 13 skills methodologie (brainstorming, writing-plans, systematic-debugging, TDD...)
+- `pbakaus-impeccable/` - 16 commandes /polish, /audit, /critique, /overdrive...
+- `garrytan-gstack/` - 28 commandes virtual engineering team
+- `ui-ux-pro-max/` - 7 skills + database design
+- `shannon-pentest/` - pentest IA (NE PAS activer par defaut)
+
+## Comment activer un skill supplementaire
+
+```cmd
+cd C:\Users\gimu8\Desktop\Inaricom\.claude\skills
+xcopy /E /I /Q /Y external\<repo>\skills\<skill> <skill>\
 ```
 
----
+Le skill devient disponible a la prochaine session Claude Code.
 
-## Desactivation d'un skill
+## Comment desactiver un skill
 
-```bash
-# Soit supprimer le dossier actif
-rmdir /S /Q .claude\skills\<nom>
-# Soit renommer en _<nom> pour le garder mais le desactiver
-```
+Supprimer le dossier `.claude/skills/<skill>/`. Les sources restent dans `external/` pour reactivation future.
 
 ---
 
-## Pour Claude Code
-
-Pour connaitre les skills disponibles dans cette session :
-- Scan automatique de `.claude/skills/*/SKILL.md` au demarrage
-- Invocation via matching trigger (naturelle) ou explicite (`use taste-skill`)
-- Guide d'usage par phase : voir CLAUDE.md section SKILLS
+Installation 2025-11-13 : 7 repos externes (anthropics, vercel, obra, impeccable, gstack, ui-ux-pro-max, shannon)
+Installation 2026-04-21 : 6 skills supplementaires Phase 2 (taste-skill, tailwind-v4-shadcn, motion-dev, design-motion-principles, r3f+three-best-practices, webgpu-threejs-tsl, woocommerce-backend-dev, wordpress-plugin-core, design-system-creation, interaction-design) + activation web-design-guidelines.
