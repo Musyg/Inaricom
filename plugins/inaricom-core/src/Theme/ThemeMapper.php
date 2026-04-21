@@ -18,24 +18,28 @@ if (!defined('ABSPATH')) {
 /**
  * Résolution du thème pour chaque vue du site.
  *
- * Règle métier (arbitrée 2026-04-20) :
- * - OR    = univers IA entier (boutique WooCommerce actuelle + futurs services/tutos IA)
- * - ROUGE = univers sécurité/Red Team pur (services sécu, articles sécu premium)
- * - VERT  = blog / ressources / contenu éditorial gratuit
- * - BLEU  = pages institutionnelles (contact, à propos, légal, CGV)
+ * Règle métier (arbitrée 2026-04-20, étendue 2026-04-21) :
+ * - NEUTRE = homepage (front page) : palette noir/blanc/crème, aucune couleur
+ *            d'accent dominante. Les 3 cards piliers rouge/or/vert apparaissent
+ *            chacune avec leur accent propre, en égalité visuelle.
+ * - OR     = univers IA entier (boutique WooCommerce actuelle + futurs services/tutos IA)
+ * - ROUGE  = univers sécurité/Red Team pur (services sécu, articles sécu premium)
+ * - VERT   = blog / ressources / contenu éditorial gratuit
+ * - BLEU   = pages institutionnelles (contact, à propos, légal, CGV)
  *
  * Ordre de résolution :
  *
+ * 0. is_front_page() -> NEUTRE (priorité absolue, homepage équitable)
  * 1. Contenu avec terme `inaricom_pillar` assigné -> thème du pilier
  * 2. Archive de taxonomy `inaricom_pillar` -> thème du pilier
  * 3. Pages WooCommerce (shop, produit, panier, compte...) -> OR
  * 4. Pages institutionnelles (via slug) -> BLEU
  * 5. Contexte blog (posts, archives, tags, auteurs) -> VERT
  * 6. Archive de CPT Inaricom (sans pilier spécifique) -> défaut par CPT
- * 7. Sinon (homepage, pages non classées, 404) -> ROUGE (identité marque dominante)
+ * 7. Sinon (pages non classées, 404) -> ROUGE (identité marque dominante)
  *
  * Injection :
- * - filter `body_class` : ajoute `theme-rouge|or|vert|bleu`
+ * - filter `body_class` : ajoute `theme-neutre|rouge|or|vert|bleu`
  * - action `wp_head` : inline script minimal qui pose `data-theme` sur <html>
  *   avant le premier paint (0 flash, pas d'event listener, <100 octets)
  */
@@ -120,6 +124,13 @@ final class ThemeMapper
      */
     public function resolve_current_theme(): string
     {
+        // 0. Front page (homepage) -> NEUTRE, priorité absolue.
+        //    La homepage présente les 3 piliers à égalité, aucun ne doit dominer.
+        //    Les cards piliers portent chacune leur couleur d'accent propre.
+        if (is_front_page()) {
+            return 'neutre';
+        }
+
         // 1. Singular avec terme pilier assigné (priorité max)
         if (is_singular()) {
             $post_id = get_queried_object_id();
