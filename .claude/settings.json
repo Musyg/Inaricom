@@ -8,20 +8,7 @@
     "ANTHROPIC_SMALL_FAST_MODEL": "claude-opus-4-7",
     "TOKEN_OPTIMIZER_READ_CACHE": "1",
     "TOKEN_OPTIMIZER_READ_CACHE_MODE": "warn",
-    "CLAUDE_CODE_SUBPROCESS_ENV_SCRUB": "1"
-  },
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "C:\\Users\\gimu8\\.rtk\\bin\\rtk.exe hook claude --ultra-compact"
-          }
-        ]
-      }
-    ]
+    "PATH": "C:\\Users\\gimu8\\.rtk\\bin;C:\\Users\\gimu8\\AppData\\Local\\pnpm;C:\\Users\\gimu8\\AppData\\Roaming\\npm;C:\\Program Files\\nodejs;C:\\Program Files\\Git\\bin;C:\\Program Files\\Git\\usr\\bin;C:\\Users\\gimu8\\.cargo\\bin;C:\\Users\\gimu8\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\gimu8\\AppData\\Local\\Programs\\Python\\Python313\\Scripts;C:\\Windows\\System32;C:\\Windows"
   },
   "permissions": {
     "allow": [
@@ -37,6 +24,7 @@
       "Bash(wp:*)",
       "Bash(rsync:*)",
       "Bash(ssh:*)",
+      "Bash(scp:*)",
       "Bash(curl:*)",
       "Bash(cat:*)",
       "Bash(grep:*)",
@@ -45,6 +33,11 @@
       "Bash(mkdir:*)",
       "Bash(cp:*)",
       "Bash(mv:*)",
+      "Bash(echo:*)",
+      "Bash(test:*)",
+      "Bash(wc:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
       "Bash(python:*)",
       "Bash(python3:*)",
       "Bash(node:*)",
