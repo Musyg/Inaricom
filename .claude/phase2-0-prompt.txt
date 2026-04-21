@@ -1,63 +1,91 @@
-On demarre la Phase 2.0 du projet Inaricom en mode autonome full permissions.
+On demarre la Phase 2.0 du projet Inaricom en mode autonome full permissions avec Opus 4.7.
 
 ============================================================
-IMPORTANT - ETAT ACTUEL DU WORKSPACE (2026-04-21 21:00)
+BOOTSTRAP TOKEN-SAVERS (a faire EN TOUT PREMIER)
+============================================================
+
+Installe les plugins token-saving AVANT tout le reste :
+
+1. Plugin token-optimizer (alexgreensh) - deja clone dans ~/.claude/plugins/cache/token-optimizer
+   Commande : `/plugin marketplace add alexgreensh/token-optimizer`
+   Puis : `/plugin install token-optimizer@alexgreensh-token-optimizer`
+   Puis active l'auto-update via /plugin > Marketplaces tab.
+
+2. Active les hooks Token Optimizer en verifiant qu'ils sont bien charges avec `/plugin list`.
+
+3. Verifie que context-mode MCP est bien reconnu :
+   - Le serveur MCP `context-mode` est deja dans .mcp.json
+   - Doit apparaitre dans la liste MCP au demarrage
+   - Test : lister les tools MCP disponibles et confirmer `context-mode` present
+
+4. Verifie RTK :
+   - Binaire present : `rtk --version` doit retourner 0.37.2
+   - Hook PreToolUse Bash actif via settings.json (ne pas y toucher)
+
+5. Verifie caveman skill : existe dans .claude/skills/caveman/SKILL.md (chargera la verbosite reduite)
+
+Si l'un de ces 4 outils ne marche pas, log le probleme dans `.claude/logs/phase2-0-bootstrap.md` et continue quand meme - pas de blocage sur les optimisations. Mission prioritaire = Phase 2.0, les token-savers sont un bonus.
+
+============================================================
+REGLES TOKEN-FRUGAL (applicables tout du long)
+============================================================
+
+- Ne lis pas deux fois le meme fichier dans une session (cache prompt Anthropic s'en occupe, et Token Optimizer traque)
+- Grep > Read quand tu cherches une ligne precise
+- Ne lis JAMAIS en entier les SKILL.md non-actifs (juste le front-matter YAML si besoin)
+- Reponds en francais decontracte, pas de preambule type "Je vais maintenant..."
+- Pas de `git status` ou `ls` repetitifs : une fois au debut, une fois avant commit
+- Batch les operations shell : `cmd1 && cmd2 && cmd3` en 1 tool call
+- Quand tache finie, stop. Pas de recapitulatif complaisant.
+
+============================================================
+IMPORTANT - ETAT ACTUEL DU WORKSPACE (2026-04-21 22:00)
 ============================================================
 
 Une session precedente a commence l'Etape 0 puis a ete interrompue pour securiser le package manager (migration npm -> pnpm suite aux attaques supply chain).
 
-Premiere action obligatoire : faire un `git status` et `git log -5 --oneline` pour cartographier ce qui est deja fait et ce qui reste.
+Premiere action obligatoire APRES bootstrap : faire un `git status` et `git log -5 --oneline` pour cartographier ce qui est deja fait.
 
-ETAT REEL CONNU :
-- Les modifs CSS de l'Etape 0 sont FAITES en local mais PAS ENCORE COMMITTEES ni PUSHEES sur staging
-  - `audits/snippet-63-theme-neutre.css` : swap logo argent retire (modifie, non commit)
-  - `audits/347-REFACTORED-B5.css` : swap logos or/bleu/vert retires (modifie, non commit)
-  - `audits/347-REFACTORED-B4-PLUS-IREMAP.css` : idem B4 (modifie, non commit)
-- `scripts/_fill_env_staging.py` : cree (non commit)
-- `pnpm v10.33.0` installe sur Phoenix2 avec config securite (ignore-scripts=true, min-release-age=10080, strict-dep-builds=true, resolution-mode=highest)
+ETAT REEL CONNU (DEJA FAIT, NE PAS REFAIRE) :
+- Les modifs CSS Etape 0 : FAITES en local (snippet 63 + 347 B5 + 347 B4), non pushees staging
+- `scripts/_fill_env_staging.py` : cree
+- pnpm v10.33.0 installe + config securite globale (ignore-scripts, min-release-age 7j, strict-dep-builds)
 - `.npmrc` user cree dans `C:\Users\gimu8\.npmrc`
-- Regles `.claude/rules/npm-security.md` creee (committe au commit precedent)
-- `CLAUDE.md` MAJ avec 3 guardrails pnpm (commit precedent)
-- Brief `docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md` reecrit avec pnpm (commit precedent)
+- `.claude/rules/npm-security.md` creee et committee
+- `CLAUDE.md` MAJ avec 3 guardrails pnpm
+- Brief `docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md` reecrit avec pnpm
+- `react-islands/` existe avec scaffold Vite (mais node_modules + package-lock.json SUPPRIMES : il faut refaire un pnpm install propre)
+- Opus 4.7 verrouille dans settings.json
+- 4 outils token-savers installes (token-optimizer, context-mode, caveman, RTK)
 
 RESTE A FAIRE :
 1. Finir Etape 0 : build 347, push staging, supprimer 4 PNG serveur, validation visuelle Chrome, commit cleanup, push main
-2. Etapes 1-15 setup Vite via pnpm (jamais commence)
+2. Etape 1-15 setup Vite via pnpm (react-islands/ existe mais il faut pinner versions + pnpm install + audit)
 
 ============================================================
 REGLE D'IDEMPOTENCE : VERIFIER L'ETAT CIBLE, PAS L'ACTION
 ============================================================
 
-Pour chaque step : ne verifie pas "est-ce que j'ai deja fait cette commande" mais "est-ce que l'ETAT FINAL VOULU est deja atteint". Si non atteint, agis.
+Pour chaque step : verifie "est-ce que l'ETAT FINAL VOULU est deja atteint" (pas "est-ce que j'ai fait la commande"). Si atteint, skip. Sinon, agis.
 
-Exemples concrets :
+Exemples :
 
-- Modifs CSS snippet 63 : le bloc `[data-theme="neutre"] .site-logo img { content: url... }` est-il ABSENT du fichier ? 
-  -> `grep -c 'data-theme="neutre".*content' audits/snippet-63-theme-neutre.css`
-  -> Si 0 : deja propre, passer au point suivant
-  -> Si >0 : retirer le bloc
+- Modifs CSS snippet 63 : `grep -c 'data-theme="neutre".*content' audits/snippet-63-theme-neutre.css`
+  0 -> deja propre, passe. >0 -> retirer le bloc.
 
-- Fichier staging a jour ? Le fichier distant contient-il encore `content: url(...Design-sans-titre-17.png)` ?
-  -> `ssh inaricom 'grep -c "Design-sans-titre-17" /path/to/snippet347.css'`
-  -> Si 0 : staging deja a jour, skip push
-  -> Si >0 : push
+- Staging a jour ? `ssh inaricom 'grep -c "Design-sans-titre-17" /home/toriispo/inaricom.com/web-staging/wp-content/uploads/custom-css-js/*.css'`
+  0 -> staging deja propre, skip push. >0 -> push.
 
-- PNG obsoletes sur serveur ?
-  -> `ssh inaricom 'ls /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-*.png 2>/dev/null | wc -l'`
-  -> Si 0 : deja supprimes, skip
-  -> Si >0 : supprimer
+- PNG obsoletes ? `ssh inaricom 'ls /home/toriispo/inaricom.com/web-staging/wp-content/uploads/2026/01/Design-sans-titre-*.png 2>/dev/null | wc -l'`
+  0 -> deja supprimes, skip. >0 -> supprimer.
 
-- Commit cleanup existe ?
-  -> `git log --oneline -20 | grep -c "Cleanup reliquats logo"`
-  -> Si 0 : commit a faire
-  -> Si >0 : deja committe, skip
+- Commit cleanup existe ? `git log --oneline -20 | grep -c "Cleanup reliquats logo"`
+  0 -> a faire. >0 -> skip.
 
-- Projet Vite existe ?
-  -> `test -d react-islands && test -f react-islands/package.json`
-  -> Si oui : verifier contenu et completer ce qui manque
-  -> Si non : creer from scratch
+- Projet Vite existe ? `test -d react-islands && test -f react-islands/package.json`
+  oui -> verifier contenu, completer ce qui manque (pin versions, pnpm install, audit). non -> `pnpm create vite@latest`.
 
-Applique cette logique A CHAQUE step. Loggue ce que tu skip dans `.claude/logs/phase2-0-skipped.md` avec raison. Le but est de converger vers l'etat cible final sans doublon ni regression.
+Applique cette logique A CHAQUE step. Loggue les skips dans `.claude/logs/phase2-0-skipped.md` avec raison.
 
 ============================================================
 CONTEXTE A CHARGER DANS L'ORDRE
@@ -71,57 +99,67 @@ CONTEXTE A CHARGER DANS L'ORDRE
 6. @.claude/rules/security-first.md
 7. @.claude/rules/npm-security.md (OBLIGATOIRE - regle supply chain)
 8. @docs/phase2-react-islands.md
-9. @docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md (MAJ 2026-04-21 pnpm)
+9. @docs/BRIEF_CLAUDE_CODE_PHASE_2.0.md (MAJ pnpm)
 10. @.claude/skills/ACTIVATION.md
 
 SKILLS A ACTIVER :
 - react-best-practices (Vercel)
 - tailwind-v4-shadcn (secondsky)
 - taste-skill (VARIANCE 7, MOTION 6, DENSITY 4)
+- caveman (verbosity reduite automatique)
 
 OUTILS :
-- Chrome integration avec /chrome (credentials staging memorises dans Chrome)
+- /chrome (credentials staging memorises dans Chrome)
 - Sous-agent frontend-kadence
 - SSH via alias inaricom
-- Scripts serveur avec kses_remove_filters (pattern eprouve)
+- Scripts serveur avec kses_remove_filters
+- RTK pour toutes commandes Bash (hook auto)
+- context-mode MCP pour sandboxer les outputs lourds
+- token-optimizer pour tracking live
 
-MISSION : converger vers l'etat cible final de la Phase 2.0 en autonomie.
+MISSION : converger vers l'etat cible final Phase 2.0 en autonomie.
 
 ============================================================
 ETAT CIBLE FINAL A ATTEINDRE
 ============================================================
 
+BOOTSTRAP (nouveau) - ETAT CIBLE :
+[ ] /plugin list montre token-optimizer actif
+[ ] /mcp list montre context-mode operationnel
+[ ] rtk --version OK (0.37.2)
+[ ] caveman skill detecte
+
 ETAPE 0 (cleanup logo) - ETAT CIBLE :
-[ ] snippet 63 ne contient plus aucune reference a Design-sans-titre-17.png ni aux swaps de logo par theme
-[ ] snippet 347 (B5 + B4-PLUS-IREMAP + source) ne contient plus aucun swap logo or/bleu/vert via content: url(...)
-[ ] CSS staging a jour : la version distante du 347 ne reference plus les PNG obsoletes
+[ ] snippet 63 ne contient plus de reference Design-sans-titre-17.png ni swap logo par theme
+[ ] snippet 347 (B5 + B4-PLUS-IREMAP + source) ne contient plus de swap logo or/bleu/vert
+[ ] Staging a jour (versions distantes des snippets propres)
 [ ] 4 PNG Design-sans-titre-{13,15,16,17}*.png ABSENTS du serveur staging
-[ ] Chrome verifie visuellement : logo rouge natif cropped-LogoLong4White-1.png affiche sur /, /shop/, /articles/, /contact/ avec halo blanc
-[ ] Git : commit "Cleanup reliquats logo variants (theme-neutre + 4 PNG obsoletes)" existe sur main et est pushe origin/main
+[ ] Chrome verifie : logo rouge natif sur /, /shop/, /articles/, /contact/ avec halo blanc
+[ ] Git : commit "Cleanup reliquats logo variants" pushe sur origin/main
 
 ETAPES 1-15 (setup Vite via pnpm) - ETAT CIBLE :
-[ ] `react-islands/` existe avec template Vite React-TS
-[ ] `react-islands/package.json` : toutes versions EXACTES (pas de ^ ni ~)
-[ ] `react-islands/pnpm-lock.yaml` existe et NE CONTIENT PAS `axios@1.14.1`, `axios@0.30.4`, `plain-crypto-js`
-[ ] `react-islands/.npmrc` existe avec ignore-scripts=true + min-release-age=10080 + audit-level=moderate
-[ ] `pnpm audit --prod --audit-level=moderate` retourne "No known vulnerabilities"
-[ ] `vite.config.ts` configure multi-entry + outDir vers `../plugins/inaricom-core/assets/react`
-[ ] `tsconfig.json` a alias @/ vers ./src
-[ ] `src/styles/globals.css` existe avec @theme + tokens --inari-*
-[ ] shadcn/ui initialise (New York, Neutral, CSS variables) : `components.json` existe
+[ ] react-islands/ existe avec template Vite React-TS (OK existe deja)
+[ ] react-islands/package.json : versions EXACTES (pas de ^ ni ~)
+[ ] react-islands/pnpm-lock.yaml existe et ne contient PAS axios@1.14.1, axios@0.30.4, plain-crypto-js
+[ ] react-islands/.npmrc avec ignore-scripts=true + min-release-age=10080 + audit-level=moderate
+[ ] pnpm audit --prod --audit-level=moderate = "No known vulnerabilities"
+[ ] vite.config.ts configure multi-entry + outDir vers ../plugins/inaricom-core/assets/react
+[ ] tsconfig.json avec alias @/ vers ./src
+[ ] src/styles/globals.css avec @theme + tokens --inari-*
+[ ] shadcn/ui initialise (New York, Neutral, CSS variables) : components.json existe
 [ ] Dossiers crees : src/islands, src/components/{ui,hero,cards,layout}, src/hooks, src/lib
-[ ] `src/islands/homepage.tsx` minimal de test existe
-[ ] `index.html` preview avec body.theme-neutre + data-theme=neutre
-[ ] `pnpm dev` fonctionne (localhost:5173 accessible, HMR actif)
-[ ] `pnpm build` reussit et genere `plugins/inaricom-core/assets/react/` avec manifest.json
-[ ] `.gitignore` inclut react-islands/node_modules, dist, .vite
-[ ] Git : commit "Phase 2.0: setup Vite + React 19 + Tailwind v4 + shadcn/ui (pnpm-secure)" existe sur main et pushe
+[ ] src/islands/homepage.tsx test minimal
+[ ] index.html preview avec body.theme-neutre + data-theme=neutre
+[ ] pnpm dev fonctionne (localhost:5173, HMR actif)
+[ ] pnpm build genere plugins/inaricom-core/assets/react/ avec manifest.json
+[ ] .gitignore inclut react-islands/node_modules, dist, .vite (deja fait)
+[ ] Git : commit "Phase 2.0: setup Vite + React 19 + Tailwind v4 + shadcn/ui (pnpm-secure)" pushe
 
 ============================================================
 REGLES ABSOLUES
 ============================================================
 
-- Logo IMMUTABLE, ne rien creer ni modifier
+- Logo IMMUTABLE
 - Palette 5 themes VERROUILLEE
 - Corrections chirurgicales
 - SSH via alias inaricom
@@ -129,36 +167,30 @@ REGLES ABSOLUES
 - JAMAIS `npm install` -> toujours `pnpm`
 - Versions EXACTES (pas de ^ ou ~)
 - `pnpm audit --prod` OBLIGATOIRE apres chaque `pnpm add`
-- Verifier absence plain-crypto-js / axios@1.14.1 / axios@0.30.4 dans pnpm-lock.yaml apres chaque install
+- Verifier absence plain-crypto-js / axios@1.14.1 / axios@0.30.4 dans pnpm-lock.yaml
 
 ============================================================
 GESTION D'INCIDENTS
 ============================================================
 
-Si `pnpm audit` retourne CRITICAL ou HIGH :
--> STOP immediat, rollback le dernier install, rapport complet dans `.claude/logs/phase2-0-security-alert.md`
-
-Si package bloque par min-release-age :
--> NE PAS override avec --ignore-min-release-age
--> Prendre version N-1 stable
--> Logger dans `.claude/logs/phase2-0-issues.md`
-
-Si autre probleme bloquant non-securite :
--> Logger dans `.claude/logs/phase2-0-issues.md` et continuer en mode degrade si possible
+pnpm audit CRITICAL ou HIGH -> STOP immediat, rollback, rapport dans .claude/logs/phase2-0-security-alert.md
+Package bloque par min-release-age -> version N-1 stable, log dans .claude/logs/phase2-0-issues.md
+Autre probleme non-securite -> log et continuer en mode degrade si possible
 
 ============================================================
 LIVRABLE FINAL
 ============================================================
 
 A la fin, ecrire `.claude/logs/phase2-0-completion-report.md` :
-- Tous les items [x] de l'etat cible (coches/non coches avec raison)
-- Liste des commits faits (hashes + messages)
-- Liste exhaustive des deps installees (package + version exacte)
-- Resultat pnpm audit --prod (doit etre "No known vulnerabilities found")
-- Resultat grep plain-crypto-js + axios@1.14.1 + axios@0.30.4 sur pnpm-lock.yaml (doit etre vide)
-- URL preview (localhost:5173) + accessibilite confirmee
+- Tous les items [x] de l'etat cible (coches/non avec raison)
+- Liste commits faits (hashes + messages)
+- Liste exhaustive deps installees (package + version exacte)
+- Resultat pnpm audit --prod
+- Resultat grep plain-crypto-js + axios compromis sur pnpm-lock.yaml
+- URL preview (localhost:5173) + test accessibilite
 - Build output path verifie
-- Items skip du `.claude/logs/phase2-0-skipped.md` avec raisons
+- Items skip dans .claude/logs/phase2-0-skipped.md avec raisons
+- Rapport token savings (via /cost ou token-optimizer dashboard)
 - Prochaines etapes Phase 2.1
 
 Go.
