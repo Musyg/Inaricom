@@ -1,0 +1,22 @@
+## Phase 2.0 bouclee, commit `3f21ac9` pushe sur `main`
+
+**Resultats cles :**
+- `pnpm install` : 192 packages, audit clean, 0 compromised (axios@1.14.1/0.30.4/plain-crypto-js absents)
+- `pnpm build` : 248 ms → `plugins/inaricom-core/assets/react/` avec manifest.json (215 KB JS / 67 KB gzip + 11 KB CSS)
+- `pnpm dev` : ready 669 ms sur localhost:5173
+- 6 downgrades N-1 appliques (min-release-age 7j) sans `--ignore-min-release-age` → logs dans `.claude/logs/phase2-0-issues.md`
+
+**Livres :**
+- `react-islands/.npmrc` + versions EXACT dans package.json
+- `vite.config.ts` multi-entry + `@/` alias + `@tailwindcss/vite`
+- `tsconfig.app.json` paths `@/*` + strict
+- `src/styles/globals.css` : Tailwind v4 `@theme inline` + 5 themes `--inari-*` + prefers-reduced-motion
+- `src/islands/homepage.tsx` test island (mount `#inari-homepage-root`, `QueryClientProvider`)
+- `src/lib/utils.ts` (cn helper)
+- `components.json` shadcn new-york/neutral/cssVariables
+- Boilerplate Vite supprime (App.tsx, main.tsx, *.css, *.svg)
+- `.gitignore` : build artifacts ignores, `.claude/logs/` exception
+
+**Rapport complet** : `.claude/logs/phase2-0-completion-report.md`
+
+Prochaine phase : 2.1 — homepage island (hero + 3 piliers + Framer Motion + enqueue PHP dans `inaricom-core`).

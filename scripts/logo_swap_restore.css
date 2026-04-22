@@ -1,0 +1,80 @@
+/* ============================================================
+   LOGO SWAP PAR THEME - 5 variantes
+   Restauration post-incident 22/04/2026
+   A coller dans WP Admin staging > Simple Custom CSS and JS > snippet 347
+   ============================================================ */
+
+/* --- 1. content:url() sur l'<img.custom-logo> via [data-theme=X] sur <html> --- */
+
+[data-theme="or"] .site-logo img,
+[data-theme="or"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-16.png');
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+[data-theme="bleu"] .site-logo img,
+[data-theme="bleu"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-13.png');
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+[data-theme="vert"] .site-logo img,
+[data-theme="vert"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-15.png');
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+[data-theme="neutre"] .site-logo img,
+[data-theme="neutre"] .custom-logo {
+  content: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.55));
+}
+
+/* --- 2. Hack srcset : masquer l'<img> natif pour tous les themes non-rouge --- */
+
+.theme-or img.custom-logo,
+.theme-bleu img.custom-logo,
+.theme-vert img.custom-logo,
+.theme-neutre img.custom-logo {
+  opacity: 0;
+}
+
+/* --- 3. Re-afficher le bon logo en background-image sur .brand --- */
+
+.theme-or .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-16.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+.theme-bleu .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-13.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+.theme-vert .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-15.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: left center;
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
+
+.theme-neutre .site-branding .brand.has-logo-image {
+  background-image: url('https://staging.inaricom.com/wp-content/uploads/2026/01/Design-sans-titre-17.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.55));
+}
+
+/* --- 4. Theme rouge (defaut) : garder logo natif avec halo --- */
+
+.theme-rouge .site-branding .brand.has-logo-image img.custom-logo {
+  filter: drop-shadow(0 0 2px rgba(255,255,255,0.6));
+}
