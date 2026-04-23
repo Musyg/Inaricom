@@ -1,0 +1,119 @@
+On demarre la Phase 2.1 du projet Inaricom (Homepage React island) avec Opus 4.7 xhigh.
+
+Avant tout : faire un git status + git log -5 pour cartographier.
+
+============================================================
+CONTEXTE : OU ON EN EST
+============================================================
+
+Phase 2.0 TERMINEE (setup Vite + React 19 + Tailwind v4 + shadcn/ui).
+Scaffold pret dans `react-islands/` :
+- package.json : 16 deps pinees EXACT (pas de ^ ni ~), react 19.2.5, tailwindcss 4.2.2, framer-motion 12.38.0, @tanstack/react-query 5.95.0, lucide-react 1.8.0
+- pnpm-lock.yaml committed, pnpm audit --prod = 0 vuln
+- vite.config.ts : outDir -> ../plugins/inaricom-core/assets/react/, manifest.json active
+- tsconfig avec alias @/, strict mode
+- src/styles/globals.css : tokens --inari-* + 5 themes (default rouge / or / vert / bleu / neutre)
+- src/islands/homepage.tsx : skeleton actuel (QueryClientProvider + mount #inari-homepage-root)
+- Build deja genere dans plugins/inaricom-core/assets/react/
+
+Restauration logo du 22/04 terminee :
+- 5 logos thematiques (rouge/or/vert/bleu/neutre) presents sur staging
+- snippet 347 avec swap [data-theme] restaure
+- La homepage rend data-theme="neutre" (argent) : verifie visuellement OK
+
+============================================================
+MISSION PHASE 2.1 : HOMEPAGE ISLAND
+============================================================
+
+Construire la homepage en React island, niveau visuel Darknode / Linear / Vercel / Anthropic.
+
+Le composant doit contenir :
+1. HERO : badge kicker + titre impactant + sous-titre + 2 CTA (primary + ghost) + stats row
+2. 3 PILIERS cards (Cybersecurite / IA / Ressources) - cliquables vers pages services
+3. Stats bar si espace (clients, projets, annees, langues)
+
+Contraintes :
+- Se monte sur <div id="inari-homepage-root" data-theme="neutre"></div>
+- Theme neutre strict : accent = blanc, halos cremes discrets
+- Glassmorphism sur cards (backdrop-filter blur)
+- Typo : Inter pour corps, Instrument Serif pour titres display (self-hosted deja OK)
+- Framer Motion pour animations entree : subtle, staggered, pas d'explosion
+- Full responsive mobile-first, breakpoints Tailwind md/lg/xl
+- Lighthouse 95+ maintenu : budget JS gzip ~70 KB, CSS gzip ~5 KB
+- JAMAIS de logo rendu dans React (texte "Inaricom" en Instrument Serif si besoin)
+
+Cote WordPress (inaricom-core plugin) :
+- Helper PHP qui lit plugins/inaricom-core/assets/react/.vite/manifest.json
+- Enqueue JS+CSS hashes uniquement sur is_front_page()
+- Injecte <div id="inari-homepage-root" data-theme="neutre"></div> dans le template homepage Kadence
+- Test integration end-to-end sur https://staging.inaricom.com/
+
+============================================================
+CONTEXTE A CHARGER DANS L'ORDRE
+============================================================
+
+1. @CLAUDE.md
+2. @.claude/rules/logo-immutable.md (5 logos immuables, AUCUNE modif)
+3. @.claude/rules/palette-locked.md (5 themes verrouilles)
+4. @.claude/rules/surgical-fixes.md
+5. @.claude/rules/css-custom-properties.md
+6. @.claude/rules/security-first.md
+7. @.claude/rules/npm-security.md (pnpm exclusif, versions EXACTES)
+8. @react-islands/src/islands/homepage.tsx
+9. @react-islands/src/styles/globals.css
+10. @react-islands/vite.config.ts
+11. @react-islands/package.json
+
+============================================================
+REGLES ABSOLUES
+============================================================
+
+- LOGO IMMUTABLE : jamais toucher aux 5 PNG, jamais rendre de logo dans React
+- PALETTE : jamais de hex en dur dans components. Toujours var(--inari-*) ou rgba(var(--inari-red-rgb), X)
+- SURGICAL : pas de refactor global d'un code qui marche. Une correction = une modif minimale ciblee
+- pnpm EXCLUSIF : jamais npm/yarn/bun. Aucun nouveau package sans justification + audit
+- VERSIONS EXACTES : pas de ^ ni ~ dans package.json
+- pnpm audit --prod OBLIGATOIRE apres chaque pnpm add
+- CSS via tokens + Tailwind v4 @theme. Pas de !important sauf override WP/Kadence documente
+- Security-first : CSP compatible, pas d'inline handlers, pas de secrets
+- Pas de localStorage / sessionStorage / browser storage dans l'island
+- Francais partout (code comments, UI text, commits)
+
+============================================================
+WORKFLOW
+============================================================
+
+1. Cartographier : git status + git log -5 + verifier pnpm-lock intact + pnpm audit --prod clean
+2. Proposer un plan de composants (Hero / PilierCard / StatsBar) AVANT de coder
+3. Implementer composants un par un, chacun avec son .tsx dans src/components/{hero,cards,layout}/
+4. Assembler dans src/islands/homepage.tsx
+5. Tester pnpm dev sur localhost:5173 (design preview hors WP)
+6. Implementer helper PHP dans plugins/inaricom-core/src/ (enqueue manifest + mount point)
+7. Build : pnpm build + verifier manifest.json + bundle sizes (gzip)
+8. Deployer plugin sur staging, tester integration sur https://staging.inaricom.com/
+9. Commit chaque etape avec message clair (feat, fix, chore)
+
+============================================================
+QUAND S'ARRETER POUR VALIDER AVEC GILLES
+============================================================
+
+- AVANT de coder : presenter le plan des composants + maquette textuelle
+- APRES design hero : screenshot preview pour validation visuelle
+- AVANT deploy staging : recap ce qui change cote WP
+- SI doute sur un choix design/UX : demander, ne pas assumer
+
+============================================================
+LIVRABLE FINAL
+============================================================
+
+.claude/logs/phase2-1-completion-report.md avec :
+- Liste composants crees
+- Bundle sizes (JS + CSS, brut + gzip)
+- pnpm audit result
+- URL preview (localhost et staging)
+- Lighthouse scores (perf/a11y/bp/seo)
+- Commits faits (hashes + messages)
+- Screenshots avant/apres
+- Next steps (Phase 2.2 ou retouches)
+
+Go.
