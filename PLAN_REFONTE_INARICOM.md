@@ -9,7 +9,7 @@
 
 ## VISION
 
-Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones** (Suisse romande + FR + BE + LU), tout en conservant la verticale IA. 
+Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones** (FR + BE + LU + CH, sans priorite geographique), tout en conservant la verticale IA. 
 
 **Site premium dark** + 5 themes semantiques (neutre/rouge/or/vert/bleu) + WordPress backend solide + **React islands pour zones premium** + hardening exemplaire.
 
@@ -20,7 +20,7 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 ### 3 differenciateurs uniques marche FR
 1. **Transparence pedagogique** : "sans boite noire" — audits, systemes et contenus lisibles
 2. **Convergence IA + cybersec offensif** (pentest LLM / OWASP LLM Top 10)
-3. **Local-first + souverainete** : Ollama, Mistral self-hosted, data residency CH
+3. **Local-first + self-hosting** : Ollama, Mistral self-hosted, donnees hebergees chez Infomaniak (Europe)
 
 ---
 
@@ -89,7 +89,6 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 - [ ] Fox animation : migration Canvas 2D v28 -> OGL + glow additif HDR (6-8 jours, P2 dette tech)
 - [ ] Noise overlay SVG 4% sur hero des autres pages
 - [ ] Cursor-follow spotlight sur pages services
-- [ ] Swiss trust-signal footer
 - [ ] Section "Preuves techniques" landing cybersec
 - [ ] Fox paths JSON : migrer de raw.githubusercontent vers self-hosted (P3)
 
@@ -215,9 +214,9 @@ Une fois homepage sortie, on itere sur les autres islands :
 ### Status : 20% — 3/15 articles
 
 **Priorite 1 — Piliers SEO cybersec (post-pivot)**
-- [ ] Pillar 1 : "Guide complet du pentest pour PME suisses 2026" (4500 mots)
+- [ ] Pillar 1 : "Guide complet du pentest pour PME francophones 2026" (4500 mots)
 - [ ] Pillar 2 : "Red Team vs Pentest vs Audit : quelle difference ?" (3000 mots)
-- [ ] Pillar 3 : "nLPD et cybersec : obligations PME suisses 2026" (4500 mots)
+- [ ] Pillar 3 : "RGPD + nLPD : obligations cyber PME francophones 2026" (4500 mots)
 - [ ] Pillar 4 : "Securite des applications IA : guide pentest LLM" (4000 mots) [bridge]
 
 **Priorite 2 — Articles IA**
@@ -271,7 +270,7 @@ Une fois homepage sortie, on itere sur les autres islands :
 - [ ] Open Graph + Twitter Cards
 - [ ] Schema.org validates (Rich Results Test)
 - [ ] Desactiver maintenance mode
-- [ ] Annonce LinkedIn Suisse prioritaire
+- [ ] Annonce LinkedIn marche francophone (FR + BE + LU + CH)
 - [ ] Monitorer conversions 30j
 
 ---

@@ -23,15 +23,15 @@
 4. **Pilier 4** : Institutionnel (a propos, contact, legal)
 
 ### Cible
-- PME suisses (Suisse romande prioritaire)
-- Independants, TPE
-- CTO / RSSI europeens francophones (FR, BE, LU)
+- PME et TPE francophones (FR, BE, LU, CH) — marche francophone global, pas de priorite geographique
+- Independants / freelances
+- CTO / RSSI francophones
 - Dirigeants non-techniques (pedagogie essentielle)
 
 ### Positionnement differenciant
 - **Convergence unique** : IA + cybersec offensif (pentest LLM, OWASP LLM Top 10)
-- **Transparence tarifaire** : grilles CHF/EUR publiques (rupture marche)
-- **Local-first / souverainete** : Ollama, Mistral self-hosted, data residency CH
+- **Transparence tarifaire** : grilles EUR/CHF publiques (rupture marche)
+- **Local-first / self-hosting** : Ollama, Mistral self-hosted, donnees hebergees chez Infomaniak (Europe)
 - **Pedagogie double-livrable** : rapport technique + synthese COMEX
 
 ---
@@ -85,7 +85,7 @@
 ### Regles CSS absolues
 - **Variable `--inari-red` change selon theme actif** via `[data-theme]` — le code utilise toujours `var(--inari-red)`, jamais les hex en dur
 - **Pour opacites** : `rgba(var(--inari-red-rgb), x.x)`
-- **Logo IMMUTABLE** : un seul logo rouge (`cropped-LogoLong4White-1.png`, attachment WP 600) partout sur le site. Pas de variantes thematiques. Pas de recreation. Voir `.claude/rules/logo-immutable.md` pour la regle complete.
+- **Logo IMMUTABLE** : 5 variantes thematiques (rouge default / or / vert / bleu / neutre argent). Swap via `content: url()` sur `[data-theme]`, JAMAIS de filtre CSS pour recolorer. Fichiers et selecteurs dans `.claude/rules/logo-immutable.md` (source de verite unique).
 - **Seul effet autorise sur logo** : liseret blanc via `filter: drop-shadow(0 0 2px rgba(255,255,255,0.6))` — rien d'autre.
 
 ---
@@ -134,10 +134,18 @@
 ### Animation / 3D
 
 **Cote WordPress (pages classiques)**
-- **Fox animation** : migration Canvas 2D v28 -> **OGL + Polyline + glow additif HDR** (15 KB, 60fps mobile)
+- **Fox animation** : migration Canvas 2D v28 -> **OGL + Polyline + glow additif HDR** (15 KB, 60fps mobile).
+  - **Contrainte formelle de silhouette** : la tete/museau du logo DOIT rester identique (meme forme triangulaire caracteristique). Seule l'animation INTERNE change (particules, trace SVG revele, glow breathing, faisceaux lumineux, deformation legere des contours, etc.). Pas de renard 3D realiste, pas de morphing qui casse l'identite.
+  - **References visuelles** : `assets/logo-rouge-original.png`, `fox-animation/Fox.svg`, derniere version fonctionnelle `snippets/snippet-443-fox-v28.js`, reference animation narrative Sherlock.xyz pour le timing/storytelling.
 - **GSAP 3.13+** (gratuit depuis 2025, tous plugins inclus)
 - **Lenis** smooth scroll
 - **Fallback statique** : SVG inline + `filter: drop-shadow()` multicouches (visuellement ~90% de l'animation)
+
+**Backgrounds animes par theme (5 animations)**
+- Une animation de fond dediee par theme, Canvas 2D vanilla, opacity max 10%, <25 KB total gzipped
+- Mapping : `rouge=code flux` (Matrix a la sauce Inari, caracteres hex/ASCII en colonnes eparses) / `or=nodes IA` (graphe de nodes avec signaux) / `vert=reseau neuronal` (layers avec forward pass pulses) / `neutre=constellation convergente` (particules argentees + pulses pilier rares) / `bleu=blueprint grid` (grille architecte avec pulse horizontal)
+- Contraintes : `prefers-reduced-motion` respecte avec fallback SVG statique, pause off-screen via IntersectionObserver, couleurs via `var(--inari-red)` (jamais de hex en dur), 60fps desktop / 30fps mobile
+- **Specs completes et parametres par animation** : `docs/specs/background-animations.md`
 
 **Cote React islands**
 - **Framer Motion 11+** pour anim UI React (entrées, transitions, micro-interactions)
@@ -164,7 +172,7 @@
 ## IDENTITE VISUELLE — PRINCIPES
 
 ### Direction artistique : **Red Ops**
-Defense-grade minimalism + posture red-team confiante + sobriete suisse.
+Defense-grade minimalism + posture red-team confiante + clarte editoriale.
 
 ### Recettes visuelles state-of-the-art
 1. **Layered dark canvas** : jamais `#000` flat, tier system `#0A0A0F -> #14141C -> #1A1A24`
@@ -185,13 +193,14 @@ Defense-grade minimalism + posture red-team confiante + sobriete suisse.
 - Google Fonts via CDN (risque €250 000 Munich)
 - Heavy WebGL 3D au hero mobile sans conditional
 
-### References d'inspiration (6 archetypes principaux)
+### References d'inspiration (7 archetypes principaux)
 - **Darknode** (palette quasi-identique)
 - **Bishop Fox** (stack WP + rouge, archetype red-team)
 - **Horizon3.ai** (posture red-team, data-viz attack paths)
 - **Linear** (bentogrid + aurora + cursor spotlight)
 - **Resend** (minimalisme dev + serif display)
 - **Anthropic** (maturite editoriale serif/sans collision)
+- **Sherlock.xyz** (animations narratives synchronisees au scroll, storytelling visuel par piliers — reference haute priorite pour animations homepage + sections services)
 
 ---
 
@@ -267,7 +276,8 @@ Audit baseline 17/04/2026 confirme : HSTS 1 an + preload, CSP stricte, X-Frame D
 - JAMAIS de hex en dur apres les design tokens
 - JAMAIS de filtre CSS pour recolorer le logo
 - JAMAIS creer, modifier, regenerer ou proposer un nouveau logo (voir `.claude/rules/logo-immutable.md`)
-- JAMAIS de variantes thematiques du logo (pas de logo or/vert/bleu/argent — un seul logo partout)
+- JAMAIS supprimer ou fusionner les 5 variantes thematiques du logo (rouge/or/vert/bleu/neutre argent — toutes actives via swap `[data-theme]`)
+- JAMAIS utiliser "Suisse" comme argument marketing (badge, slogan, trust-signal, "Swiss made", "sobriete suisse", etc.) — la Suisse est un fait legal/technique, pas un argument. Voir `.claude/rules/no-swiss-marketing.md`.
 - JAMAIS introduire une couleur hors palette (pas de violet/orange/rose — 5 themes verrouilles, voir `.claude/rules/palette-locked.md`)
 - JAMAIS utiliser les classes Tailwind defaut (`red-500`, `emerald-400`, etc.) pour des accents de marque (utiliser les tokens `--inari-*`)
 - JAMAIS substituer ou "moderniser" une couleur de la palette existante

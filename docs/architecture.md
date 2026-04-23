@@ -198,7 +198,7 @@ Build via `scripts/_build_347.py` a partir des sections modulaires dans `audits/
 
 - **Structure** : sous-repertoires `/fr/` (defaut) + `/en/` via Polylang Pro
 - **Hreflang** : auto via Rank Math
-- **Contenu prioritaire FR** (marche Suisse romande + FR + BE + LU)
+- **Contenu prioritaire FR** (marche francophone : FR + BE + LU + CH, sans priorite geographique)
 - **EN** : pages services + articles tier 1 seulement (budget)
 - **DE/IT** : non prioritaires (pas de plan a court terme)
 - **React islands** : i18n via `react-i18next` quand on branchera EN

@@ -68,13 +68,13 @@ Derniere MAJ : 21 avril 2026
 - [x] Theme switcher UI supprime definitivement (arbitrage couleurs fait, plus besoin)
 
 **A faire (Phase 1.C — fox animation et header complet)**
-- [ ] Fox animation : migration Canvas 2D v28 -> OGL + glow additif HDR (P2, 6-8 jours)
+- [ ] Fox animation : migration Canvas 2D v28 -> OGL + glow additif HDR (P2, 6-8 jours). **Contrainte silhouette : tete/museau du logo identique (forme triangulaire), seule l'animation INTERNE change. Pas de renard 3D realiste.** Ref : `assets/logo-rouge-original.png`, `fox-animation/Fox.svg`, `snippets/snippet-443-fox-v28.js`, animation narrative Sherlock.xyz.
 - [ ] Hero homepage actuelle (page 985) : sera replacee par React island Phase 2
 - [ ] Noise overlay SVG 4% opacity
 - [ ] Radial glow + aurora mesh sur pages avec hero (pas homepage, c'est React maintenant)
 - [ ] Cursor-follow spotlight (ROI eleve, 20 lignes JS) sur pages services
 - [ ] Glass cards premium (blur 20px + saturate 180%) generalisees
-- [ ] Swiss trust-signal footer (FADP/nFADP, FINMA, NIS2, ISO 27001)
+- [ ] **Backgrounds animes par theme (5 animations)** — Canvas 2D vanilla, opacity max 10%, <25 KB total gzipped, respect `prefers-reduced-motion`. Specs completes : `docs/specs/background-animations.md`. Mapping : rouge=code flux / or=nodes IA / vert=reseau neuronal / neutre=constellation convergente / bleu=blueprint grid. P2, ~5-7 jours (1-2j par animation + orchestrateur + fallbacks SVG).
 - [ ] Fox animation paths JSON : migrer depuis raw.githubusercontent vers self-hosted (P3 dette tech)
 - [ ] Section "Preuves techniques" (CVE publies, CTF, publications MISC) sur landing cybersec
 
@@ -192,9 +192,9 @@ Derniere MAJ : 21 avril 2026
 ### Status : 20% — 3/15 articles publies
 
 **Priorite 1 — Piliers SEO cybersec (nouveau pivot)**
-- [ ] Pillar 1 : "Guide complet du pentest pour PME suisses 2026" (4500 mots)
+- [ ] Pillar 1 : "Guide complet du pentest pour PME francophones 2026" (4500 mots)
 - [ ] Pillar 2 : "Red Team vs Pentest vs Audit : quelle difference ?" (3000 mots)
-- [ ] Pillar 3 : "nLPD et cybersec : obligations PME suisses 2026" (4500 mots)
+- [ ] Pillar 3 : "RGPD + nLPD : obligations cyber PME francophones 2026" (4500 mots)
 - [ ] Pillar 4 : "Securite des applications IA : guide pentest LLM" (4000 mots) [bridge IA+secu]
 
 **Priorite 2 — Contenu IA existant a enrichir / republier**

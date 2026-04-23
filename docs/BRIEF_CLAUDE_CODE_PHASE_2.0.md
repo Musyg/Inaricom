@@ -71,33 +71,6 @@ La homepage sera faite en Phase 2.1 (session suivante).
 
 ## Commandes a executer (dans l'ordre)
 
-### 0. [SECTION OBSOLETE] Cleanup reliquats logo — NE PAS EXECUTER
-
-> **Cette section entiere est obsolete et ne doit pas etre executee.**
->
-> Elle etait basee sur une regle fausse (« logo unique rouge partout, supprimer
-> les variantes or/vert/bleu/neutre ») qui a depuis ete corrigee.
->
-> La vraie regle : **5 logos thematiques immutables** avec swap via
-> `content: url()` selon `[data-theme]`, sans filtre CSS de recoloration.
-> Voir `.claude/rules/logo-immutable.md` (version mise a jour le 21/04/2026).
->
-> Ne pas executer :
-> - les modifications du snippet 63 theme-neutre (suppression du swap argente),
-> - les suppressions de swap or/bleu/vert dans le 347,
-> - la commande `ssh inaricom 'rm ...Design-sans-titre-*.png'`
->   qui supprimerait les 4 PNG thematiques du serveur staging,
-> - le commit « Cleanup reliquats logo variants ».
->
-> Le commit `af24375` (issu de cette section) a ete revert par `b8bd982` le
-> 21 avril 2026. Si une session Claude Code anterieure a deja applique une
-> partie de ces changements sur le staging, la restauration est traitee dans
-> un plan separe (Axe B/C).
->
-> Passer directement a la section 1.
-
----
-
 ### 1. Creer le dossier et initialiser Vite (via pnpm)
 
 ```bash
