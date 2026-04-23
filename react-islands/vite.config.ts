@@ -4,8 +4,8 @@ import tailwindcss from '@tailwindcss/vite'
 import path from 'node:path'
 
 // Inaricom React islands — multi-entry build
-// Output: ../plugins/inaricom-core/assets/react/
-// Enqueue cote WP via manifest.json
+// Output: ../inaricom-core/assets/react/ (vrai plugin actif cote WP)
+// Enqueue cote WP via manifest.json lu par ReactIslandEnqueue
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
@@ -14,7 +14,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: path.resolve(__dirname, '../plugins/inaricom-core/assets/react'),
+    outDir: path.resolve(__dirname, '../inaricom-core/assets/react'),
     emptyOutDir: true,
     manifest: true,
     rollupOptions: {
