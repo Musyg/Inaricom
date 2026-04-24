@@ -151,3 +151,6 @@ plugins/inaricom-core/assets/react/
  
 # Sources animations de reference (poids + droits) 
 Animations/ 
+ 
+# Playwright MCP captures locales 
+.playwright-mcp/ 

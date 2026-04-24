@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Tailwind v4 : force le scan des entrées non listées dans rollupOptions.input
+   (comme la page de test isolée /test-matrix-rain.html). */
+@source "../pages/**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+
 /*
  * Inaricom — globals.css
  * Tailwind v4 @theme : expose les tokens --inari-* en utilitaires Tailwind.
