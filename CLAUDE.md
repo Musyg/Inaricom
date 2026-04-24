@@ -193,14 +193,28 @@ Defense-grade minimalism + posture red-team confiante + clarte editoriale.
 - Google Fonts via CDN (risque €250 000 Munich)
 - Heavy WebGL 3D au hero mobile sans conditional
 
-### References d'inspiration (7 archetypes principaux)
-- **Darknode** (palette quasi-identique)
-- **Bishop Fox** (stack WP + rouge, archetype red-team)
-- **Horizon3.ai** (posture red-team, data-viz attack paths)
-- **Linear** (bentogrid + aurora + cursor spotlight)
-- **Resend** (minimalisme dev + serif display)
-- **Anthropic** (maturite editoriale serif/sans collision)
-- **Sherlock.xyz** (animations narratives synchronisees au scroll, storytelling visuel par piliers — reference haute priorite pour animations homepage + sections services)
+### References d'inspiration (structure / mouvement / typo UNIQUEMENT — JAMAIS les couleurs)
+
+**Technologique premium + cinetique narrative (tier 1, ADN Sherlock.xyz)**
+- **Sherlock.xyz** (reference principale — animations narratives scroll, data vivante, terminal-vibe propre)
+- **Darktrace** (ondes, halos, mouvement radial, "IA qui surveille")
+- **Snyk** (dashboard reel en hero, data visualisations)
+- **Varonis** (sci-fi interconnexion, data-as-art)
+- **HackVector.io** (cybersecurite avec curseur-as-consciousness qui connecte des points)
+
+**Rigueur layout / micro-interactions (tier 2, complementaires)**
+- **Linear** (bentogrid, aurora, cursor spotlight)
+- **Vercel** (rigueur layout, typo, rythme)
+- **Stripe** (fluidite scroll, dataviz subtile)
+
+### Couleurs — STRICTEMENT la palette verrouillee (5 themes)
+Les refs d'inspiration ci-dessus servent uniquement pour **structure, mouvement, typo, micro-interactions**. Les couleurs proviennent EXCLUSIVEMENT de la palette Inari definie plus haut :
+- **rouge** `#E31E24` (cybersec/default), **or** `#FFD700` (IA), **vert** `#10B981` (blog), **bleu** `#00D4FF` (institutionnel), **neutre/argent** `#FFFFFF`/`#E0E0E0` (homepage) + palette noirs/textes fixe.
+- Toute tentative d'introduire navy, purple, lime, teal, cream hors `#EFEBE8`, terracotta ou autre couleur hors palette = **rejet immediat**. Voir `.claude/rules/palette-locked.md`.
+
+### A eviter absolument
+- La **house style d'Opus 4.7** documentee par Anthropic : fond cream/beige (~#F4F1EA), serif italique (Georgia/Fraunces/Playfair), accent terracotta/amber. C'est un biais par defaut du modele. Si Claude Code derive vers cette esthetique editoriale, la rejeter immediatement — Inaricom est techno-cinetique, pas editorial hospitality.
+- Les refs **Anthropic / Resend** qui etaient dans l'ancienne liste : trop editorial-calme, renforcent le biais d'Opus 4.7.
 
 ---
 
