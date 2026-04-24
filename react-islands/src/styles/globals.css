@@ -45,6 +45,14 @@
   --semantic-warning: #F59E0B;
   --semantic-info: #00D4FF;
 
+  /* Accents des 4 themes — exposes partout pour usage homepage neutre */
+  /* Ne sont PAS de nouvelles couleurs : reprennent exactement les valeurs */
+  /* des themes rouge/or/vert/bleu pour les rendre accessibles en permanence */
+  --accent-rouge: #E31E24;
+  --accent-or: #FFD700;
+  --accent-vert: #10B981;
+  --accent-bleu: #00D4FF;
+
   /* Theme default : rouge (securite / Red Team) */
   --inari-red: #E31E24;
   --inari-red-dark: #B8161B;
@@ -118,6 +126,11 @@
   --color-semantic-success: var(--semantic-success);
   --color-semantic-warning: var(--semantic-warning);
   --color-semantic-info: var(--semantic-info);
+
+  --color-accent-rouge: var(--accent-rouge);
+  --color-accent-or: var(--accent-or);
+  --color-accent-vert: var(--accent-vert);
+  --color-accent-bleu: var(--accent-bleu);
 
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);

@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test — MeshGradientNeutral (Inaricom)</title>
+  </head>
+  <body>
+    <!-- Pas de data-theme sur <html> ni <body> : ainsi les 4 sections
+         rouge/or/vert/bleu remontent vers un ancêtre existant et affichent
+         null ; seule la section data-theme="neutre" active le mesh gradient. -->
+    <div id="test-mesh-gradient-root"></div>
+    <script type="module" src="/src/pages/_test-mesh-gradient.tsx"></script>
+  </body>
+</html>
