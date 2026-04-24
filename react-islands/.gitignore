@@ -22,3 +22,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# QA artefacts (screenshots Chrome DevTools MCP / Playwright MCP)
+/matrix-rain-*.png
+/particle-neon-*.png
+/.playwright-mcp/
