@@ -97,7 +97,7 @@ function Hero() {
         {/* Badge en pilule, centre tout en haut.
             Style chiffres ref : bg rgba(227,30,36,0.10), text rgb(227,30,36),
             font 14px, align center, h ~47px, radius full. */}
-        <div className="flex justify-center" style={{ paddingTop: '58px' }}>
+        <div className="flex justify-center" style={{ paddingTop: '14px' }}>
           <div
             className="inline-flex items-center gap-2.5 rounded-full border px-5"
             style={{
