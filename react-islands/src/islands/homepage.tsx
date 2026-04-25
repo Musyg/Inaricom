@@ -95,59 +95,79 @@ function Hero() {
         <FoxAnimationV29 />
       </div>
 
-      {/* Couche 2 : contenu hero centre */}
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 py-24 text-center lg:px-12">
-        <div className="max-w-3xl">
-          {/* Eyebrow / kicker mono pour ancrer le ton technique */}
-          <p className="font-mono text-xs uppercase tracking-[0.22em] text-inari-text-muted">
-            Inaricom &middot; Cybers&eacute;curit&eacute; &amp; IA
-          </p>
-
-          {/* H1 display Instrument Serif, 3 lignes pour rythme editorial */}
-          <h1 className="mt-6 font-serif text-5xl leading-[1.05] tracking-tight text-inari-white sm:text-6xl lg:text-7xl">
-            <span className="block">Syst&egrave;mes IA</span>
-            <span className="block text-inari-text-soft">exploitables,</span>
-            <span className="block">
-              mesurables,{' '}
-              <em className="not-italic text-inari-accent">contr&ocirc;lables.</em>
+      {/* Couche 2 : contenu hero — badge floating en haut centre + bloc texte gauche */}
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-12 lg:px-12 lg:py-16">
+        {/* Badge en pilule, centre tout en haut (style ref prod) */}
+        <div className="flex justify-center pt-4 sm:pt-6">
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-[color:var(--inari-red)]/40 bg-inari-black-alt/70 px-5 py-2 shadow-[0_0_20px_-8px_var(--inari-red)] backdrop-blur-sm">
+            {/* Icone cadenas inline */}
+            <svg
+              aria-hidden="true"
+              viewBox="0 0 16 16"
+              className="h-3.5 w-3.5 text-inari-accent"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="7" width="10" height="7" rx="1.5" />
+              <path d="M5.5 7V5a2.5 2.5 0 015 0v2" />
+            </svg>
+            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-inari-accent">
+              Inaricom &middot; Cybers&eacute;curit&eacute; &amp; IA
             </span>
-          </h1>
-
-          {/* Sous-titre Geist Sans, posture differenciante */}
-          <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-inari-text-soft">
-            Convergence unique IA + cybers&eacute;curit&eacute; offensive. Pour les
-            PME et CTO francophones qui refusent la bo&icirc;te noire.
-          </p>
-
-          {/* CTAs : primary = audit (rouge/sec), secondary = blog (vert) */}
-          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
-            <a
-              href="/services-cybersecurite/"
-              className="group inline-flex items-center gap-2 rounded-md bg-inari-accent px-6 py-3 font-sans text-sm font-medium text-inari-black transition hover:bg-inari-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-            >
-              Commander un audit
-              <span
-                aria-hidden="true"
-                className="transition group-hover:translate-x-0.5"
-              >
-                &rarr;
-              </span>
-            </a>
-            <a
-              href="/blog/"
-              className="inline-flex items-center gap-2 rounded-md border border-inari-border bg-inari-black-alt px-6 py-3 font-sans text-sm font-medium text-inari-text transition hover:bg-inari-black-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-            >
-              Explorer le blog
-            </a>
           </div>
+        </div>
 
-          {/* Indicateur scroll discret (UX cue desktop only) */}
-          <div className="mt-16 hidden items-center justify-center gap-3 lg:flex">
-            <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
-            <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
-              Scroll
-            </span>
-            <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
+        {/* Bloc contenu : titre + sous-titre + CTA, ALIGNE A GAUCHE */}
+        <div className="flex flex-1 items-center">
+          <div className="max-w-2xl lg:w-1/2">
+            {/* H1 display Instrument Serif, 3 lignes pour rythme editorial */}
+            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-inari-white sm:text-6xl lg:text-7xl">
+              <span className="block">Syst&egrave;mes IA</span>
+              <span className="block text-inari-text-soft">exploitables,</span>
+              <span className="block">
+                mesurables,{' '}
+                <em className="not-italic text-inari-accent">contr&ocirc;lables.</em>
+              </span>
+            </h1>
+
+            {/* Sous-titre Geist Sans, posture differenciante */}
+            <p className="mt-8 max-w-xl text-lg leading-relaxed text-inari-text-soft">
+              Convergence unique IA + cybers&eacute;curit&eacute; offensive. Pour les
+              PME et CTO francophones qui refusent la bo&icirc;te noire.
+            </p>
+
+            {/* CTAs : primary = audit (rouge/sec), secondary = blog (vert) */}
+            <div className="mt-10 flex flex-wrap items-center gap-4">
+              <a
+                href="/services-cybersecurite/"
+                className="group inline-flex items-center gap-2 rounded-md bg-inari-accent px-6 py-3 font-sans text-sm font-medium text-inari-black transition hover:bg-inari-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
+              >
+                Commander un audit
+                <span
+                  aria-hidden="true"
+                  className="transition group-hover:translate-x-0.5"
+                >
+                  &rarr;
+                </span>
+              </a>
+              <a
+                href="/blog/"
+                className="inline-flex items-center gap-2 rounded-md border border-inari-border bg-inari-black-alt px-6 py-3 font-sans text-sm font-medium text-inari-text transition hover:bg-inari-black-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
+              >
+                Explorer le blog
+              </a>
+            </div>
+
+            {/* Indicateur scroll discret (UX cue desktop only) */}
+            <div className="mt-16 hidden items-center gap-3 lg:flex">
+              <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
+                Scroll
+              </span>
+            </div>
           </div>
         </div>
       </div>
