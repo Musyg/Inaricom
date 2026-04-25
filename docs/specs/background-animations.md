@@ -1,11 +1,50 @@
 # Specs — Animations background par theme
 
 > 5 animations de fond thematiques, une par theme. Legeres, contextuelles, non-distractives.
-> Derniere MAJ : 24 avril 2026 (arbitrage Gilles Munier)
+> Derniere MAJ doc d'intention : 24 avril 2026 (arbitrage Gilles Munier)
+> Derniere MAJ etat reel : 25 avril 2026 (sync avec commits Phase 2.0)
 
 ---
 
-## Principe
+## ⚠️ ÉTAT RÉEL D'IMPLÉMENTATION (avril 2026 — source de vérité)
+
+**Les 5 backgrounds sont implémentés et committés**. Les concepts ci-dessous (sections "🔴 / 🟡 / 🟢 / ⚪ / 🔵") documentent l'**intention initiale** et certains paramètres détaillés. Mais plusieurs concepts ont **évolué** lors du portage. Le code commit prime systématiquement.
+
+Code source (vérité) : [`react-islands/src/components/backgrounds/`](../../react-islands/src/components/backgrounds/)
+
+| Thème | Composant | Concept réel implémenté | Différence vs spec d'intention |
+|---|---|---|---|
+| 🔴 rouge | `MatrixRainRed.tsx` | Run Matrix Text (hex / ASCII / symboles cybersec, Geist Mono, colonnes éparses) | ≈ aligné avec la spec |
+| 🟡 or | `ParticleNeonGold.tsx` | "Particle neon" multi-centres (3 mobile / 4 desktop), lignes hexagonales + sparks par centre, drift léger, seedé Mulberry32 (positions stables au refresh) | Concept différent : "Particle neon" hexagonal au lieu de "Nodes IA" graphe avec signaux |
+| 🟢 vert | `NeuralNetworkGreen.tsx` | 2 étages : desktop = Three.js r184 nuage synaptique 3D auto-rotatif (glow via AdditiveBlending, **pas** UnrealBloomPass) + mobile = SVG inline 12 neurones / 4 layers. Progressive hydration via dynamic import | Bascule du Canvas 2D vanilla initial vers Three.js conditional desktop avec fallback SVG mobile |
+| ⚪ neutre | `MeshGradientNeutral.tsx` v3 | "Prisme homepage" : 5 orbes radiaux flous (4 halos piliers bleu/rouge/or/vert aux coins + 1 halo argent dominant au centre, dessiné en dernier). Parallaxe souris, canvas downscale 50% | **Concept totalement différent** : prisme atmosphérique au lieu de "constellation à particules + pulses pilier" |
+| 🔵 bleu | `BlueprintGridBlue.tsx` v2.4 | "L-shape routing 1px" : grille blueprint statique + nœuds aux intersections + petits packets qui voyagent en L sur deux segments orthogonaux (A → B → C) avec courte traînée qui tourne au coude | Concept différent : packets en L au lieu de pulse horizontal lumineux. Grille statique au lieu de "respirante" |
+
+### Règles communes confirmées (toujours valides)
+
+Les contraintes techniques décrites dans la section "Contraintes techniques communes" plus bas restent **toutes applicables** au code commit :
+- `position: fixed; z-index: -1; pointer-events: none`
+- DPR-aware (canvas, downscale autorisé)
+- Opacité max 10% sur les éléments dessinés
+- 60fps desktop / 30fps mobile
+- IntersectionObserver + visibilityState (pause off-screen / tab hidden)
+- MutationObserver sur `[data-theme]` (couleurs live)
+- `prefers-reduced-motion` → frame statique, pas de RAF
+- Pas de hex en dur, lecture de `var(--inari-red)` via `getComputedStyle`
+- Self-hosted (nLPD)
+
+### Pourquoi cette divergence ?
+
+Lors du portage des animations sources (`Animations/*`) vers React, certains concepts ont été retravaillés pour des raisons de :
+- **Performance** : Three.js conditional desktop pour le vert au lieu de Canvas 2D plat
+- **Identité visuelle** : prisme 5 halos pour le neutre annonce les 4 piliers + zone fox plus subtilement qu'une constellation
+- **Lisibilité** : packets L-shape pour le bleu donnent un narratif "data qui chemine dans la structure" plus clair qu'un pulse horizontal
+
+Les sections détaillées qui suivent (concepts, paramètres) restent une **référence utile** mais ne sont pas la vérité absolue.
+
+---
+
+## Principe (intention initiale — peut différer du commit)
 
 Chaque theme a SA propre animation de background qui reflete sa thematique :
 - le sujet de la section est "raconte" subtilement par l'animation derriere

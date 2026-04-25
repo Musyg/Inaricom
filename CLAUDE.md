@@ -141,11 +141,11 @@
 - **Lenis** smooth scroll
 - **Fallback statique** : SVG inline + `filter: drop-shadow()` multicouches (visuellement ~90% de l'animation)
 
-**Backgrounds animes par theme (5 animations)**
-- Une animation de fond dediee par theme, Canvas 2D vanilla, opacity max 10%, <25 KB total gzipped
-- Mapping : `rouge=code flux` (Matrix a la sauce Inari, caracteres hex/ASCII en colonnes eparses) / `or=nodes IA` (graphe de nodes avec signaux) / `vert=reseau neuronal` (layers avec forward pass pulses) / `neutre=constellation convergente` (particules argentees + pulses pilier rares) / `bleu=blueprint grid` (grille architecte avec pulse horizontal)
-- Contraintes : `prefers-reduced-motion` respecte avec fallback SVG statique, pause off-screen via IntersectionObserver, couleurs via `var(--inari-red)` (jamais de hex en dur), 60fps desktop / 30fps mobile
-- **Specs completes et parametres par animation** : `docs/specs/background-animations.md`
+**Backgrounds animes par theme (5 animations) — ETAT REEL COMMIT**
+- Une animation de fond dediee par theme, opacity max 10%, <25 KB total gzipped (Three.js exclu de ce budget, charge dynamique uniquement si vert + desktop)
+- Mapping reel (avril 2026) : `rouge=MatrixRainRed` (Run Matrix Text, hex/ASCII/symboles, Geist Mono) / `or=ParticleNeonGold` (multi-centres 3 mobile / 4 desktop, lignes hexagonales + sparks, seede Mulberry32) / `vert=NeuralNetworkGreen` (2 etages : Three.js r184 nuage synaptique desktop + SVG inline 12 neurones mobile, progressive hydration via dynamic import) / `neutre=MeshGradientNeutral v3 'prisme homepage'` (5 orbes radiaux : 4 halos piliers en coins + halo argent dominant au centre, parallaxe souris) / `bleu=BlueprintGridBlue v2.4 'L-shape routing'` (grille blueprint + packets qui voyagent en L sur 2 segments orthogonaux avec coude)
+- Contraintes : `prefers-reduced-motion` respecte avec fallback statique, pause off-screen via IntersectionObserver, couleurs via `var(--inari-red)` (jamais de hex en dur), 60fps desktop / 30fps mobile
+- **Code source = verite** : `react-islands/src/components/backgrounds/`. Specs initiales (intention, parametres) : `docs/specs/background-animations.md` + `docs/specs/animations-mapping.md`. En cas d'ecart code <-> spec, le code prime.
 
 **Cote React islands**
 - **Framer Motion 11+** pour anim UI React (entrées, transitions, micro-interactions)

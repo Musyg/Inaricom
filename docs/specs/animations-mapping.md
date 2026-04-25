@@ -5,7 +5,21 @@
 >
 > **RÈGLE ABSOLUE** : toutes les couleurs hardcodées (hex, rgb, hsl, palette Three.js) doivent être remplacées par `var(--inari-red)` et dérivées. Palette verrouillée, voir `.claude/rules/palette-locked.md`.
 >
-> Dernière MAJ : 24 avril 2026.
+> Dernière MAJ : 25 avril 2026 (sync avec commits Phase 2.0).
+
+---
+
+## ✅ ÉTAT RÉEL D'IMPLÉMENTATION
+
+**Les 5 backgrounds sont commités** dans `react-islands/src/components/backgrounds/`. Le code prime sur ce mapping qui documente l'intention de portage initiale.
+
+| Thème | Composant commité | Source d'inspiration originale | Statut |
+|---|---|---|---|
+| 🔴 rouge | `MatrixRainRed.tsx` | `Animations/Run Matrix Text/` | ✅ aligné |
+| 🟡 or | `ParticleNeonGold.tsx` | `Animations/Particle neon/` | ✅ aligné (multi-centres ajoutés) |
+| 🟢 vert | `NeuralNetworkGreen.tsx` | `Animations/Ineractive neural network/` | ✅ aligné (2 étages desktop/mobile, sans UnrealBloomPass) |
+| ⚪ neutre | `MeshGradientNeutral.tsx` v3 | _aucune source_ — créé from scratch | ✅ **concept changé** : prisme 5 halos au lieu de Particles |
+| 🔵 bleu | `BlueprintGridBlue.tsx` v2.4 | _aucune source_ — créé from scratch | ✅ **créé from scratch** : L-shape routing |
 
 ---
 
@@ -88,26 +102,29 @@
 
 ### 🔵 THÈME BLEU — Institutionnel (about, contact, légal)
 
-**Choix final : à recréer** — aucune des 13 animations du dossier n'est satisfaisante :
-- `Smoke` : Three.js + texture PNG sur CDN tiers → trop lourd + nLPD
-- `Matrix Wave Loading Animation` : plus pour un loader que pour un fond permanent
+**Choix final implémenté : `BlueprintGridBlue.tsx` v2.4 "L-shape routing 1px"** (Canvas 2D vanilla, créé from scratch, aucune source dans `Animations/`)
 
-**À prévoir** : un Canvas 2D vanilla "blueprint grid" (grille d'architecte qui respire + pulse horizontal 1 toutes 6-10s), comme spécifié dans `docs/specs/background-animations.md`. À coder from scratch lors de la session bleue.
+- Fichier code : `react-islands/src/components/backgrounds/BlueprintGridBlue.tsx`
+- Concept : grille blueprint statique fine (1px) + nœuds aux intersections + petits packets qui voyagent en **L** sur deux segments orthogonaux (A → B → C). Seul le point se déplace, avec une courte traînée qui tourne au coude B
+- Couleur : `var(--inari-red)` (vaut `#00D4FF` en bleu)
+- Contraintes appliquées : `prefers-reduced-motion` (1 frame statique), pause off-screen, MutationObserver couleur live, DPR cap 2
+
+**Note historique** : la version initiale envisagée (grille respirante + pulse horizontal) n'a pas été retenue. Le L-shape routing donne un narratif plus clair "data qui chemine dans la structure".
 
 ---
 
 ### ⚪ THÈME NEUTRE / ARGENT — Homepage
 
-**Choix final : `Particles`** (particles.js, particules + lignes reliées)
+**Choix final implémenté : `MeshGradientNeutral.tsx` v3 "prisme homepage"** (Canvas 2D vanilla, créé from scratch — aucune source dans `Animations/`)
 
-- Fichier : `Animations/Particles/js.txt`
-- Couleurs à remplacer (2 lignes JSON) :
-  - `"color": { "value": "#ffffff" }` → `"#ffffff"` OK pour neutre
-  - `"line_linked": { "color": "#ffffff" }` → `"#ffffff"` OK pour neutre
-- Pour rendre adaptable à tous les thèmes : remplacer `"#ffffff"` par la valeur computed de `var(--inari-red)` au init (sera blanc en neutre, rouge en rouge, etc.)
-- ⚠️ Réduire `"number": { "value": 380 }` → `150` (perf mobile)
-- Lib : particles.js (~45 KB minifié) — **self-host obligatoire**, pas de CDN
-- Alternative si on veut rester à 0 lib externe : réécrire en Canvas 2D vanilla (~60 lignes), pattern connu
+- Fichier code : `react-islands/src/components/backgrounds/MeshGradientNeutral.tsx`
+- Concept : 5 orbes radiaux ultra flous, stackés. **4 halos périphériques aux 4 coins** (un par pilier : top-left bleu institutionnel, top-right rouge cybersec, bottom-left or IA, bottom-right vert blog) + **1 halo argent dominant au centre** (couvre la zone fox v29). Ordre de dessin : périphériques d'abord, centre en dernier (gagne visuellement)
+- Aucune particule, aucun bord net, aucune ligne. Atmosphère prismatique imperceptible en regardant fixement, mais visible sur 3 captures écartées de 5s
+- Opacités calibrées V-lambda (sensibilité rétinienne) : bleu/vert remontés, rouge/or baissés, centre argent dominant
+- Parallaxe souris légère, skip sur touch device. Canvas downscale 50% (gradients flous, retina inutile)
+- Couleur centre via `var(--inari-red)` (= `#FFFFFF` en neutre), couleurs piliers via `--accent-rouge`, `--accent-or`, `--accent-vert`, `--accent-bleu` (fixes)
+
+**Note historique** : `Animations/Particles/` (particles.js, particules + lignes reliées) avait été envisagé. Pivot vers le prisme parce qu'il annonce les 4 piliers + zone fox plus subtilement et atmosphériquement qu'une constellation à particules.
 
 ---
 
