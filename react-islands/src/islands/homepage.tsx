@@ -10,6 +10,7 @@ import { NeuralNetworkGreen } from '@/components/backgrounds/NeuralNetworkGreen'
 import { BlueprintGridBlue } from '@/components/backgrounds/BlueprintGridBlue'
 import { MeshGradientNeutral } from '@/components/backgrounds/MeshGradientNeutral'
 import { FoxAnimationV29 } from '@/components/hero/FoxAnimationV29'
+import { TechDemo } from '@/components/sections/TechDemo'
 
 /**
  * Island: homepage
@@ -157,6 +158,7 @@ function HomepageIsland() {
   return (
     <main className="relative bg-inari-black text-inari-text">
       <Hero />
+      <TechDemo />
       {/*
         TODO Phase 2.1.x : ajouter ici les sections suivantes
           - Cards piliers (rouge / or / vert / bleu)
