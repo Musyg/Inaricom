@@ -155,3 +155,7 @@ Animations/
  
 # Playwright MCP captures locales 
 .playwright-mcp/ 
+
+# QA tools outputs (screenshots locaux, ne pas commit)
+scripts/qa-tools/out/
+scripts/qa-tools/node_modules/
