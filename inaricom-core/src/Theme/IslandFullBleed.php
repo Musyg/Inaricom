@@ -35,10 +35,42 @@ final class IslandFullBleed
     {
         // Vire le titre Kadence de la page si elle contient une island.
         // Filter Kadence officiel (cf. kadencewp.com filters reference).
+        // Note : ce filter ne marche pas dans toutes les configurations
+        // Kadence (selon le template). Le CSS inline ci-dessous fait le job
+        // de toute facon et reste defensif.
         add_filter('kadence_post_title', [$this, 'maybe_hide_title']);
 
         // Body class pour overrides CSS si besoin
         add_filter('body_class', [$this, 'add_body_class']);
+
+        // CSS critique inline : cache l entry-header par defaut Kadence
+        // sur les pages full-bleed. Inline pour eviter une requete CSS
+        // supplementaire et eviter le FOUC.
+        add_action('wp_head', [$this, 'print_critical_css'], 1);
+    }
+
+    /**
+     * CSS critique inline pour les pages avec island.
+     * Imprime SEULEMENT si la page courante en a une.
+     */
+    public function print_critical_css(): void
+    {
+        if (!is_singular() || !$this->page_has_island()) {
+            return;
+        }
+
+        // CSS minimal :
+        //  - hide entry-header (titre WP "Accueil Inaricom" et compagnie)
+        //  - retire le padding default content area Kadence pour true full-bleed
+        //  - assure que le mount React occupe 100% de la largeur dispo
+        echo "<style id=\"inari-fullbleed-critical\">"
+            . "body.inari-fullbleed .entry-header.page-title,"
+            . "body.inari-fullbleed header.entry-header.page-title{display:none!important}"
+            . "body.inari-fullbleed .content-area,"
+            . "body.inari-fullbleed .site-main,"
+            . "body.inari-fullbleed .entry-content{padding:0!important;margin:0!important;max-width:none!important}"
+            . "body.inari-fullbleed .inari-island-root{width:100%}"
+            . "</style>\n";
     }
 
     /**
