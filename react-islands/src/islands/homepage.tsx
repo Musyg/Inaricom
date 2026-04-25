@@ -95,9 +95,9 @@ function Hero() {
         <FoxAnimationV29 />
       </div>
 
-      {/* Couche 2 : contenu hero */}
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl items-center px-6 py-24 lg:px-12">
-        <div className="max-w-2xl lg:w-1/2">
+      {/* Couche 2 : contenu hero centre */}
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col items-center justify-center px-6 py-24 text-center lg:px-12">
+        <div className="max-w-3xl">
           {/* Eyebrow / kicker mono pour ancrer le ton technique */}
           <p className="font-mono text-xs uppercase tracking-[0.22em] text-inari-text-muted">
             Inaricom &middot; Cybers&eacute;curit&eacute; &amp; IA
@@ -114,13 +114,13 @@ function Hero() {
           </h1>
 
           {/* Sous-titre Geist Sans, posture differenciante */}
-          <p className="mt-8 max-w-xl text-lg leading-relaxed text-inari-text-soft">
+          <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-inari-text-soft">
             Convergence unique IA + cybers&eacute;curit&eacute; offensive. Pour les
             PME et CTO francophones qui refusent la bo&icirc;te noire.
           </p>
 
           {/* CTAs : primary = audit (rouge/sec), secondary = blog (vert) */}
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
             <a
               href="/services-cybersecurite/"
               className="group inline-flex items-center gap-2 rounded-md bg-inari-accent px-6 py-3 font-sans text-sm font-medium text-inari-black transition hover:bg-inari-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
@@ -142,11 +142,12 @@ function Hero() {
           </div>
 
           {/* Indicateur scroll discret (UX cue desktop only) */}
-          <div className="mt-16 hidden items-center gap-3 lg:flex">
+          <div className="mt-16 hidden items-center justify-center gap-3 lg:flex">
             <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
             <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
               Scroll
             </span>
+            <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
           </div>
         </div>
       </div>

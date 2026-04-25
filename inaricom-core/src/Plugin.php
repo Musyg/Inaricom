@@ -50,6 +50,10 @@ final class Plugin
         $this->services['theme_mapper'] = new Theme\ThemeMapper();
         $this->services['theme_mapper']->register();
 
+        // Cache le titre Kadence sur les pages avec une React island
+        $this->services['island_fullbleed'] = new Theme\IslandFullBleed();
+        $this->services['island_fullbleed']->register();
+
         // WP Cleanup : emojis (CSP), embeds, generators legacy
         $this->services['wp_cleanup'] = new Optimization\WPCleanup();
         $this->services['wp_cleanup']->register();
