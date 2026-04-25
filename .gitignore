@@ -148,7 +148,7 @@ react-islands/.vite/
 react-islands/package-lock.json
 
 # React build artifacts (regeneres par CI ou pnpm build local)
-plugins/inaricom-core/assets/react/
+inaricom-core/assets/react/
  
 # Sources animations de reference (poids + droits) 
 Animations/ 

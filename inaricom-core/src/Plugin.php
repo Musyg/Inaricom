@@ -50,6 +50,14 @@ final class Plugin
         $this->services['theme_mapper'] = new Theme\ThemeMapper();
         $this->services['theme_mapper']->register();
 
+        // React islands (Phase 2) — shortcode mount points + enqueue conditionnel
+        // L'enqueue ne tournera qu'en front (hook wp_enqueue_scripts), mais le
+        // shortcode est enregistre partout pour permettre les previews admin.
+        $this->services['react_mount_points'] = new React\ReactMountPoints();
+        $this->services['react_mount_points']->register();
+        $this->services['react_loader'] = new React\ReactLoader();
+        $this->services['react_loader']->register();
+
         // Custom Post Types
         $this->services['cpt_resource']    = new CPT\ResourceCPT();
         $this->services['cpt_case_study']  = new CPT\CaseStudyCPT();
