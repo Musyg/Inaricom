@@ -29,8 +29,8 @@ const THEME_COLORS: Record<ThemeName, { primary: Rgb; dark: Rgb }> = {
 }
 
 const CONFIG = {
-  jsonUrl: '/assets/data/fox-paths.json',
-  logoUrl: '/assets/logo-silver-v2.png',
+  jsonUrl: `${import.meta.env.BASE_URL}assets/data/fox-paths.json`,
+  logoUrl: `${import.meta.env.BASE_URL}assets/logo-silver-v2.png`,
   minSegmentLength: 1000,
   stitchThreshold: 25,
   beamSpeed: 620,

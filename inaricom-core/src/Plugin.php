@@ -50,6 +50,10 @@ final class Plugin
         $this->services['theme_mapper'] = new Theme\ThemeMapper();
         $this->services['theme_mapper']->register();
 
+        // WP Cleanup : emojis (CSP), embeds, generators legacy
+        $this->services['wp_cleanup'] = new Optimization\WPCleanup();
+        $this->services['wp_cleanup']->register();
+
         // React islands (Phase 2) — shortcode mount points + enqueue conditionnel
         // L'enqueue ne tournera qu'en front (hook wp_enqueue_scripts), mais le
         // shortcode est enregistre partout pour permettre les previews admin.

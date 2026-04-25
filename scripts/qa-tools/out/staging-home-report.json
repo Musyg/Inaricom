@@ -1,0 +1,132 @@
+{
+  "url": "https://staging.inaricom.com/",
+  "timestamp": "2026-04-25T11:05:33.504Z",
+  "inspection": {
+    "desktop": {
+      "htmlDataTheme": "neutre",
+      "htmlClass": "",
+      "bodyClass": "home wp-singular page-template-default page page-id-1069 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js theme-neutre footer-on-bottom hide-focus-outline link-style-standard content-title-style-normal content-width-normal content-style-boxed content-vertical-padding-show non-transparent-header mobile-non-transparent-header",
+      "mountPointExists": true,
+      "mountPointChildrenCount": 1,
+      "mountPointHTML": "<div id=\"inari-homepage-root\" class=\"inari-island-root\" data-island=\"homepage\"><main class=\"relative bg-inari-black text-inari-text\"><section class=\"relative isolate overflow-hidden bg-inari-black\" aria-label=\"Hero Inaricom\" style=\"min-height: 100vh;\"><div class=\"absolute inset-0 z-0\"><div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 overflow-hidden\"><canvas class=\"block h-full w-full\" width=\"584\" height=\"450\" style=\"width: 1168px; height: 900px;\"></canvas></div></div><div clas",
+      "skeletonStillVisible": false,
+      "canvasCount": 2,
+      "canvasInfo": [
+        {
+          "width": 584,
+          "height": 450,
+          "cssWidth": 1168,
+          "cssHeight": 900,
+          "parentClass": "pointer-events-none absolute inset-0 overflow-hidden"
+        },
+        {
+          "width": 1168,
+          "height": 900,
+          "cssWidth": 1168,
+          "cssHeight": 900,
+          "parentClass": "pointer-events-none absolute inset-0 overflow-hidden opacity-[0.35] md:opacity-100"
+        }
+      ],
+      "computedBg": "rgba(0, 0, 0, 0)",
+      "title": "Inaricom – Solutions IA et cybersecurite pour PME suisses",
+      "urlFinal": "https://staging.inaricom.com/"
+    },
+    "mobile": {
+      "htmlDataTheme": "neutre",
+      "htmlClass": "",
+      "bodyClass": "home wp-singular page-template-default page page-id-1069 wp-custom-logo wp-embed-responsive wp-theme-kadence theme-kadence woocommerce-js theme-neutre footer-on-bottom hide-focus-outline link-style-standard content-title-style-normal content-width-normal content-style-boxed content-vertical-padding-show non-transparent-header mobile-non-transparent-header",
+      "mountPointExists": true,
+      "mountPointChildrenCount": 1,
+      "mountPointHTML": "<div id=\"inari-homepage-root\" class=\"inari-island-root\" data-island=\"homepage\"><main class=\"relative bg-inari-black text-inari-text\"><section class=\"relative isolate overflow-hidden bg-inari-black\" aria-label=\"Hero Inaricom\" style=\"min-height: 100vh;\"><div class=\"absolute inset-0 z-0\"><div aria-hidden=\"true\" class=\"pointer-events-none absolute inset-0 overflow-hidden\"><canvas class=\"block h-full w-full\" width=\"172\" height=\"422\" style=\"width: 344px; height: 844px;\"></canvas></div></div><div class",
+      "skeletonStillVisible": false,
+      "canvasCount": 2,
+      "canvasInfo": [
+        {
+          "width": 172,
+          "height": 422,
+          "cssWidth": 344,
+          "cssHeight": 844,
+          "parentClass": "pointer-events-none absolute inset-0 overflow-hidden"
+        },
+        {
+          "width": 344,
+          "height": 844,
+          "cssWidth": 344,
+          "cssHeight": 844,
+          "parentClass": "pointer-events-none absolute inset-0 overflow-hidden opacity-[0.35] md:opacity-100"
+        }
+      ],
+      "computedBg": "rgba(0, 0, 0, 0)",
+      "title": "Inaricom – Solutions IA et cybersecurite pour PME suisses",
+      "urlFinal": "https://staging.inaricom.com/"
+    }
+  },
+  "consoleMessages": [
+    {
+      "label": "desktop",
+      "type": "error",
+      "text": "Creating a worker from 'blob:https://staging.inaricom.com/3b4d038b-1517-482b-b6ad-c78e2f099f85' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com connect.facebook.net js.stripe.com *.cloudflare.com\". Note that 'worker-src' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+      "location": {
+        "url": "https://staging.inaricom.com/wp-includes/js/wp-emoji-loader.min.js",
+        "lineNumber": 2,
+        "columnNumber": 0
+      }
+    },
+    {
+      "label": "desktop",
+      "type": "warning",
+      "text": "[FoxAnimationV29] logo image failed to load at /assets/logo-silver-v2.png",
+      "location": {
+        "url": "https://staging.inaricom.com/wp-content/plugins/inaricom-core/assets/react/js/homepage-Cvzmx7Ya.js",
+        "lineNumber": 8,
+        "columnNumber": 100014
+      }
+    },
+    {
+      "label": "desktop",
+      "type": "warning",
+      "text": "FoxAnimationV29 fetch error: SyntaxError: Unexpected token '<', \"<!doctype \"... is not valid JSON",
+      "location": {
+        "url": "https://staging.inaricom.com/wp-content/plugins/inaricom-core/assets/react/js/homepage-Cvzmx7Ya.js",
+        "lineNumber": 8,
+        "columnNumber": 101312
+      }
+    },
+    {
+      "label": "mobile",
+      "type": "error",
+      "text": "Creating a worker from 'blob:https://staging.inaricom.com/bcf3ddad-e255-4e05-9638-a52fbdaa055a' violates the following Content Security Policy directive: \"script-src 'self' 'unsafe-inline' 'unsafe-eval' *.googletagmanager.com *.google-analytics.com connect.facebook.net js.stripe.com *.cloudflare.com\". Note that 'worker-src' was not explicitly set, so 'script-src' is used as a fallback. The action has been blocked.",
+      "location": {
+        "url": "https://staging.inaricom.com/wp-includes/js/wp-emoji-loader.min.js",
+        "lineNumber": 2,
+        "columnNumber": 0
+      }
+    },
+    {
+      "label": "mobile",
+      "type": "warning",
+      "text": "[FoxAnimationV29] logo image failed to load at /assets/logo-silver-v2.png",
+      "location": {
+        "url": "https://staging.inaricom.com/wp-content/plugins/inaricom-core/assets/react/js/homepage-Cvzmx7Ya.js",
+        "lineNumber": 8,
+        "columnNumber": 100014
+      }
+    },
+    {
+      "label": "mobile",
+      "type": "warning",
+      "text": "FoxAnimationV29 fetch error: SyntaxError: Unexpected token '<', \"<!doctype \"... is not valid JSON",
+      "location": {
+        "url": "https://staging.inaricom.com/wp-content/plugins/inaricom-core/assets/react/js/homepage-Cvzmx7Ya.js",
+        "lineNumber": 8,
+        "columnNumber": 101312
+      }
+    }
+  ],
+  "networkErrors": [],
+  "bundleLoaded": {
+    "homepageJs": true,
+    "homepageCss": true
+  },
+  "totalRequests": 153
+}

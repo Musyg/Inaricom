@@ -6,7 +6,15 @@ import path from 'node:path'
 // Inaricom React islands — multi-entry build
 // Output: ../inaricom-core/assets/react/ (vrai plugin actif cote WP)
 // Enqueue cote WP via manifest.json lu par ReactIslandEnqueue
-export default defineConfig({
+//
+// base : en build prod, prefixe tous les imports dynamiques + import.meta.env.BASE_URL
+// par le path WordPress du plugin. En dev (vite serve), base = '/' car les assets
+// public/ sont servis a la racine 5173.
+export default defineConfig(({ command }) => ({
+  base:
+    command === 'build'
+      ? '/wp-content/plugins/inaricom-core/assets/react/'
+      : '/',
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
@@ -36,4 +44,4 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
   },
-})
+}))
