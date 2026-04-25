@@ -90,16 +90,35 @@ function Hero() {
         <FoxAnimationV29 />
       </div>
 
-      {/* Couche 2 : contenu hero — badge floating en haut centre + bloc texte gauche */}
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-12 lg:px-12 lg:py-16">
-        {/* Badge en pilule, centre tout en haut (style ref prod) */}
-        <div className="flex justify-center pt-4 sm:pt-6">
-          <div className="inline-flex items-center gap-2.5 rounded-full border border-[color:var(--inari-red)]/40 bg-inari-black-alt/70 px-5 py-2 shadow-[0_0_20px_-8px_var(--inari-red)] backdrop-blur-sm">
-            {/* Icone cadenas inline */}
+      {/* Couche 2 : contenu hero — badge en pilule rouge + texte gauche
+          PADDING REDUITS (mesures vs ref accueil-cybersecurite) :
+          header(81px) + 58px gap + badge(47px) + 40px gap + h1(top 226px) */}
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-3 lg:px-12">
+        {/* Badge en pilule, centre tout en haut.
+            Style chiffres ref : bg rgba(227,30,36,0.10), text rgb(227,30,36),
+            font 14px, align center, h ~47px, radius full. */}
+        <div className="flex justify-center" style={{ paddingTop: '58px' }}>
+          <div
+            className="inline-flex items-center gap-2.5 rounded-full border px-5"
+            style={{
+              backgroundColor: 'rgba(227, 30, 36, 0.10)',
+              borderColor: 'rgba(227, 30, 36, 0.45)',
+              color: 'rgb(227, 30, 36)',
+              fontSize: '14px',
+              fontFamily: '"Geist Mono", ui-monospace, monospace',
+              letterSpacing: '0.18em',
+              textTransform: 'uppercase',
+              fontWeight: 500,
+              paddingTop: '10px',
+              paddingBottom: '10px',
+              boxShadow: '0 0 24px -8px rgba(227, 30, 36, 0.5)',
+            }}
+          >
             <svg
               aria-hidden="true"
               viewBox="0 0 16 16"
-              className="h-3.5 w-3.5 text-inari-accent"
+              width="14"
+              height="14"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
@@ -109,17 +128,26 @@ function Hero() {
               <rect x="3" y="7" width="10" height="7" rx="1.5" />
               <path d="M5.5 7V5a2.5 2.5 0 015 0v2" />
             </svg>
-            <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-inari-accent">
-              Inaricom &middot; Cybers&eacute;curit&eacute; &amp; IA
-            </span>
+            <span>Inaricom &middot; Cybers&eacute;curit&eacute; &amp; IA</span>
           </div>
         </div>
 
-        {/* Bloc contenu : titre + sous-titre + CTA, ALIGNE A GAUCHE */}
-        <div className="flex flex-1 items-center">
-          <div className="max-w-2xl lg:w-1/2">
-            {/* H1 display Instrument Serif, 3 lignes pour rythme editorial */}
-            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-inari-white sm:text-6xl lg:text-7xl">
+        {/* Bloc contenu : items-start avec un petit gap (40px badge -> h1 ref) */}
+        <div className="flex flex-1" style={{ paddingTop: '40px' }}>
+          <div className="w-full lg:w-1/2">
+            {/* H1 : style inline pour CONTOURNER Kadence cascade qui force line-height 1.5
+                Mesures ref : 88px / line-height 92.4px (1.05) / tracking serre / blanc */}
+            <h1
+              className="font-serif text-inari-white"
+              style={{
+                fontSize: 'clamp(48px, 5.5vw, 88px)',
+                lineHeight: '1.05',
+                letterSpacing: '-0.02em',
+                fontWeight: 400,
+                textAlign: 'left',
+                margin: 0,
+              }}
+            >
               <span className="block">Syst&egrave;mes IA</span>
               <span className="block text-inari-text-soft">exploitables,</span>
               <span className="block">
@@ -128,25 +156,28 @@ function Hero() {
               </span>
             </h1>
 
-            {/* Sous-titre Geist Sans, posture differenciante */}
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-inari-text-soft">
+            {/* Sous-titre : ref 22.4px / lh 1.8 / muted */}
+            <p
+              style={{
+                fontSize: '22.4px',
+                lineHeight: '1.8',
+                color: 'rgba(240, 240, 245, 0.65)',
+                marginTop: '32px',
+                maxWidth: '36rem',
+              }}
+            >
               Convergence unique IA + cybers&eacute;curit&eacute; offensive. Pour les
               PME et CTO francophones qui refusent la bo&icirc;te noire.
             </p>
 
-            {/* CTAs : primary = audit (rouge/sec), secondary = blog (vert) */}
+            {/* CTAs */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <a
                 href="/services-cybersecurite/"
                 className="group inline-flex items-center gap-2 rounded-md bg-inari-accent px-6 py-3 font-sans text-sm font-medium text-inari-black transition hover:bg-inari-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
               >
                 Commander un audit
-                <span
-                  aria-hidden="true"
-                  className="transition group-hover:translate-x-0.5"
-                >
-                  &rarr;
-                </span>
+                <span aria-hidden="true" className="transition group-hover:translate-x-0.5">&rarr;</span>
               </a>
               <a
                 href="/blog/"
@@ -156,7 +187,7 @@ function Hero() {
               </a>
             </div>
 
-            {/* Indicateur scroll discret (UX cue desktop only) */}
+            {/* Indicateur scroll (desktop) */}
             <div className="mt-16 hidden items-center gap-3 lg:flex">
               <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
               <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
