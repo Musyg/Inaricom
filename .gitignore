@@ -80,6 +80,7 @@ playwright-report/
 test-results/
 .lighthouseci/
 lighthouseci/
+qa-screenshots/
 
 # === IDE ===
 .vscode/

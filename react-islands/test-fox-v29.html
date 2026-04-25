@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test — FoxAnimationV29 (Inaricom)</title>
+  </head>
+  <body>
+    <!-- Pas de data-theme sur <html> ni <body> : le composant lit le plus
+         proche ancetre [data-theme] via closest(), qui sera la <section>
+         dans _test-fox-v29.tsx. -->
+    <div id="test-fox-v29-root"></div>
+    <script type="module" src="/src/pages/_test-fox-v29.tsx"></script>
+  </body>
+</html>
