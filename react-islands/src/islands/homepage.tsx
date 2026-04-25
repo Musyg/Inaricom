@@ -93,7 +93,7 @@ function Hero() {
       {/* Couche 2 : contenu hero — badge en pilule rouge + texte gauche
           PADDING REDUITS (mesures vs ref accueil-cybersecurite) :
           header(81px) + 58px gap + badge(47px) + 40px gap + h1(top 226px) */}
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-3 lg:px-12">
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 lg:px-12">
         {/* Badge en pilule, centre tout en haut.
             Style chiffres ref : bg rgba(227,30,36,0.10), text rgb(227,30,36),
             font 14px, align center, h ~47px, radius full. */}
@@ -134,7 +134,7 @@ function Hero() {
 
         {/* Bloc contenu : items-start avec un petit gap (40px badge -> h1 ref) */}
         <div className="flex flex-1" style={{ paddingTop: '40px' }}>
-          <div className="w-full lg:w-1/2">
+          <div className="w-full" style={{ maxWidth: '750px' }}>
             {/* H1 : style inline pour CONTOURNER Kadence cascade qui force line-height 1.5
                 Mesures ref : 88px / line-height 92.4px (1.05) / tracking serre / blanc */}
             <h1
