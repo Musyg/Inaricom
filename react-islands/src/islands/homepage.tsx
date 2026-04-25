@@ -81,27 +81,19 @@ function ThemedBackgroundStack() {
 function Hero() {
   return (
     <section
-      className="relative isolate overflow-hidden bg-inari-black"
+      className="relative isolate overflow-hidden"
       style={{ minHeight: '100vh' }}
       aria-label="Hero Inaricom"
     >
-      {/* Couche 0 : backgrounds animes par theme */}
-      <div className="absolute inset-0 z-0">
-        <ThemedBackgroundStack />
-      </div>
-
-      {/* Couche 1 : fox animation v29
-          - mobile : occupe tout l ecran (avec opacity 0.35 gere dans le composant)
-          - desktop : restreinte a la moitie droite, le canvas se redimensionne
-            via ResizeObserver et la fox se replace dans cette zone */}
-      <div className="absolute inset-0 z-10 lg:inset-y-0 lg:left-auto lg:right-0 lg:w-3/5">
+      {/* Couche 1 : fox animation v29 (PLEIN ECRAN, par-dessus le fond global) */}
+      <div className="absolute inset-0 z-10">
         <FoxAnimationV29 />
       </div>
 
-      {/* Couche 2 : contenu hero — badge en haut centre + bloc texte gauche */}
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-6 lg:px-12 lg:py-8">
-        {/* Badge en pilule, juste sous le header (style ref prod) */}
-        <div className="flex justify-center">
+      {/* Couche 2 : contenu hero — badge floating en haut centre + bloc texte gauche */}
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 py-12 lg:px-12 lg:py-16">
+        {/* Badge en pilule, centre tout en haut (style ref prod) */}
+        <div className="flex justify-center pt-4 sm:pt-6">
           <div className="inline-flex items-center gap-2.5 rounded-full border border-[color:var(--inari-red)]/40 bg-inari-black-alt/70 px-5 py-2 shadow-[0_0_20px_-8px_var(--inari-red)] backdrop-blur-sm">
             {/* Icone cadenas inline */}
             <svg
@@ -123,14 +115,11 @@ function Hero() {
           </div>
         </div>
 
-        {/* Bloc contenu : titre + sous-titre + CTA, ALIGNE A GAUCHE.
-            items-start (pas items-center) + pt-X pour caler le H1 a la
-            hauteur du haut du renard, comme sur la prod. */}
-        <div className="flex flex-1 items-start pt-12 lg:pt-16">
+        {/* Bloc contenu : titre + sous-titre + CTA, ALIGNE A GAUCHE */}
+        <div className="flex flex-1 items-center">
           <div className="max-w-2xl lg:w-1/2">
-            {/* H1 display Instrument Serif, 3 lignes pour rythme editorial.
-                leading-[0.95] pour densite verticale comme la prod. */}
-            <h1 className="font-serif text-5xl leading-[0.95] tracking-tight text-inari-white sm:text-6xl lg:text-[5.5rem] xl:text-[6rem]">
+            {/* H1 display Instrument Serif, 3 lignes pour rythme editorial */}
+            <h1 className="font-serif text-5xl leading-[1.05] tracking-tight text-inari-white sm:text-6xl lg:text-7xl">
               <span className="block">Syst&egrave;mes IA</span>
               <span className="block text-inari-text-soft">exploitables,</span>
               <span className="block">
@@ -184,8 +173,21 @@ function Hero() {
 function HomepageIsland() {
   return (
     <main className="relative bg-inari-black text-inari-text">
-      <Hero />
-      <TechDemo />
+      {/* FOND GLOBAL : les 5 backgrounds couvrent TOUTE la page (Hero + sections
+          suivantes). En absolute inset-0, ils prennent la hauteur totale du main.
+          z-0 (au-dessus du bg noir du main, en-dessous du contenu en relative). */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0"
+      >
+        <ThemedBackgroundStack />
+      </div>
+
+      {/* Contenu : place en relative z-10 pour passer AU-DESSUS du fond global */}
+      <div className="relative z-10">
+        <Hero />
+        <TechDemo />
+      </div>
       {/*
         TODO Phase 2.1.x : ajouter ici les sections suivantes
           - Cards piliers (rouge / or / vert / bleu)
