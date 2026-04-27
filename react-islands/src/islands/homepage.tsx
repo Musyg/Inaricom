@@ -101,9 +101,9 @@ function Hero() {
           <div
             className="inline-flex items-center gap-2.5 rounded-full border px-5"
             style={{
-              backgroundColor: 'rgba(227, 30, 36, 0.10)',
-              borderColor: 'rgba(227, 30, 36, 0.45)',
-              color: 'rgb(227, 30, 36)',
+              backgroundColor: 'rgba(var(--inari-red-rgb), 0.06)',
+              borderColor: 'rgba(var(--inari-red-rgb), 0.18)',
+              color: 'var(--inari-text-soft)',
               fontSize: '14px',
               fontFamily: '"Geist Mono", ui-monospace, monospace',
               letterSpacing: '0.18em',
@@ -111,7 +111,7 @@ function Hero() {
               fontWeight: 500,
               paddingTop: '10px',
               paddingBottom: '10px',
-              boxShadow: '0 0 24px -8px rgba(227, 30, 36, 0.5)',
+              boxShadow: '0 0 24px -12px rgba(var(--inari-red-rgb), 0.25)',
             }}
           >
             <svg
@@ -140,7 +140,7 @@ function Hero() {
             <h1
               className="font-serif text-inari-white"
               style={{
-                fontSize: 'clamp(48px, 5.5vw, 88px)',
+                fontSize: 'clamp(40px, 4.5vw, 72px)',
                 lineHeight: '1.05',
                 letterSpacing: '-0.02em',
                 fontWeight: 400,
@@ -148,11 +148,11 @@ function Hero() {
                 margin: 0,
               }}
             >
-              <span className="block">Syst&egrave;mes IA</span>
-              <span className="block text-inari-text-soft">exploitables,</span>
+              <span className="block">S&eacute;curit&eacute; offensive.</span>
+              <span className="block text-inari-text-soft">IA souveraine.</span>
               <span className="block">
-                mesurables,{' '}
-                <em className="not-italic text-inari-accent">contr&ocirc;lables.</em>
+                Sans{' '}
+                <em className="not-italic text-inari-accent">d&eacute;pendance.</em>
               </span>
             </h1>
 
