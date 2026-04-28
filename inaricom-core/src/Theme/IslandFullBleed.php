@@ -47,6 +47,12 @@ final class IslandFullBleed
         // sur les pages full-bleed. Inline pour eviter une requete CSS
         // supplementaire et eviter le FOUC.
         add_action('wp_head', [$this, 'print_critical_css'], 1);
+
+        // Largeur conteneur globale (1360px, alignee Cloudflare) — tout le site.
+        add_action('wp_head', [$this, 'print_global_layout_css'], 98);
+
+        // Footer uniforme sur tout le site — override snippet 347 globalement.
+        add_action('wp_head', [$this, 'print_global_footer_css'], 99);
     }
 
     /**
@@ -68,8 +74,39 @@ final class IslandFullBleed
             . "body.inari-fullbleed header.entry-header.page-title{display:none!important}"
             . "body.inari-fullbleed .content-area,"
             . "body.inari-fullbleed .site-main,"
-            . "body.inari-fullbleed .entry-content{padding:0!important;margin:0!important;max-width:none!important}"
+            . "body.inari-fullbleed .entry-content,"
+            . "body.inari-fullbleed .entry-content-wrap,"
+            . "body.inari-fullbleed .entry.single-entry,"
+            . "body.inari-fullbleed .kadence-column-inner-wrap,"
+            . "body.inari-fullbleed .content-area .site-container,"
+            . "body.inari-fullbleed .content-wrap{padding:0!important;margin:0!important;max-width:none!important;overflow:visible!important;background:transparent!important;border:none!important;border-radius:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:none!important}"
             . "body.inari-fullbleed .inari-island-root{width:100%}"
+            . "</style>\n";
+    }
+
+    /**
+     * Largeur conteneur globale : 1360px + padding 24/40px.
+     */
+    public function print_global_layout_css(): void
+    {
+        echo "<style id=\"inari-global-layout\">"
+            . ":root{--global-content-width:1360px}"
+            . ".site-container{max-width:1360px!important;padding-left:24px!important;padding-right:24px!important}"
+            . "@media(min-width:1024px){.site-container{padding-left:40px!important;padding-right:40px!important}}"
+            . "</style>\n";
+    }
+
+    /**
+     * Footer uniforme sur tout le site.
+     * Imprime APRES le snippet 347 (priority 99) pour le surcharger.
+     */
+    public function print_global_footer_css(): void
+    {
+        echo "<style id=\"inari-global-footer\">"
+            . "footer,footer.site-footer,footer#colophon{margin-top:0!important;background:transparent!important;border-top:none!important;border:none!important}"
+            . ".site-footer-wrap,.site-bottom-footer-wrap,.site-middle-footer-wrap,.site-top-footer-wrap,"
+            . ".site-footer-row-container,.site-footer-row-container-inner,"
+            . ".footer-widget-area,.footer-widget-area-inner{background:transparent!important;border:none!important}"
             . "</style>\n";
     }
 

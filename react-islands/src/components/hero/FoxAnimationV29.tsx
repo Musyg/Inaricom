@@ -44,7 +44,7 @@ const CONFIG = {
   finalOpacityRed: 1,
   finalGlow: 12,
   finalLineMultiplier: 2,
-  materializeDuration: 1,
+  materializeDuration: 0.3,
   foxOffsetX: 0.72,
   foxScale: 0.85,
   sparkCount: 3,
@@ -56,16 +56,16 @@ const CONFIG = {
   bgColor: '#0a0a0b',
 
   // === Wordmark (reservoir de particules extrait du logo) ===
-  wordmarkSampling: 2,          // sampling tous les N px (plus petit = plus de particules)
-  wordmarkPixelThreshold: 40,   // alpha minimum pour considerer un pixel actif
+  wordmarkSampling: 1,          // sampling tous les N px (1 = densité maximale)
+  wordmarkPixelThreshold: 30,   // alpha minimum pour considerer un pixel actif
   wordmarkScaleFactor: 0.85,    // taille wordmark vs bbox fox (0.85 = plus petit que le fox)
   wordmarkYOffsetFactor: -0.2,  // remonte au-dessus du centre bbox fox
   wordmarkBrownianPx: 1.0,
   wordmarkBrownianFreq: 0.9,
-  wordmarkMinSize: 0.5,
-  wordmarkMaxSize: 1.0,
-  wordmarkMinAlpha: 0.55,
-  wordmarkMaxAlpha: 0.95,
+  wordmarkMinSize: 0.8,
+  wordmarkMaxSize: 1.6,
+  wordmarkMinAlpha: 0.65,
+  wordmarkMaxAlpha: 1.0,
   wordmarkIntroDuration: 0.8,   // duree d'arrivee des particules vers leur place
   wordmarkStableDuration: 0.6,  // pause stable avant que les beams puissent siphonner
 
@@ -82,7 +82,7 @@ const CONFIG = {
   // on auto-calcule l'intervalle pour drainer pile P particules dans la duree
   // cumulee d'activite des beams (sum(L_i)/beamSpeed). Safety factor < 1 fait
   // finir le drain avant le trace, > 1 apres. Sweet spot autour de 0.92.
-  streamSpawnSafetyFactor: 0.92,
+  streamSpawnSafetyFactor: 1,
 } as const
 
 const MOBILE_MAX_W = 768
@@ -125,7 +125,7 @@ export function FoxAnimationV29() {
     const canvas = canvasRef.current
     const wrap = wrapRef.current
     if (!canvas || !wrap) return
-    const ctxMaybe = canvas.getContext('2d', { alpha: false })
+    const ctxMaybe = canvas.getContext('2d', { alpha: true })
     if (!ctxMaybe) return
     const ctx: CanvasRenderingContext2D = ctxMaybe
 
@@ -567,7 +567,7 @@ export function FoxAnimationV29() {
         let bestD = Infinity
         // Sampling : pour perf, on echantillonne seulement 40 particules aleatoires
         const n = wordmarkParticles.length
-        const sampleCount = Math.min(40, n)
+        const sampleCount = Math.min(80, n)
         for (let i = 0; i < sampleCount; i++) {
           const idx = (Math.random() * n) | 0
           const p = wordmarkParticles[idx]
@@ -795,6 +795,7 @@ export function FoxAnimationV29() {
         const foxW = originalWidth * scale
         const foxH = originalHeight * scale
         offsetX = cssW * CONFIG.foxOffsetX - foxW * 0.5
+        // Constantes EXACTES de la v28 prod (snippet 443) : centré viewport - 10%
         offsetY = (cssH - foxH) / 2 - cssH * 0.1
       }
       if (segments.length > 0) {
@@ -816,8 +817,7 @@ export function FoxAnimationV29() {
     }
 
     function drawFinalState() {
-      ctx.fillStyle = CONFIG.bgColor
-      ctx.fillRect(0, 0, cssW, cssH)
+      ctx.clearRect(0, 0, cssW, cssH)
       for (const b of beams) b.drawRevealedLine()
     }
 
@@ -835,8 +835,7 @@ export function FoxAnimationV29() {
       const allMat = beams.length > 0 && beams.every((b) => b.fullyMaterialized)
       if (allMat && colorTransitionProgress >= 1 && wordmarkParticles.length === 0) animationComplete = true
 
-      ctx.fillStyle = CONFIG.bgColor
-      ctx.fillRect(0, 0, cssW, cssH)
+      ctx.clearRect(0, 0, cssW, cssH)
 
       for (const b of beams) b.update(dt)
       for (const b of beams) b.drawRevealedLine()
@@ -863,8 +862,7 @@ export function FoxAnimationV29() {
 
     // ====== load assets + start ======
     resize()
-    ctx.fillStyle = CONFIG.bgColor
-    ctx.fillRect(0, 0, cssW, cssH)
+    ctx.clearRect(0, 0, cssW, cssH)
 
     const loadLogo = new Promise<void>((resolve) => {
       const img = new Image()
@@ -1000,7 +998,7 @@ export function FoxAnimationV29() {
           const computed =
             (totalActivity * 1000 / particleCount) * CONFIG.streamSpawnSafetyFactor
           // clamp pour eviter valeurs absurdes (perf / visu)
-          runtimeSpawnIntervalMs = Math.max(8, Math.min(60, computed))
+          runtimeSpawnIntervalMs = Math.max(2, Math.min(60, computed))
           // eslint-disable-next-line no-console
           console.log(
             `[FoxAnimationV29] auto-drain interval: ${runtimeSpawnIntervalMs.toFixed(1)}ms ` +

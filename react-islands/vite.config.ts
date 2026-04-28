@@ -28,6 +28,7 @@ export default defineConfig(({ command }) => ({
     rollupOptions: {
       input: {
         homepage: path.resolve(__dirname, 'src/islands/homepage.tsx'),
+        cybersec: path.resolve(__dirname, 'src/islands/cybersec.tsx'),
       },
       output: {
         entryFileNames: 'js/[name]-[hash].js',

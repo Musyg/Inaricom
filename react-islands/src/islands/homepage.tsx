@@ -10,7 +10,10 @@ import { NeuralNetworkGreen } from '@/components/backgrounds/NeuralNetworkGreen'
 import { BlueprintGridBlue } from '@/components/backgrounds/BlueprintGridBlue'
 import { MeshGradientNeutral } from '@/components/backgrounds/MeshGradientNeutral'
 import { FoxAnimationV29 } from '@/components/hero/FoxAnimationV29'
-import { TechDemo } from '@/components/sections/TechDemo'
+import { PillarCards } from '@/components/sections/PillarCards'
+import { WhySection } from '@/components/sections/WhySection'
+import { ArticleCards } from '@/components/sections/ArticleCards'
+import { FinalCTA } from '@/components/sections/FinalCTA'
 
 /**
  * Island: homepage
@@ -93,7 +96,7 @@ function Hero() {
       {/* Couche 2 : contenu hero — badge en pilule rouge + texte gauche
           PADDING REDUITS (mesures vs ref accueil-cybersecurite) :
           header(81px) + 58px gap + badge(47px) + 40px gap + h1(top 226px) */}
-      <div className="relative z-20 mx-auto flex min-h-screen max-w-7xl flex-col px-6 lg:px-12">
+      <div className="relative z-20 mx-auto flex min-h-screen max-w-[1360px] flex-col px-6 lg:px-10">
         {/* Badge en pilule, centre tout en haut.
             Style chiffres ref : bg rgba(227,30,36,0.10), text rgb(227,30,36),
             font 14px, align center, h ~47px, radius full. */}
@@ -132,9 +135,9 @@ function Hero() {
           </div>
         </div>
 
-        {/* Bloc contenu : items-start avec un petit gap (40px badge -> h1 ref) */}
+        {/* Bloc contenu : texte a gauche 60%, fox a droite (layout Cloudflare) */}
         <div className="flex flex-1" style={{ paddingTop: '40px' }}>
-          <div className="w-full" style={{ maxWidth: '750px' }}>
+          <div className="w-full md:w-[60%]">
             {/* H1 : style inline pour CONTOURNER Kadence cascade qui force line-height 1.5
                 Mesures ref : 88px / line-height 92.4px (1.05) / tracking serre / blanc */}
             <h1
@@ -187,13 +190,65 @@ function Hero() {
               </a>
             </div>
 
-            {/* Indicateur scroll (desktop) */}
-            <div className="mt-16 hidden items-center gap-3 lg:flex">
-              <span aria-hidden="true" className="h-px w-12 bg-inari-border" />
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
-                Scroll
-              </span>
-            </div>
+          </div>
+        </div>
+
+        {/* 3 arguments — ancres bas du hero */}
+        <div className="pb-12 lg:pb-20">
+          <div className="grid gap-px overflow-hidden rounded-2xl border border-white/[0.08] sm:grid-cols-3">
+            {[
+              {
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                  </svg>
+                ),
+                title: 'OWASP · PTES · MITRE',
+                desc: 'Méthodologie offensive documentée, pas de rapport générique.',
+              },
+              {
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    <rect x="2" y="2" width="20" height="8" rx="2" />
+                    <rect x="2" y="14" width="20" height="8" rx="2" />
+                    <circle cx="6" cy="6" r="1" fill="currentColor" stroke="none" />
+                    <circle cx="6" cy="18" r="1" fill="currentColor" stroke="none" />
+                  </svg>
+                ),
+                title: 'IA local-first',
+                desc: 'Self-hosted, open-weight, zéro dépendance cloud US.',
+              },
+              {
+                icon: (
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                  </svg>
+                ),
+                title: 'Tarifs publics',
+                desc: 'Grilles EUR / CHF, périmètres clairs, livrables lisibles.',
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="flex items-start gap-4 p-6 sm:p-7"
+                style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-inari-border text-inari-text-muted">
+                  {item.icon}
+                </div>
+                <div>
+                  <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-inari-white">
+                    {item.title}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-inari-text-soft">
+                    {item.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
@@ -203,29 +258,22 @@ function Hero() {
 
 function HomepageIsland() {
   return (
-    <main className="relative bg-inari-black text-inari-text">
-      {/* FOND GLOBAL : les 5 backgrounds couvrent TOUTE la page (Hero + sections
-          suivantes). En absolute inset-0, ils prennent la hauteur totale du main.
-          z-0 (au-dessus du bg noir du main, en-dessous du contenu en relative). */}
+    <main className="relative text-inari-text">
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-0"
+        className="pointer-events-none fixed inset-0 bg-inari-black"
+        style={{ zIndex: 0 }}
       >
         <ThemedBackgroundStack />
       </div>
 
-      {/* Contenu : place en relative z-10 pour passer AU-DESSUS du fond global */}
       <div className="relative z-10">
         <Hero />
-        <TechDemo />
+        <PillarCards />
+        <WhySection />
+        <ArticleCards />
+        <FinalCTA />
       </div>
-      {/*
-        TODO Phase 2.1.x : ajouter ici les sections suivantes
-          - Cards piliers (rouge / or / vert / bleu)
-          - Section "Pourquoi Inaricom" (4 points-cles)
-          - Derniers articles (fetch via @tanstack/react-query + REST WP)
-          - CTA final contact
-      */}
     </main>
   )
 }

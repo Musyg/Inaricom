@@ -75,6 +75,7 @@ final class ReactMountPoints
     {
         $known = [
             'homepage',
+            'cybersec',
             // Phase 2.5+ : ai-tool-finder, hardware-config, ai-mastery-hub, etc.
         ];
         return in_array($name, $known, true);
@@ -94,6 +95,7 @@ final class ReactMountPoints
     {
         $skeletons = [
             'homepage' => '<div class="inari-skeleton-hero" style="min-height:100vh;background:#0A0A0F;"></div>',
+            'cybersec' => '<div class="inari-skeleton-hero" style="min-height:100vh;background:#0A0A0F;"></div>',
         ];
 
         return $skeletons[$name] ?? '';

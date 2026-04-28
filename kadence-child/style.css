@@ -50,6 +50,77 @@
 }
 
 /* ==========================================================================
+   GLOBAL GLASS CARDS — effet vitre uniforme sur tout le site
+   background translucide + blur + saturate + bordure specular
+   ========================================================================== */
+
+/* Blog loop cards (Kadence) */
+.loop-entry .entry-content-wrap {
+    background: rgba(18, 18, 26, 0.18) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.loop-entry .entry-content-wrap:hover {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 20px 60px -15px rgba(255, 255, 255, 0.06);
+}
+
+/* WooCommerce product cards */
+.woocommerce ul.products li.product .content-inner-wrap,
+.woocommerce ul.products li.product .product-details {
+    background: rgba(18, 18, 26, 0.18) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+.woocommerce ul.products li.product .content-inner-wrap:hover,
+.woocommerce ul.products li.product .product-details:hover {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    box-shadow: 0 20px 60px -15px rgba(255, 255, 255, 0.06);
+}
+
+/* Kadence info boxes, icon boxes (PAS kadence-column-inner-wrap qui wrappe toute la page) */
+.kt-info-box-wrap .kt-blocks-info-box-link-wrap,
+.kb-icon-list-item-wrap {
+    background: rgba(18, 18, 26, 0.18) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Contact forms (Kadence Form, WPForms, CF7) */
+.kb-form-wrap .kadence-blocks-form,
+.wpforms-container .wpforms-form,
+.wpcf7-form {
+    background: rgba(18, 18, 26, 0.18) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    padding: 2rem;
+}
+
+/* Single article content card (exclut les pages island fullbleed) */
+body:not(.inari-fullbleed) .single-post .entry-content-wrap,
+body:not(.inari-fullbleed) .single-product .entry-summary {
+    background: rgba(18, 18, 26, 0.18) !important;
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    backdrop-filter: blur(16px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* ==========================================================================
    FOX ANIMATION — Background Parallax
    ========================================================================== */
 
@@ -69,4 +140,31 @@
     width: 100%;
     height: 100%;
     display: block;
+}
+
+/* ==========================================================================
+   FOOTER — style uniforme sur tout le site
+   Override le snippet 347 "custom CSS" qui pose margin-top: 48px + border-top.
+   Le footer doit être seamless avec le fond (animations fixed ou body bg).
+   ========================================================================== */
+
+footer,
+.site-footer,
+#colophon {
+    margin-top: 0 !important;
+    background: transparent !important;
+    border-top: none !important;
+    border: none !important;
+}
+
+.site-footer-wrap,
+.site-bottom-footer-wrap,
+.site-middle-footer-wrap,
+.site-top-footer-wrap,
+.site-footer-row-container,
+.site-footer-row-container-inner,
+.footer-widget-area,
+.footer-widget-area-inner {
+    background: transparent !important;
+    border: none !important;
 }

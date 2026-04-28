@@ -33,9 +33,9 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 const NEUTRE_THEME = 'neutre'
 const MOBILE_MAX_W = 768
 const DOWNSCALE = 0.5
-const PARALLAX_MAX_CENTER = 12 // px sur l'orbe central
-const PARALLAX_LERP = 0.08
-const DRIFT_FRAC = 0.06 // ±6% du viewport autour du point d'ancrage
+const PARALLAX_MAX_CENTER = 50 // px sur l'orbe central
+const PARALLAX_LERP = 0.12
+const DRIFT_FRAC = 0.12 // ±12% du viewport autour du point d'ancrage
 
 type ColorKey = 'center' | 'bleu' | 'rouge' | 'or' | 'vert'
 type Rgb = { r: number; g: number; b: number }
@@ -77,11 +77,11 @@ const ORB_SPECS: OrbSpec[] = [
     baseFracY: 0.12,
     phaseX: 1.1,
     phaseY: 3.7,
-    periodX: 26000,
-    periodY: 22000,
+    periodX: 18000,
+    periodY: 15000,
     radiusFrac: 0.78,
     colorKey: 'bleu',
-    opacity: 0.3,
+    opacity: 0.15,
     parallaxK: 0.4,
     mobile: true,
   },
@@ -91,11 +91,11 @@ const ORB_SPECS: OrbSpec[] = [
     baseFracY: 0.88,
     phaseX: 4.3,
     phaseY: 0.9,
-    periodX: 21000,
-    periodY: 29000,
+    periodX: 14000,
+    periodY: 20000,
     radiusFrac: 0.75,
     colorKey: 'vert',
-    opacity: 0.3,
+    opacity: 0.15,
     parallaxK: 0.35,
     mobile: true,
   },
@@ -105,13 +105,13 @@ const ORB_SPECS: OrbSpec[] = [
     baseFracY: 0.88,
     phaseX: 2.5,
     phaseY: 5.2,
-    periodX: 28000,
-    periodY: 19000,
+    periodX: 19000,
+    periodY: 13000,
     radiusFrac: 0.78,
     colorKey: 'or',
-    opacity: 0.24,
+    opacity: 0.12,
     parallaxK: 0.45,
-    mobile: true, // conservé en mobile
+    mobile: true,
   },
   // 4 · Périphérie top-right · rouge (cybersec, pilier 1) — poussé au coin, agrandi
   {
@@ -119,13 +119,13 @@ const ORB_SPECS: OrbSpec[] = [
     baseFracY: 0.12,
     phaseX: 0.3,
     phaseY: 2.8,
-    periodX: 24000,
-    periodY: 31000,
+    periodX: 16000,
+    periodY: 21000,
     radiusFrac: 0.75,
     colorKey: 'rouge',
-    opacity: 0.24,
+    opacity: 0.12,
     parallaxK: 0.5,
-    mobile: true, // conservé en mobile
+    mobile: true,
   },
   // 5 · CENTRE · argent (= --inari-red = #FFFFFF en neutre) — DOMINANT,
   // dessiné en dernier, couvre la zone fox hero argentée. Rayon RÉDUIT
@@ -135,13 +135,13 @@ const ORB_SPECS: OrbSpec[] = [
     baseFracY: 0.5,
     phaseX: 3.9,
     phaseY: 1.6,
-    periodX: 30000,
-    periodY: 23000,
+    periodX: 22000,
+    periodY: 16000,
     radiusFrac: 0.55,
     colorKey: 'center',
-    opacity: 0.24,
+    opacity: 0.14,
     parallaxK: 1.0,
-    mobile: true, // toujours présent
+    mobile: true,
   },
 ]
 

@@ -164,12 +164,35 @@ export function MatrixRainRed() {
     let lastTs = performance.now()
     const MUTATION_MS = 120 // fréquence de mutation des caractères
 
+    // Twinkle: une étoile scintille toutes les ~20s
+    const TWINKLE_INTERVAL = 20_000
+    const TWINKLE_DURATION = 800
+    let twinkleTimer = TWINKLE_INTERVAL * Math.random() // offset initial aléatoire
+    let twinkle: { col: number; y: number; char: string; age: number } | null = null
+
     const tick = (ts: number) => {
       raf = requestAnimationFrame(tick)
       const dt = Math.min(ts - lastTs, 64) // clamp pour éviter les sauts après pause
       lastTs = ts
 
       if (!visible || document.visibilityState === 'hidden') return
+
+      // Twinkle logic
+      twinkleTimer += dt
+      if (!twinkle && twinkleTimer >= TWINKLE_INTERVAL && columns.length > 0) {
+        const ci = (Math.random() * columns.length) | 0
+        twinkle = {
+          col: ci,
+          y: columns[ci].y,
+          char: columns[ci].char,
+          age: 0,
+        }
+        twinkleTimer = 0
+      }
+      if (twinkle) {
+        twinkle.age += dt
+        if (twinkle.age >= TWINKLE_DURATION) twinkle = null
+      }
 
       // Trail fade (comme la source : ctx.fillStyle = 'rgba(0,0,0,.05)' + fillRect)
       ctx.fillStyle = 'rgba(10, 10, 15, 0.08)'
@@ -200,6 +223,25 @@ export function MatrixRainRed() {
           col.char = randChar()
         }
       }
+
+      // Dessine le twinkle par-dessus
+      if (twinkle) {
+        const t = twinkle.age / TWINKLE_DURATION
+        // Ease in-out: monte puis redescend
+        const intensity = t < 0.5 ? t * 2 : (1 - t) * 2
+        const x = twinkle.col * columnWidth + 1
+        const y = Math.floor(twinkle.y)
+
+        // Halo glow
+        ctx.save()
+        ctx.shadowColor = themeColor
+        ctx.shadowBlur = 12 * intensity
+        ctx.globalAlpha = 0.6 + 0.4 * intensity
+        ctx.fillStyle = '#FFFFFF'
+        ctx.fillText(twinkle.char, x, y)
+        ctx.restore()
+      }
+
       ctx.globalAlpha = 1
     }
     raf = requestAnimationFrame(tick)
@@ -227,7 +269,7 @@ export function MatrixRainRed() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.18 }}
+      style={{ opacity: 0.10 }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>

@@ -263,7 +263,7 @@ export function TechDemo() {
     return (
         <section
             ref={sectionRef}
-            className="relative overflow-hidden bg-inari-black px-6 py-24 lg:px-12 lg:py-32"
+            className="relative overflow-hidden px-6 py-24 lg:px-10 lg:py-32"
             aria-labelledby="techdemo-title"
         >
             {/* Subtle radial highlight derriere le terminal pour le faire popper */}
@@ -272,12 +272,11 @@ export function TechDemo() {
                 className="pointer-events-none absolute inset-0 -z-10"
                 style={{
                     background:
-                        'radial-gradient(ellipse at 50% 30%, rgba(var(--inari-red-rgb), 0.08), transparent 60%)',
+                        'radial-gradient(ellipse at 50% 30%, rgba(227, 30, 36, 0.08), transparent 60%)',
                 }}
-                data-theme={active.dataTheme}
             />
 
-            <div className="mx-auto max-w-6xl">
+            <div className="mx-auto max-w-[1360px]">
                 {/* Eyebrow */}
                 <div className="flex items-center gap-3">
                     <span
@@ -323,12 +322,11 @@ export function TechDemo() {
                                 role="tab"
                                 aria-selected={isActive}
                                 onClick={() => handleSwitch(s.id)}
-                                data-theme={s.dataTheme}
                                 className={[
-                                    'group inline-flex flex-col items-start rounded-lg border px-4 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inari-accent focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black',
+                                    'group inline-flex flex-col items-start rounded-lg border px-4 py-3 text-left transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/20 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black',
                                     isActive
-                                        ? 'border-[color:var(--inari-red)] bg-inari-black-light'
-                                        : 'border-inari-border bg-inari-black-alt/60 hover:border-inari-text-muted hover:bg-inari-black-light',
+                                        ? 'border-white/[0.15] bg-white/[0.06]'
+                                        : 'border-white/[0.08] bg-transparent hover:border-white/[0.12] hover:bg-white/[0.04]',
                                 ].join(' ')}
                             >
                                 <span
@@ -349,9 +347,8 @@ export function TechDemo() {
                     })}
                 </div>
 
-                {/* Terminal container avec data-theme du scenario */}
+                {/* Terminal container */}
                 <div
-                    data-theme={active.dataTheme}
                     className="mt-8 overflow-hidden rounded-2xl border border-inari-border bg-inari-black-alt/60 shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] backdrop-blur-md"
                 >
                     {/* Barre de fenetre style mac (decorative) */}
@@ -368,7 +365,7 @@ export function TechDemo() {
                             <button
                                 type="button"
                                 onClick={handleReplay}
-                                className="rounded border border-inari-border px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-inari-accent hover:text-inari-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inari-accent"
+                                className="rounded border border-white/[0.08] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-[#E31E24] hover:text-[#E31E24] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E31E24]"
                                 aria-label="Rejouer la d&eacute;mo"
                             >
                                 Rejouer
@@ -376,7 +373,7 @@ export function TechDemo() {
                             <button
                                 type="button"
                                 onClick={() => setIsPlaying((p) => !p)}
-                                className="rounded border border-inari-border px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-inari-accent hover:text-inari-accent focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-inari-accent"
+                                className="rounded border border-white/[0.08] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-[#E31E24] hover:text-[#E31E24] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E31E24]"
                                 aria-pressed={!isPlaying}
                                 aria-label={
                                     isPlaying

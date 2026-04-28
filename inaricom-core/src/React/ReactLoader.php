@@ -199,19 +199,29 @@ final class ReactLoader
 
         // 3. Imports statiques (chunks importes synchronement par l'entry)
         // Vite les liste dans entry.imports comme cles d'autres entrees du manifest.
+        // On enqueue leur CSS (Vite peut placer le Tailwind global dans un chunk partage).
         if (isset($entry['imports']) && is_array($entry['imports'])) {
-            foreach ($entry['imports'] as $imported_key) {
+            foreach ($entry['imports'] as $idx => $imported_key) {
                 if (!is_string($imported_key) || !isset($manifest[$imported_key])) {
                     continue;
                 }
                 $imported = $manifest[$imported_key];
-                if (!is_array($imported) || !isset($imported['file']) || !is_string($imported['file'])) {
+                if (!is_array($imported)) {
                     continue;
                 }
-                // Modulepreload via wp_resource_hints serait ideal, mais ici on
-                // se contente de laisser le browser charger le chunk a la
-                // demande de l'entry. Vite genere les imports en ESM dans le
-                // bundle, le navigateur les resout naturellement.
+                if (isset($imported['css']) && is_array($imported['css'])) {
+                    foreach ($imported['css'] as $ci => $css_file) {
+                        if (!is_string($css_file)) {
+                            continue;
+                        }
+                        wp_enqueue_style(
+                            "inari-island-{$island_name}-chunk-{$idx}-css-{$ci}",
+                            $base_url . $css_file,
+                            [],
+                            INARICOM_CORE_VERSION
+                        );
+                    }
+                }
             }
         }
     }

@@ -69,8 +69,9 @@
   --shadow-subtle: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 
-/* Theme neutre — Homepage (equite piliers) */
-[data-theme="neutre"] {
+/* Theme neutre — Homepage (equite piliers)
+   html prefix = specificity 0,1,1 — bat le :root inline WP (0,1,0) */
+html[data-theme="neutre"] {
   --inari-red: #FFFFFF;
   --inari-red-dark: #E0E0E0;
   --inari-red-light: #FFFFFF;
