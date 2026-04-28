@@ -77,7 +77,7 @@ function PillarCard({ pillar }: { pillar: Pillar }) {
       onMouseLeave={() => setHovered(false)}
       className="group relative flex flex-col overflow-hidden rounded-2xl border transition-all duration-300"
       style={{
-        background: 'rgba(18, 18, 26, 0.18)',
+        background: 'rgba(18, 18, 26, 0.10)',
         backdropFilter: 'blur(16px) saturate(180%)',
         borderColor: hovered ? `rgb(${pillar.rgb})` : 'rgba(255, 255, 255, 0.08)',
         boxShadow: hovered ? `0 20px 60px -15px rgba(${pillar.rgb}, 0.15)` : 'none',

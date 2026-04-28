@@ -24,7 +24,7 @@ function ArticleCard({ post }: { post: WPPost }) {
     <a
       href={post.link}
       className="group flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] transition-all duration-300 hover:border-inari-text-muted hover:shadow-[0_20px_60px_-15px_rgba(255,255,255,0.06)]"
-      style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+      style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
     >
       <div className="flex flex-1 flex-col p-7 sm:p-8">
         {/* Date */}
@@ -64,7 +64,7 @@ function SkeletonCard() {
   return (
     <div
       className="flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] p-7 sm:p-8"
-      style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+      style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
     >
       <div className="h-3 w-24 animate-pulse rounded bg-inari-black-lighter" />
       <div className="mt-4 h-5 w-3/4 animate-pulse rounded bg-inari-black-lighter" />

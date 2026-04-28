@@ -77,7 +77,7 @@ function WhyPoint({ point }: { point: Point }) {
       <div className="flex flex-col items-center">
         <div
           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-inari-text-muted transition-colors duration-300 group-hover:border-inari-accent group-hover:text-inari-accent"
-          style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+          style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
         >
           {point.icon}
         </div>
