@@ -132,7 +132,7 @@ export function ParticleNeonGold() {
     })
 
     const makeCenters = (): Center[] => {
-      const N = isMobile() ? 3 : 4
+      const N = isMobile() ? 4 : 6
       const linesPerCenter = isMobile() ? 10 : 14
       // PRNG frais à chaque resize → positions identiques entre refresh (pas de flicker)
       const localRand = mulberry32(1337 + N * 7)
@@ -144,8 +144,9 @@ export function ParticleNeonGold() {
         const cxRatio = (i + 0.5) * stripRatio + jitter
         // Zigzag vertical : pairs en bande haute, impairs en bande basse
         // → séparation verticale garantie entre voisins horizontaux
+        // Bandes elargies (8-48% / 52-92%) pour couvrir un peu plus de viewport
         const isUpper = i % 2 === 0
-        const cyRatio = isUpper ? 0.18 + localRand() * 0.22 : 0.6 + localRand() * 0.22
+        const cyRatio = isUpper ? 0.08 + localRand() * 0.40 : 0.52 + localRand() * 0.40
         const cx = cxRatio * cssW
         const cy = cyRatio * cssH
         const angle = localRand() * Math.PI * 2

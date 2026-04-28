@@ -272,7 +272,7 @@ export function TechDemo() {
                 className="pointer-events-none absolute inset-0 -z-10"
                 style={{
                     background:
-                        'radial-gradient(ellipse at 50% 30%, rgba(227, 30, 36, 0.08), transparent 60%)',
+                        'radial-gradient(ellipse at 50% 30%, rgba(var(--inari-red-rgb), 0.08), transparent 60%)',
                 }}
             />
 
@@ -365,7 +365,7 @@ export function TechDemo() {
                             <button
                                 type="button"
                                 onClick={handleReplay}
-                                className="rounded border border-white/[0.08] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-[#E31E24] hover:text-[#E31E24] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E31E24]"
+                                className="rounded border border-white/[0.08] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-[var(--inari-red)] hover:text-[var(--inari-red)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--inari-red)]"
                                 aria-label="Rejouer la d&eacute;mo"
                             >
                                 Rejouer
@@ -373,7 +373,7 @@ export function TechDemo() {
                             <button
                                 type="button"
                                 onClick={() => setIsPlaying((p) => !p)}
-                                className="rounded border border-white/[0.08] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-[#E31E24] hover:text-[#E31E24] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#E31E24]"
+                                className="rounded border border-white/[0.08] px-2 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted transition hover:border-[var(--inari-red)] hover:text-[var(--inari-red)] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[var(--inari-red)]"
                                 aria-pressed={!isPlaying}
                                 aria-label={
                                     isPlaying

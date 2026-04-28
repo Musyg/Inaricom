@@ -213,7 +213,7 @@ function IaHero() {
               <a
                 href="#agents"
                 className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-6 py-3 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-                style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
                 Parler &agrave; un expert
               </a>
@@ -260,7 +260,7 @@ function IaHero() {
               <div
                 key={item.title}
                 className="flex items-start gap-4 p-6 sm:p-7"
-                style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] text-inari-text-muted">
                   {item.icon}
@@ -291,7 +291,7 @@ function PillarCard({ pillar }: { pillar: Pillar }) {
     <a
       href={pillar.href}
       className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] transition-all duration-300 hover:border-[#FFD700] hover:shadow-[0_20px_60px_-15px_rgba(255,215,0,0.18)]"
-      style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+      style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
     >
       {/* Glow top */}
       <div
@@ -438,7 +438,7 @@ function CommitmentsSection() {
                 <div className="flex flex-col items-center">
                   <div
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-inari-text-muted transition-colors duration-300 group-hover:border-[#FFD700] group-hover:text-[#FFD700]"
-                    style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                    style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
                   >
                     <span className="font-mono text-sm font-medium">{c.number}</span>
                   </div>
@@ -509,7 +509,7 @@ function RoadmapTeaser() {
             <div
               key={i}
               className="relative overflow-hidden rounded-2xl border border-white/[0.08] p-7 sm:p-8"
-              style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+              style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
             >
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[10px] uppercase tracking-[0.18em]" style={{ color: '#FFD700' }}>
@@ -583,7 +583,7 @@ function IaCTA() {
           <a
             href="/contact/"
             className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-7 py-3.5 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-            style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+            style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
           >
             Parler &agrave; un expert
           </a>
