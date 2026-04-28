@@ -29,8 +29,10 @@ const GOLD_THEME = 'or'
 
 const BASE_RAD = (Math.PI * 2) / 6
 const LEN = 16 // px par unité radiale (équivalent opts.len de la source, reduit de 20→16)
-const DIE_RANGE = 8 // en len-units → ~128px de rayon effectif autour du centre
-const MAX_DRIFT_PX = 40 // bornes du drift autour de la position base
+const DIE_RANGE = 16 // en len-units → ~256px de rayon effectif autour du centre (2x vs initial)
+                    // → batches voisins se chevauchent et particules se "rencontrent"
+const MAX_DRIFT_PX = 70 // bornes du drift autour de la position base — centres deplacent plus,
+                       // amplifie le chevauchement entre batches voisins
 
 // Mulberry32 — PRNG déterministe pour positions seedées stables entre refresh
 function mulberry32(seed: number) {
@@ -126,7 +128,7 @@ export function ParticleNeonGold() {
       addedY: 0,
       rad: 0,
       time: 0,
-      targetTime: (10 + Math.random() * 10) | 0,
+      targetTime: (20 + Math.random() * 20) | 0,
       cumulativeTime: 0,
       lightInputMultiplier: 0.01 + 0.02 * Math.random(),
     })
@@ -150,7 +152,7 @@ export function ParticleNeonGold() {
         const cx = cxRatio * cssW
         const cy = cyRatio * cssH
         const angle = localRand() * Math.PI * 2
-        const driftSpeed = 0.002 + localRand() * 0.002 // px/ms, < 5 px/s
+        const driftSpeed = 0.0008 + localRand() * 0.0012 // px/ms, ~2.5x plus lent (calme)
         result.push({
           cx,
           cy,
@@ -231,7 +233,7 @@ export function ParticleNeonGold() {
       line.x += line.addedX
       line.y += line.addedY
       line.time = 0
-      line.targetTime = (10 + Math.random() * 10) | 0
+      line.targetTime = (20 + Math.random() * 20) | 0
       line.rad += BASE_RAD * (Math.random() < 0.5 ? 1 : -1)
       line.addedX = Math.cos(line.rad)
       line.addedY = Math.sin(line.rad)
@@ -249,7 +251,7 @@ export function ParticleNeonGold() {
         line.rad = 0
         line.cumulativeTime = 0
         line.time = 0
-        line.targetTime = (10 + Math.random() * 10) | 0
+        line.targetTime = (20 + Math.random() * 20) | 0
         line.lightInputMultiplier = 0.01 + 0.02 * Math.random()
       }
     }
@@ -264,11 +266,12 @@ export function ParticleNeonGold() {
 
       if (!visible || document.visibilityState === 'hidden') return
 
-      // Fade trail avec teinte noire palette Inari (source: rgba(0,0,0,.04))
+      // Fade trail avec teinte noire palette Inari.
+      // Alpha 0.03 → trail longue, particules laissent une comete dorée.
       ctx.globalCompositeOperation = 'source-over'
       ctx.shadowBlur = 0
       ctx.globalAlpha = 1
-      ctx.fillStyle = 'rgba(10, 10, 15, 0.07)'
+      ctx.fillStyle = 'rgba(10, 10, 15, 0.03)'
       ctx.fillRect(0, 0, cssW, cssH)
 
       // Draw additif pour effet glow (comme la source)
@@ -295,22 +298,25 @@ export function ParticleNeonGold() {
           const x = line.addedX * wave
           const y = line.addedY * wave
 
-          ctx.shadowBlur = prop * 6
-          // Remplacement du cycle "light" source par variation d'alpha (teinte fixe)
-          const alpha = 0.5 + 0.25 * Math.sin(line.cumulativeTime * line.lightInputMultiplier)
+          // shadowBlur 10 → halo dore 2x plus large = brillance accrue sans
+          // grossir la tete (qui reste 1x1, finesse preservee)
+          ctx.shadowBlur = prop * 10
+          // Variation d'alpha (teinte fixe, pas de cycle "light" source)
+          const alpha = 0.62 + 0.22 * Math.sin(line.cumulativeTime * line.lightInputMultiplier)
           ctx.globalAlpha = alpha
 
           const px = center.cx + (line.x + x) * LEN
           const py = center.cy + (line.y + y) * LEN
-          ctx.fillRect(px, py, 2, 2)
+          // Tete 1x1 → particules fines, la trainee prend visuellement le dessus
+          ctx.fillRect(px, py, 1, 1)
 
-          // Sparks (10% de chance par frame par ligne comme la source)
-          if (Math.random() < 0.1) {
+          // Sparks (5% de chance par frame par ligne)
+          if (Math.random() < 0.05) {
             ctx.fillRect(
-              px + (Math.random() - 0.5) * 10 - 1,
-              py + (Math.random() - 0.5) * 10 - 1,
-              2,
-              2,
+              px + (Math.random() - 0.5) * 10,
+              py + (Math.random() - 0.5) * 10,
+              1,
+              1,
             )
           }
         }
@@ -346,7 +352,7 @@ export function ParticleNeonGold() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.1 }}
+      style={{ opacity: 0.07 }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>
