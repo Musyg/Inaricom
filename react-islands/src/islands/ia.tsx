@@ -1407,7 +1407,7 @@ function IaCTA() {
 
 function IaIsland() {
   return (
-    <main className="relative text-inari-text" data-theme="or">
+    <div className="relative text-inari-text" data-theme="or" role="region" aria-label="Contenu IA souveraine">
       {/* Background fixe — fumee theme + particules en surcouche */}
       <div
         aria-hidden="true"
@@ -1427,7 +1427,7 @@ function IaIsland() {
         <RoadmapTeaser />
         <IaCTA />
       </div>
-    </main>
+    </div>
   )
 }
 

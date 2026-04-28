@@ -327,9 +327,32 @@ export function ParticleNeonGold() {
       ctx.globalCompositeOperation = 'source-over'
       ctx.shadowBlur = 0
     }
-    raf = requestAnimationFrame(tick)
+    // Defer le start de l'animation hors du critical path : requestIdleCallback
+    // attend une fenetre d'idle navigateur (ou timeout 2s max). Reduit le TBT
+    // au load (audit QA 28 avril : 8s mobile / 16s desktop sur IA → blocage RAF
+    // dans la fenetre Lighthouse). cancelIdleCallback en cleanup pour eviter
+    // la fuite si le composant unmount avant idle.
+    let idleHandle: number | null = null
+    const startAnimation = () => {
+      idleHandle = null
+      lastTs = performance.now()
+      raf = requestAnimationFrame(tick)
+    }
+    type RIC = (cb: () => void, opts?: { timeout?: number }) => number
+    type CIC = (h: number) => void
+    const ric = (window as Window & { requestIdleCallback?: RIC }).requestIdleCallback
+    const cic = (window as Window & { cancelIdleCallback?: CIC }).cancelIdleCallback
+    if (typeof ric === 'function') {
+      idleHandle = ric(startAnimation, { timeout: 2000 })
+    } else {
+      idleHandle = window.setTimeout(startAnimation, 100)
+    }
 
     return () => {
+      if (idleHandle !== null) {
+        if (typeof cic === 'function') cic(idleHandle)
+        else clearTimeout(idleHandle)
+      }
       cancelAnimationFrame(raf)
       ro.disconnect()
       colorMo.disconnect()

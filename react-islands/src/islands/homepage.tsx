@@ -264,7 +264,7 @@ function Hero() {
 
 function HomepageIsland() {
   return (
-    <main className="relative text-inari-text">
+    <div className="relative text-inari-text" role="region" aria-label="Contenu homepage">
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 bg-inari-black"
@@ -280,7 +280,7 @@ function HomepageIsland() {
         <ArticleCards />
         <FinalCTA />
       </div>
-    </main>
+    </div>
   )
 }
 

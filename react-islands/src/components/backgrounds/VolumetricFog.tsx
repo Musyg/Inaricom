@@ -348,9 +348,27 @@ export function VolumetricFog() {
       curOffsetY += (targetOffsetY - curOffsetY) * PARALLAX_LERP
       drawFrame(ts)
     }
-    raf = requestAnimationFrame(tick)
+    // Defer le start de l'animation hors du critical path → reduit le TBT au load.
+    let idleHandle: number | null = null
+    type RIC = (cb: () => void, opts?: { timeout?: number }) => number
+    type CIC = (h: number) => void
+    const ric = (window as Window & { requestIdleCallback?: RIC }).requestIdleCallback
+    const cic = (window as Window & { cancelIdleCallback?: CIC }).cancelIdleCallback
+    const startAnimation = () => {
+      idleHandle = null
+      raf = requestAnimationFrame(tick)
+    }
+    if (typeof ric === 'function') {
+      idleHandle = ric(startAnimation, { timeout: 2000 })
+    } else {
+      idleHandle = window.setTimeout(startAnimation, 100)
+    }
 
     return () => {
+      if (idleHandle !== null) {
+        if (typeof cic === 'function') cic(idleHandle)
+        else clearTimeout(idleHandle)
+      }
       cancelAnimationFrame(raf)
       if (resizeTimer) clearTimeout(resizeTimer)
       ro.disconnect()

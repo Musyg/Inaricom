@@ -460,7 +460,7 @@ function CybersecHero() {
               <span className="block">La cybers&eacute;curit&eacute;</span>
               <span className="block">
                 n&rsquo;a jamais &eacute;t&eacute;{' '}
-                <em className="not-italic" style={{ color: '#E31E24' }}>
+                <em className="not-italic" style={{ color: '#FF3A40' }}>
                   aussi critique.
                 </em>
               </span>
@@ -548,7 +548,7 @@ function StatsBar() {
 
               <p
                 className="font-mono text-3xl font-semibold leading-none tracking-tight sm:text-4xl"
-                style={{ color: '#E31E24' }}
+                style={{ color: '#FF3A40' }}
               >
                 {s.value}
               </p>
@@ -591,7 +591,7 @@ function AttackVectorCard({ v }: { v: AttackVector }) {
       {/* Icon */}
       <div
         className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
-        style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#E31E24' }}
+        style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#FF3A40' }}
       >
         {v.icon}
       </div>
@@ -609,7 +609,7 @@ function AttackVectorCard({ v }: { v: AttackVector }) {
       {/* Problem (red accent quote) */}
       <p
         className="mt-3 text-[15px] font-medium leading-snug"
-        style={{ color: '#E31E24' }}
+        style={{ color: '#FF3A40' }}
       >
         &ldquo;{v.problem}&rdquo;
       </p>
@@ -670,7 +670,7 @@ function AttackVectorsSection() {
           className="mt-5 max-w-3xl font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
         >
           Six menaces concretes.{' '}
-          <em className="not-italic" style={{ color: '#E31E24' }}>
+          <em className="not-italic" style={{ color: '#FF3A40' }}>
             Six tests.
           </em>
         </h2>
@@ -730,7 +730,7 @@ function AuditProductCard({ product }: { product: AuditProduct }) {
       <div className="flex items-start justify-between">
         <div
           className="flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300"
-          style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#E31E24' }}
+          style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#FF3A40' }}
         >
           {product.icon}
         </div>
@@ -739,7 +739,7 @@ function AuditProductCard({ product }: { product: AuditProduct }) {
             className="rounded-full px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em]"
             style={{
               backgroundColor: 'rgba(227, 30, 36, 0.10)',
-              color: '#E31E24',
+              color: '#FF3A40',
               border: '1px solid rgba(227, 30, 36, 0.30)',
             }}
           >
@@ -792,7 +792,7 @@ function AuditProductCard({ product }: { product: AuditProduct }) {
         <div>
           <p
             className="font-mono text-2xl font-semibold leading-none tracking-tight"
-            style={{ color: '#E31E24' }}
+            style={{ color: '#FF3A40' }}
           >
             {product.price}
           </p>
@@ -846,7 +846,7 @@ function AuditPricingSection() {
           className="mt-5 max-w-3xl font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
         >
           Quatre audits.{' '}
-          <em className="not-italic" style={{ color: '#E31E24' }}>
+          <em className="not-italic" style={{ color: '#FF3A40' }}>
             Quatre prix publics.
           </em>
         </h2>
@@ -933,7 +933,7 @@ function MethodologySection() {
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
                     style={{
                       backgroundColor: 'rgba(227, 30, 36, 0.08)',
-                      color: '#E31E24',
+                      color: '#FF3A40',
                     }}
                   >
                     <span className="font-mono text-sm font-medium">{step.number}</span>
@@ -995,7 +995,7 @@ function ComparatorRow({ row }: { row: CompareRow }) {
       <div className="flex flex-col gap-1">
         <span
           className="font-mono text-[10px] uppercase tracking-[0.14em] sm:hidden"
-          style={{ color: '#E31E24' }}
+          style={{ color: '#FF3A40' }}
         >
           Inaricom Red Team
         </span>
@@ -1005,7 +1005,7 @@ function ComparatorRow({ row }: { row: CompareRow }) {
         {row.inaricomHighlight && (
           <p
             className="text-[11px] font-medium leading-snug"
-            style={{ color: '#E31E24' }}
+            style={{ color: '#FF3A40' }}
           >
             {row.inaricomHighlight}
           </p>
@@ -1037,7 +1037,7 @@ function ComparatorSection() {
           className="mt-5 max-w-3xl font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
         >
           Pourquoi un humain.{' '}
-          <em className="not-italic" style={{ color: '#E31E24' }}>
+          <em className="not-italic" style={{ color: '#FF3A40' }}>
             Vraiment.
           </em>
         </h2>
@@ -1078,7 +1078,7 @@ function ComparatorSection() {
             <div>
               <div
                 className="flex h-9 w-9 items-center justify-center rounded-lg"
-                style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#E31E24' }}
+                style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#FF3A40' }}
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
@@ -1087,7 +1087,7 @@ function ComparatorSection() {
               <p className="mt-3 font-sans text-base font-medium text-inari-white">
                 Inaricom Red Team
               </p>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: '#E31E24' }}>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: '#FF3A40' }}>
                 Humains + methodologie
               </p>
             </div>
@@ -1107,7 +1107,7 @@ function ComparatorSection() {
           <a
             href="/contact/"
             className="font-medium underline-offset-4 transition hover:underline"
-            style={{ color: '#E31E24' }}
+            style={{ color: '#FF3A40' }}
           >
             &Eacute;crivez-nous &rarr;
           </a>
@@ -1185,7 +1185,7 @@ function CybersecCTA() {
 
 function CybersecIsland() {
   return (
-    <main className="relative text-inari-text" data-theme="rouge">
+    <div className="relative text-inari-text" data-theme="rouge" role="region" aria-label="Contenu cybersecurite">
       {/* Background fixe — fumee theme + matrix rain en surcouche */}
       <div
         aria-hidden="true"
@@ -1205,7 +1205,7 @@ function CybersecIsland() {
         <ComparatorSection />
         <CybersecCTA />
       </div>
-    </main>
+    </div>
   )
 }
 

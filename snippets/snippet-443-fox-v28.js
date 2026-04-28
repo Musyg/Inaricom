@@ -558,7 +558,7 @@
                 ctx.shadowColor = `rgb(${r}, ${g}, ${b})`;
                 ctx.shadowBlur = CONFIG.glowBlur * scale;
                 ctx.beginPath();
-                ctx.arc(head.x, head.y, scaledLineWidth + 1, 0, Math.PI * 2);
+                ctx.arc(head.x, head.y, Math.max(0, scaledLineWidth + 1), 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 1)`;
                 ctx.fill();
                 ctx.shadowBlur = 0;
@@ -584,11 +584,14 @@
             
             if (opacity > 0.01) {
                 const { r, g, b } = spark.color;
-                const size = CONFIG.sparkSize * scale * (0.5 + lifeRatio * 0.5);
-                
+                // Math.max(0, ...) : evite arc() radius negatif quand
+                // lifeRatio < 0 (spark.life > maxLife sur edge case) ou
+                // scale negatif (resize transitoire) — fix QA 28 avril.
+                const size = Math.max(0, CONFIG.sparkSize * scale * (0.5 + lifeRatio * 0.5));
+
                 ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
-                ctx.shadowBlur = CONFIG.sparkGlow * scale * lifeRatio;
-                
+                ctx.shadowBlur = Math.max(0, CONFIG.sparkGlow * scale * lifeRatio);
+
                 ctx.beginPath();
                 ctx.arc(spark.x, spark.y, size, 0, Math.PI * 2);
                 ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
