@@ -19,7 +19,7 @@ export function FinalCTA() {
           id="final-cta-title"
           className="font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl lg:text-6xl"
         >
-          Parlons de{' '}
+          D&eacute;crivez-nous{' '}
           <em className="not-italic text-inari-text-soft">votre projet.</em>
         </h2>
 
