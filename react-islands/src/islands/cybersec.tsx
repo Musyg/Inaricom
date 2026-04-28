@@ -5,132 +5,395 @@ import '@/styles/globals.css'
 
 import { MatrixRainRed } from '@/components/backgrounds/MatrixRainRed'
 import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
-import { TechDemo } from '@/components/sections/TechDemo'
 
 // ---------------------------------------------------------------------------
-// Data
+// Data — Stats (KPI panic). 4 chiffres choc en bandeau apres le hero.
 // ---------------------------------------------------------------------------
 
-type Service = {
+type Stat = {
   id: string
-  number: string
+  value: string
+  label: string
+  trend?: string
+  source: string
+}
+
+const STATS: Stat[] = [
+  {
+    id: 'ransomware-rise',
+    value: '+45%',
+    label: 'Attaques ransomware globales',
+    trend: 'en 2025 vs 2024',
+    source: 'Astra Security 2026',
+  },
+  {
+    id: 'avg-cost-pme',
+    value: 'CHF 1.85M',
+    label: 'Cout moyen d’une attaque sur PME',
+    trend: 'tous secteurs confondus',
+    source: 'Verizon DBIR 2026',
+  },
+  {
+    id: 'one-in-five',
+    value: '1 sur 5',
+    label: 'PME ferment apres un ransomware',
+    trend: 'dans les 12 mois',
+    source: 'Mastercard Global SMB 2025',
+  },
+  {
+    id: 'global-damage',
+    value: '$74 Mds',
+    label: 'Cout cybercriminalite previsionnel',
+    trend: 'en 2026',
+    source: 'Cybersecurity Ventures',
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Data — Attack vectors (Section B-rouge). 6 vecteurs concrets pour PME.
+// Remplace l'ancien SERVICES (3 cards generiques) par des scenarios qui
+// parlent au dirigeant non-tech.
+// ---------------------------------------------------------------------------
+
+type AttackVector = {
+  id: string
+  category: string
   title: string
-  tagline: string
+  problem: string
   description: string
-  features: string[]
-  href: string
+  service: string
+  deliverable: string
   icon: React.ReactNode
 }
 
-const SERVICES: Service[] = [
+const ATTACK_VECTORS: AttackVector[] = [
   {
-    id: 'pentest',
-    number: '01',
-    title: 'Pentest applicatif & infra',
-    tagline: 'Tests d’intrusion web, mobile, API, réseau',
+    id: 'phishing',
+    category: 'Social engineering',
+    title: 'Phishing dirigeant',
+    problem:
+      'Le DG clique. Le wire transfer part. CHF 350k disparus en 4 minutes.',
     description:
-      'Simulation d’attaque réaliste sur votre périmètre : applications web, API REST/GraphQL, mobile, infrastructure réseau. Rapport technique + synthèse COMEX.',
-    features: [
-      'OWASP Top 10 & OWASP API Security',
-      'Tests manuels + outils automatisés',
-      'Rapport avec preuves d’exploitation',
-      'Recommandations priorisées',
-    ],
-    href: '/services-cybersecurite/pentest/',
+      'Pretexting cible sur dirigeants : LinkedIn + emails + appels. Test de votre sensibilisation et de vos garde-fous (validation double, CFO).',
+    service: 'Red Team / phishing campaign',
+    deliverable: 'Rapport + replay scenarios + recos formation',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <path d="M22 6l-10 7L2 6" />
+        <rect x="2" y="4" width="20" height="16" rx="2" />
+      </svg>
+    ),
+  },
+  {
+    id: 'ransomware',
+    category: 'Ransomware',
+    title: 'Chiffrement infrastructure',
+    problem:
+      'Lundi 6h. AD chiffre. ERP HS. 14 jours d’arret de production.',
+    description:
+      'Audit Active Directory + pentest interne. Detection des chemins lateraux, comptes a privileges, partages exposes. Test de votre detection EDR/SIEM.',
+    service: 'Audit AD + pentest interne',
+    deliverable: 'Plan remediation P0/P1 + scenarios d’intrusion',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <rect x="3" y="11" width="18" height="11" rx="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        <line x1="12" y1="15" x2="12" y2="18" />
+      </svg>
+    ),
+  },
+  {
+    id: 'supply-chain',
+    category: 'Supply chain',
+    title: 'Dependance compromise',
+    problem:
+      'Une lib npm que vous n’avez pas auditee. Backdoor en post-install.',
+    description:
+      'Audit complet de vos dependances (npm, Composer, pip). Detection CVE actives + packages compromis recents (Axios mars 2026, Shai-Hulud sept 2025).',
+    service: 'Audit deps + monitoring CVE',
+    deliverable: 'SBOM + plan upgrade + alerting CVE continu',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </svg>
+    ),
+  },
+  {
+    id: 'cloud-iam',
+    category: 'Cloud / SaaS',
+    title: 'Compte cloud compromis',
+    problem:
+      'Un secret expose sur GitHub. Acces full-admin AWS pour 4 jours.',
+    description:
+      'Audit IAM + secrets management : permissions excessives, cles exposees dans repos, MFA absent, sessions persistantes. Test sur AWS / GCP / Azure / GitHub / Microsoft 365.',
+    service: 'Audit IAM + secrets scan',
+    deliverable: 'Matrice permissions + plan moindre privilege',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'web-app',
+    category: 'Web application',
+    title: 'App web vulnerable',
+    problem:
+      'IDOR sur l’API client. 12 000 dossiers exfiltres en 2h.',
+    description:
+      'Pentest applicatif OWASP Top 10 + API Security. Tests manuels (logique metier) + automatises (Burp / ZAP). Couvre auth, autorisations, injections, XSS, SSRF, IDOR.',
+    service: 'Pentest web / API',
+    deliverable: 'Rapport tech + COMEX + PoC d’exploitation',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'llm-ai',
+    category: 'IA / LLM',
+    title: 'Agent IA expose',
+    problem:
+      'Prompt injection sur le chatbot. Donnees clients exfiltrees via system prompt.',
+    description:
+      'Audit OWASP LLM Top 10 : prompt injection, data leakage, jailbreak, model DoS, supply chain (poids modeles), insecure plugins. Couvre agents RAG + tool-calling.',
+    service: 'Audit IA / pentest LLM',
+    deliverable: 'Rapport vecteurs + plan hardening prompts',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
+        <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.09-2 3.5V12h3l1 3h-8l1-3h3V9.5C11.4 9.09 10 7.95 10 6a4 4 0 0 1 2-4z" />
+        <path d="M9 18h6" />
+        <path d="M10 22h4" />
+      </svg>
+    ),
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Data — Audit products (Section A-rouge). 4 produits avec prix HT publics.
+// Transparence tarifaire = pilier marketing Inaricom.
+// ---------------------------------------------------------------------------
+
+type AuditProduct = {
+  id: string
+  name: string
+  tagline: string
+  specs: string[]
+  recommendedFor: string
+  price: string
+  href: string
+  badge?: string
+  icon: React.ReactNode
+}
+
+const AUDIT_PRODUCTS: AuditProduct[] = [
+  {
+    id: 'pentest-web',
+    name: 'Pentest application web',
+    tagline: '5 jours · OWASP Top 10',
+    specs: [
+      'OWASP Top 10 + API Security',
+      'Tests manuels + automatises',
+      'Rapport tech + synthese COMEX',
+      'Re-test 6 semaines offert',
+    ],
+    recommendedFor: 'PME avec app web exposee, e-commerce, SaaS',
+    price: 'CHF 4 800',
+    href: '/services-cybersecurite/pentest-web/',
+    badge: 'POPULAIRE',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="2" y1="12" x2="22" y2="12" />
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+      </svg>
+    ),
+  },
+  {
+    id: 'audit-solidity',
+    name: 'Audit Solidity',
+    tagline: '10 jours · ToB framework',
+    specs: [
+      'Slither + Manticore + Echidna',
+      'Revue manuelle line-by-line',
+      'Scenarios d’attaque PoC',
+      'Re-test 6 semaines offert',
+    ],
+    recommendedFor: 'Projets DeFi, NFT, DAO, smart contracts EVM',
+    price: 'CHF 8 500',
+    href: '/services-cybersecurite/audit-solidity/',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+        <line x1="14" y1="4" x2="10" y2="20" />
+      </svg>
+    ),
+  },
+  {
+    id: 'red-team',
+    name: 'Red Team complete',
+    tagline: '4 semaines · MITRE ATT&CK',
+    specs: [
+      'OSINT + reconnaissance',
+      'Phishing + intrusion physique/logique',
+      'Lateralisation + exfiltration',
+      'Debriefing Purple Team',
+    ],
+    recommendedFor: 'PME 50+ employes, donnees sensibles, finance',
+    price: 'CHF 18 000',
+    href: '/services-cybersecurite/red-team/',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
       </svg>
     ),
   },
   {
-    id: 'redteam',
-    number: '02',
-    title: 'Red Team',
-    tagline: 'Simulation d’attaque avancée, multi-vecteurs',
-    description:
-      'Attaque coordonnée simulant un adversaire réel : reconnaissance OSINT, social engineering, intrusion physique et logique, latéralisation. Test de votre détection et réponse.',
-    features: [
-      'Scénarios MITRE ATT&CK alignés',
-      'Phishing ciblé + pretexting',
-      'Mouvement latéral & escalade',
-      'Debriefing Purple Team',
+    id: 'audit-llm',
+    name: 'Audit IA / LLM',
+    tagline: '7 jours · OWASP LLM Top 10',
+    specs: [
+      'OWASP LLM Top 10 (prompt injection)',
+      'Tests jailbreak + data leakage',
+      'Audit pipeline RAG + agents',
+      'Re-test 6 semaines offert',
     ],
-    href: '/services-cybersecurite/red-team/',
+    recommendedFor: 'Apps IA en production, chatbots, RAG',
+    price: 'CHF 6 200',
+    href: '/services-cybersecurite/audit-ia/',
     icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <circle cx="12" cy="12" r="10" />
-        <circle cx="12" cy="12" r="6" />
-        <circle cx="12" cy="12" r="2" />
-      </svg>
-    ),
-  },
-  {
-    id: 'audit-code',
-    number: '03',
-    title: 'Audit de code & configuration',
-    tagline: 'Revue manuelle de votre code source et infra',
-    description:
-      'Analyse statique et manuelle de votre code, pipelines CI/CD, configurations cloud et on-premise. Détection de vulnérabilités avant qu’elles n’arrivent en production.',
-    features: [
-      'Revue de code sécurité manuelle',
-      'Audit CI/CD & supply chain',
-      'Configuration cloud (AWS, Azure, GCP)',
-      'Hardening système & réseau',
-    ],
-    href: '/services-cybersecurite/audit-code/',
-    icon: (
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-6 w-6">
-        <polyline points="16 18 22 12 16 6" />
-        <polyline points="8 6 2 12 8 18" />
-        <line x1="12" y1="2" x2="12" y2="22" opacity="0.3" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-7 w-7">
+        <path d="M12 2a4 4 0 0 1 4 4c0 1.95-1.4 3.09-2 3.5V12h3l1 3h-8l1-3h3V9.5C11.4 9.09 10 7.95 10 6a4 4 0 0 1 2-4z" />
+        <path d="M9 18h6" />
+        <path d="M10 22h4" />
       </svg>
     ),
   },
 ]
+
+// ---------------------------------------------------------------------------
+// Data — Methodology steps (Section E-rouge). Existant prereserve, juste
+// re-cadrer pour mettre l'accent sur l'architecture du livrable.
+// ---------------------------------------------------------------------------
 
 type MethodStep = {
   id: string
   number: string
   title: string
   description: string
+  duration: string
 }
 
 const METHOD_STEPS: MethodStep[] = [
   {
     id: 'cadrage',
     number: '01',
-    title: 'Cadrage & périmètre',
+    title: 'Cadrage & perimetre',
     description:
-      'Échange initial pour définir les cibles, le scope, les règles d’engagement et le calendrier. Devis fixé avant démarrage.',
+      'Echange initial pour definir cibles, scope, regles d’engagement, calendrier. Validation legale (RGPD/nLPD). Devis fixe avant demarrage.',
+    duration: '1 sem',
   },
   {
     id: 'reconnaissance',
     number: '02',
-    title: 'Reconnaissance & cartographie',
+    title: 'Reconnaissance',
     description:
-      'Collecte passive et active d’informations : surface d’attaque, technologies, points d’entrée, dépendances exposées.',
+      'Collecte passive et active : surface d’attaque, technologies, points d’entree, dependances exposees, OSINT social.',
+    duration: '~3 j',
   },
   {
     id: 'exploitation',
     number: '03',
-    title: 'Tests d’exploitation',
+    title: 'Exploitation',
     description:
-      'Tentatives d’intrusion manuelles et automatisées. Chaque vulnérabilité est documentée avec preuve, impact, reproductibilité.',
+      'Tests manuels et automatises bases sur PTES + OWASP + MITRE ATT&CK. Chaque vulnerabilite documentee avec preuve, impact, reproductibilite.',
+    duration: 'core',
   },
   {
     id: 'rapport',
     number: '04',
-    title: 'Rapport & restitution',
+    title: 'Livrable double',
     description:
-      'Double livrable : rapport technique détaillé pour l’équipe IT + synthèse décisionnelle pour le COMEX. Debriefing oral inclus.',
+      'Rapport technique detaille pour l’equipe IT (CVSS, PoC, remediation par finding) + synthese decisionnelle COMEX (priorisation budget × risque).',
+    duration: '~4 j',
   },
   {
-    id: 'remediation',
+    id: 're-test',
     number: '05',
-    title: 'Accompagnement remédiation',
+    title: 'Re-test offert',
     description:
-      'Suivi des correctifs, retest des vulnérabilités critiques, validation du plan de remédiation. Jusqu’à fermeture des P0/P1.',
+      '6 semaines apres remise. Re-test des P0/P1 corriges, validation du plan de remediation. Inclus dans le devis initial.',
+    duration: '1 j',
+  },
+]
+
+// ---------------------------------------------------------------------------
+// Data — Comparator (Section C-rouge). 6 axes Inaricom vs SaaS automatique.
+// ---------------------------------------------------------------------------
+
+type CompareRow = {
+  id: string
+  axis: string
+  saas: string
+  saasDetail?: string
+  inaricom: string
+  inaricomHighlight?: string
+}
+
+const COMPARE_ROWS: CompareRow[] = [
+  {
+    id: 'false-positives',
+    axis: 'Faux positifs',
+    saas: '~70-80%',
+    saasDetail: 'a trier manuellement par votre IT',
+    inaricom: '< 5%',
+    inaricomHighlight: 'verifies main par main',
+  },
+  {
+    id: 'cve-coverage',
+    axis: 'Couverture',
+    saas: 'CVE connues uniquement',
+    saasDetail: 'pattern matching sur feeds CVE',
+    inaricom: 'CVE + chasse 0-day',
+    inaricomHighlight: 'logique metier testee',
+  },
+  {
+    id: 'business-logic',
+    axis: 'Logique metier',
+    saas: 'Non testee',
+    saasDetail: 'IDOR, BAC, race conditions ignores',
+    inaricom: 'Testee (PTES)',
+    inaricomHighlight: 'IDOR, BAC, workflows',
+  },
+  {
+    id: 'comex',
+    axis: 'Synthese COMEX',
+    saas: 'Aucune',
+    saasDetail: 'rapport technique brut',
+    inaricom: 'Synthese decisionnelle',
+    inaricomHighlight: 'priorisation budget × risque',
+  },
+  {
+    id: 'cost',
+    axis: 'Cout 12 mois',
+    saas: 'CHF 6-12k abonnement',
+    saasDetail: 'renouvele chaque annee',
+    inaricom: 'CHF 4.8-18k one-shot',
+    inaricomHighlight: 'devis fixe avant demarrage',
+  },
+  {
+    id: 'retest',
+    axis: 'Re-test',
+    saas: 'Non',
+    saasDetail: 'vous re-payez l’abonnement',
+    inaricom: 'Offert (6 semaines)',
+    inaricomHighlight: 'verifie correctifs P0/P1',
   },
 ]
 
@@ -143,10 +406,10 @@ function CybersecHero() {
     <section
       className="relative isolate overflow-hidden"
       style={{ minHeight: '100vh' }}
-      aria-label="Hero Cybersécurité"
+      aria-label="Hero cybersecurite"
     >
       <div className="relative z-10 mx-auto flex min-h-screen max-w-[1360px] flex-col px-6 lg:px-10">
-        {/* Badge */}
+        {/* Badge rouge */}
         <div className="flex justify-center" style={{ paddingTop: '14px' }}>
           <div
             className="inline-flex items-center gap-2.5 rounded-full border px-5"
@@ -175,7 +438,7 @@ function CybersecHero() {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <path d="M8 14s6-3 6-7.5V3.5L8 1 2 3.5V6.5C2 11 8 14 8 14z" />
+              <path d="M8 1L2 4v4c0 4 6 7 6 7s6-3 6-7V4l-6-3z" />
             </svg>
             <span>Red Team &middot; Pentest &middot; Audit</span>
           </div>
@@ -183,7 +446,7 @@ function CybersecHero() {
 
         {/* Content */}
         <div className="flex flex-1" style={{ paddingTop: '40px' }}>
-          <div className="w-full" style={{ maxWidth: '800px' }}>
+          <div className="w-full" style={{ maxWidth: '820px' }}>
             <h1
               className="font-serif text-inari-white"
               style={{
@@ -194,106 +457,50 @@ function CybersecHero() {
                 margin: 0,
               }}
             >
-              <span className="block">Votre surface d&rsquo;attaque,</span>
+              <span className="block">La cybers&eacute;curit&eacute;</span>
               <span className="block">
-                test&eacute;e{' '}
+                n&rsquo;a jamais &eacute;t&eacute;{' '}
                 <em className="not-italic" style={{ color: '#E31E24' }}>
-                  avant qu&rsquo;un autre
+                  aussi critique.
                 </em>
               </span>
-              <span className="block text-inari-text-soft">ne le fasse.</span>
+              <span className="block text-inari-text-soft">Vous testez avant ou vous attendez&nbsp;?</span>
             </h1>
 
             <p
               style={{
                 fontSize: '22.4px',
-                lineHeight: '1.8',
+                lineHeight: '1.7',
                 color: 'rgba(240, 240, 245, 0.65)',
                 marginTop: '32px',
-                maxWidth: '38rem',
+                maxWidth: '40rem',
               }}
             >
-              Pentest, Red Team, audit de code. M&eacute;thodologie
-              offensive transparente, r&eacute;sultats document&eacute;s
-              avec preuves. Pour les PME qui veulent savoir, pas juste
-              se rassurer.
+              <strong style={{ color: '#FF3A40', fontWeight: 600 }}>27 % des PME francophones</strong>{' '}
+              ont subi une attaque en 2025. <strong style={{ color: '#FF3A40', fontWeight: 600 }}>104 ransomwares</strong>{' '}
+              ont ete reportes a l&rsquo;OFCS en Suisse. Pentest, Red Team, audit
+              de code&nbsp;: methodologie offensive transparente, double livrable
+              technique + COMEX.
             </p>
 
             {/* CTAs */}
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <a
-                href="/contact/"
+                href="#tarifs"
                 className="group inline-flex items-center gap-2 rounded-md px-6 py-3 font-sans text-sm font-medium transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
                 style={{ backgroundColor: '#E31E24', color: '#FFFFFF' }}
               >
-                Demander un audit
+                Voir les tarifs publics
                 <span aria-hidden="true" className="transition group-hover:translate-x-0.5">&rarr;</span>
               </a>
               <a
-                href="#services"
+                href="#methodologie"
                 className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-6 py-3 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
                 style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
-                Voir nos offres
+                Notre m&eacute;thodologie
               </a>
             </div>
-          </div>
-        </div>
-
-        {/* 3 trust signals bas du hero */}
-        <div className="pb-12 lg:pb-20">
-          <div className="grid gap-px overflow-hidden rounded-2xl border border-white/[0.08] sm:grid-cols-3">
-            {[
-              {
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                  </svg>
-                ),
-                title: 'OWASP · PTES · MITRE ATT&CK',
-                desc: 'Frameworks de référence, pas de méthodologie maison opaque.',
-              },
-              {
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                  </svg>
-                ),
-                title: 'Double livrable',
-                desc: 'Rapport technique IT + synthèse décisionnelle COMEX.',
-              },
-              {
-                icon: (
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
-                    <rect x="1" y="4" width="22" height="16" rx="2" />
-                    <line x1="1" y1="10" x2="23" y2="10" />
-                  </svg>
-                ),
-                title: 'Tarifs publics',
-                desc: 'Grilles EUR / CHF affichées. Pas de devis-surprise.',
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className="flex items-start gap-4 p-6 sm:p-7"
-                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] text-inari-text-muted">
-                  {item.icon}
-                </div>
-                <div>
-                  <p className="font-mono text-xs font-medium uppercase tracking-[0.14em] text-inari-white">
-                    {item.title}
-                  </p>
-                  <p className="mt-1 text-sm leading-relaxed text-inari-text-soft">
-                    {item.desc}
-                  </p>
-                </div>
-              </div>
-            ))}
           </div>
         </div>
       </div>
@@ -302,109 +509,199 @@ function CybersecHero() {
 }
 
 // ---------------------------------------------------------------------------
-// Services cards
+// StatsBar (KPI panic) — 4 chiffres choc apres le hero.
 // ---------------------------------------------------------------------------
 
-function ServiceCard({ service }: { service: Service }) {
+function StatsBar() {
   return (
-    <a
-      href={service.href}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] transition-all duration-300 hover:border-[#E31E24] hover:shadow-[0_20px_60px_-15px_rgba(227,30,36,0.15)]"
+    <section
+      id="stats"
+      className="relative overflow-hidden px-6 pb-16 pt-4 lg:px-10 lg:pb-20"
+      aria-labelledby="cybersec-stats-title"
+    >
+      <div className="mx-auto max-w-[1360px]">
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-px w-10 bg-inari-border" />
+          <p
+            id="cybersec-stats-title"
+            className="font-mono text-xs uppercase tracking-[0.22em] text-inari-text-muted"
+          >
+            Le terrain en chiffres &middot; 2025-2026
+          </p>
+        </div>
+
+        {/* Grid 4 KPI */}
+        <div className="mt-8 grid gap-px overflow-hidden rounded-2xl border border-white/[0.08] sm:grid-cols-2 lg:grid-cols-4">
+          {STATS.map((s) => (
+            <div
+              key={s.id}
+              className="relative flex flex-col p-6 sm:p-7"
+              style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
+            >
+              {/* Glow top */}
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-x-0 top-0 h-px opacity-25"
+                style={{ background: 'linear-gradient(90deg, transparent, #E31E24, transparent)' }}
+              />
+
+              <p
+                className="font-mono text-3xl font-semibold leading-none tracking-tight sm:text-4xl"
+                style={{ color: '#E31E24' }}
+              >
+                {s.value}
+              </p>
+              <p className="mt-3 text-[15px] font-medium leading-snug text-inari-white">
+                {s.label}
+              </p>
+              {s.trend && (
+                <p className="mt-1 text-[13px] leading-snug text-inari-text-soft">
+                  {s.trend}
+                </p>
+              )}
+              <p className="mt-auto pt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted">
+                {s.source}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Attack vectors section (B-rouge) — 6 cas concrets par vecteur d'attaque.
+// ---------------------------------------------------------------------------
+
+function AttackVectorCard({ v }: { v: AttackVector }) {
+  return (
+    <div
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] p-7 transition-all duration-300 hover:border-[#E31E24] hover:shadow-[0_20px_60px_-15px_rgba(227,30,36,0.15)] sm:p-8"
       style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
     >
       {/* Glow top */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-px transition-opacity duration-300 opacity-20 group-hover:opacity-60"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px transition-opacity duration-300 opacity-15 group-hover:opacity-60"
         style={{ background: 'linear-gradient(90deg, transparent, #E31E24, transparent)' }}
       />
 
-      <div className="flex flex-1 flex-col p-7 sm:p-8">
-        {/* Number + icon row */}
-        <div className="flex items-center justify-between">
-          <span className="font-mono text-xs tracking-[0.14em] text-inari-text-muted">
-            {service.number}
+      {/* Icon */}
+      <div
+        className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
+        style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#E31E24' }}
+      >
+        {v.icon}
+      </div>
+
+      {/* Category */}
+      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
+        {v.category}
+      </p>
+
+      {/* Title */}
+      <h3 className="mt-1 font-sans text-lg font-medium text-inari-white">
+        {v.title}
+      </h3>
+
+      {/* Problem (red accent quote) */}
+      <p
+        className="mt-3 text-[15px] font-medium leading-snug"
+        style={{ color: '#E31E24' }}
+      >
+        &ldquo;{v.problem}&rdquo;
+      </p>
+
+      {/* Description */}
+      <p className="mt-3 flex-1 text-[14px] leading-relaxed text-inari-text-soft">
+        {v.description}
+      </p>
+
+      {/* Service + Deliverable */}
+      <div className="mt-5 flex flex-col gap-1.5 border-t border-white/[0.06] pt-4">
+        <div className="flex items-baseline gap-2">
+          <span className="w-20 shrink-0 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted">
+            Service
           </span>
-          <div className="flex h-11 w-11 items-center justify-center rounded-xl border border-white/[0.08] text-inari-text-muted transition-colors duration-300 group-hover:border-[#E31E24] group-hover:text-[#E31E24]">
-            {service.icon}
-          </div>
+          <span className="text-[13px] text-inari-text-soft">{v.service}</span>
         </div>
-
-        {/* Title */}
-        <h3 className="mt-5 font-sans text-xl font-medium text-inari-white">
-          {service.title}
-        </h3>
-
-        {/* Tagline */}
-        <p className="mt-1 font-mono text-xs uppercase tracking-[0.14em] text-inari-text-muted">
-          {service.tagline}
-        </p>
-
-        {/* Description */}
-        <p className="mt-4 text-[15px] leading-relaxed text-inari-text-soft">
-          {service.description}
-        </p>
-
-        {/* Features list */}
-        <ul className="mt-5 flex flex-1 flex-col gap-2">
-          {service.features.map((f) => (
-            <li key={f} className="flex items-start gap-2 text-sm text-inari-text-soft">
-              <svg viewBox="0 0 16 16" fill="none" stroke="#E31E24" strokeWidth="1.5" className="mt-0.5 h-4 w-4 shrink-0">
-                <polyline points="3.5 8 6.5 11 12.5 5" />
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
-
-        {/* CTA */}
-        <div className="mt-6 flex items-center gap-2 text-sm font-medium text-inari-text-muted transition-colors duration-300 group-hover:text-[#E31E24]">
-          <span>En savoir plus</span>
-          <span aria-hidden="true" className="transition-transform duration-300 group-hover:translate-x-1">&rarr;</span>
+        <div className="flex items-baseline gap-2">
+          <span className="w-20 shrink-0 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted">
+            Livrable
+          </span>
+          <span className="text-[13px] text-inari-text-soft">{v.deliverable}</span>
         </div>
       </div>
-    </a>
+
+      {/* Radial glow bottom (hover) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 100%, rgba(227, 30, 36, 0.06), transparent 70%)',
+        }}
+      />
+    </div>
   )
 }
 
-function ServicesSection() {
+function AttackVectorsSection() {
   return (
     <section
-      id="services"
-      className="relative overflow-hidden px-6 pb-24 pt-12 lg:px-10 lg:pb-32 lg:pt-16"
-      aria-labelledby="services-title"
+      id="vecteurs"
+      className="relative overflow-hidden px-6 pb-20 pt-12 lg:px-10 lg:pb-28 lg:pt-16"
+      aria-labelledby="cybersec-vectors-title"
     >
       <div className="mx-auto max-w-[1360px]">
         {/* Eyebrow */}
         <div className="flex items-center gap-3">
           <span aria-hidden="true" className="h-px w-10 bg-inari-border" />
           <p className="font-mono text-xs uppercase tracking-[0.22em] text-inari-text-muted">
-            Nos offres
+            Vecteurs d&rsquo;attaque
           </p>
         </div>
 
         {/* H2 */}
         <h2
-          id="services-title"
+          id="cybersec-vectors-title"
           className="mt-5 max-w-3xl font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
         >
-          Trois niveaux de{' '}
+          Six menaces concretes.{' '}
           <em className="not-italic" style={{ color: '#E31E24' }}>
-            profondeur.
+            Six tests.
           </em>
         </h2>
 
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-inari-text-soft sm:text-lg">
-          Du test d&rsquo;intrusion cibl&eacute; au Red Team complet.
-          Chaque mission est cadr&eacute;e, document&eacute;e, et livr&eacute;e
-          avec des preuves exploitables.
+          Pas de menace abstraite. Six scenarios qui touchent concretement les
+          PME francophones aujourd&rsquo;hui, avec le service Inaricom et le
+          livrable correspondants.
         </p>
 
-        {/* Cards grid */}
-        <div className="mt-12 grid gap-6 lg:grid-cols-3">
-          {SERVICES.map((s) => (
-            <ServiceCard key={s.id} service={s} />
+        {/* Grid 3x2 desktop, 2x3 tablet, 1x6 mobile */}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {ATTACK_VECTORS.map((v) => (
+            <AttackVectorCard key={v.id} v={v} />
           ))}
+        </div>
+
+        {/* Sub CTA */}
+        <div className="mt-10">
+          <a
+            href="/contact/"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-inari-text-soft transition hover:text-[#E31E24]"
+          >
+            <span>Votre vecteur n&rsquo;est pas list&eacute;&nbsp;? On en parle.</span>
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-300 group-hover:translate-x-1"
+            >
+              &rarr;
+            </span>
+          </a>
         </div>
       </div>
     </section>
@@ -412,14 +709,179 @@ function ServicesSection() {
 }
 
 // ---------------------------------------------------------------------------
-// Methodology timeline
+// Audit pricing section (A-rouge) — 4 produits avec prix HT publics.
+// ---------------------------------------------------------------------------
+
+function AuditProductCard({ product }: { product: AuditProduct }) {
+  return (
+    <a
+      href={product.href}
+      className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/[0.08] p-7 transition-all duration-300 hover:border-[#E31E24] hover:shadow-[0_20px_60px_-15px_rgba(227,30,36,0.15)] sm:p-8"
+      style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
+    >
+      {/* Glow top */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-x-0 top-0 h-px transition-opacity duration-300 opacity-15 group-hover:opacity-60"
+        style={{ background: 'linear-gradient(90deg, transparent, #E31E24, transparent)' }}
+      />
+
+      {/* Header: icon + badge */}
+      <div className="flex items-start justify-between">
+        <div
+          className="flex h-12 w-12 items-center justify-center rounded-xl transition-colors duration-300"
+          style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#E31E24' }}
+        >
+          {product.icon}
+        </div>
+        {product.badge && (
+          <span
+            className="rounded-full px-2.5 py-1 font-mono text-[10px] font-medium uppercase tracking-[0.14em]"
+            style={{
+              backgroundColor: 'rgba(227, 30, 36, 0.10)',
+              color: '#E31E24',
+              border: '1px solid rgba(227, 30, 36, 0.30)',
+            }}
+          >
+            {product.badge}
+          </span>
+        )}
+      </div>
+
+      {/* Tagline */}
+      <p className="mt-4 font-mono text-[10px] uppercase tracking-[0.18em] text-inari-text-muted">
+        {product.tagline}
+      </p>
+
+      {/* Title */}
+      <h3 className="mt-2 font-sans text-lg font-medium leading-tight text-inari-white">
+        {product.name}
+      </h3>
+
+      {/* Specs */}
+      <ul className="mt-4 flex flex-col gap-1.5 border-t border-white/[0.06] pt-4">
+        {product.specs.map((s) => (
+          <li
+            key={s}
+            className="flex items-start gap-2 text-[13px] leading-relaxed text-inari-text-soft"
+          >
+            <svg
+              viewBox="0 0 16 16"
+              fill="none"
+              stroke="#E31E24"
+              strokeWidth="1.5"
+              className="mt-1 h-3 w-3 shrink-0 opacity-60"
+            >
+              <polyline points="3.5 8 6.5 11 12.5 5" />
+            </svg>
+            {s}
+          </li>
+        ))}
+      </ul>
+
+      {/* Recommended for */}
+      <p className="mt-4 text-[12px] leading-snug text-inari-text-muted">
+        <span className="font-mono uppercase tracking-[0.14em]">Pour</span>{' '}
+        {product.recommendedFor}
+      </p>
+
+      <div className="flex-1" />
+
+      {/* Price + CTA */}
+      <div className="mt-5 flex items-end justify-between border-t border-white/[0.06] pt-4">
+        <div>
+          <p
+            className="font-mono text-2xl font-semibold leading-none tracking-tight"
+            style={{ color: '#E31E24' }}
+          >
+            {product.price}
+          </p>
+          <p className="mt-1.5 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted">
+            HT &middot; devis fixe
+          </p>
+        </div>
+        <span className="flex items-center gap-1 text-xs font-medium text-inari-text-muted transition-colors duration-300 group-hover:text-[#E31E24]">
+          <span>Fiche</span>
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-300 group-hover:translate-x-1"
+          >
+            &rarr;
+          </span>
+        </span>
+      </div>
+
+      {/* Radial glow bottom (hover) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
+        style={{
+          background:
+            'radial-gradient(ellipse at 50% 100%, rgba(227, 30, 36, 0.06), transparent 70%)',
+        }}
+      />
+    </a>
+  )
+}
+
+function AuditPricingSection() {
+  return (
+    <section
+      id="tarifs"
+      className="relative overflow-hidden px-6 pb-20 pt-10 lg:px-10 lg:pb-28 lg:pt-14"
+      aria-labelledby="cybersec-pricing-title"
+    >
+      <div className="mx-auto max-w-[1360px]">
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-px w-10 bg-inari-border" />
+          <p className="font-mono text-xs uppercase tracking-[0.22em] text-inari-text-muted">
+            Tarifs publics
+          </p>
+        </div>
+
+        {/* H2 */}
+        <h2
+          id="cybersec-pricing-title"
+          className="mt-5 max-w-3xl font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
+        >
+          Quatre audits.{' '}
+          <em className="not-italic" style={{ color: '#E31E24' }}>
+            Quatre prix publics.
+          </em>
+        </h2>
+
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-inari-text-soft sm:text-lg">
+          Pas de devis cach&eacute;, pas de tarification a la decouverte. Vous
+          savez ce que vous payez, le devis est fixe avant demarrage.
+        </p>
+
+        {/* Grid 4-col desktop, 2-col tablet */}
+        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+          {AUDIT_PRODUCTS.map((p) => (
+            <AuditProductCard key={p.id} product={p} />
+          ))}
+        </div>
+
+        {/* Footnote */}
+        <p className="mt-10 font-mono text-[11px] uppercase tracking-[0.14em] text-inari-text-muted">
+          Tarifs HT &middot; re-test 6 semaines offert &middot; reponse sous 48h
+        </p>
+      </div>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Methodology section (E-rouge) — Stepper 5 etapes, deliverable architecture.
 // ---------------------------------------------------------------------------
 
 function MethodologySection() {
   return (
     <section
+      id="methodologie"
       className="relative overflow-hidden px-6 py-24 lg:px-10 lg:py-32"
-      aria-labelledby="method-title"
+      aria-labelledby="cybersec-method-title"
     >
       <div className="mx-auto max-w-[1360px]">
         <div className="grid gap-16 lg:grid-cols-[1fr_1.2fr] lg:gap-24">
@@ -433,31 +895,46 @@ function MethodologySection() {
             </div>
 
             <h2
-              id="method-title"
+              id="cybersec-method-title"
               className="mt-5 font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
             >
-              Processus{' '}
+              Cinq &eacute;tapes.{' '}
               <em className="not-italic text-inari-text-soft">
-                transparent.
+                Double livrable.
               </em>
             </h2>
 
             <p className="mt-5 text-base leading-relaxed text-inari-text-soft sm:text-lg">
-              Cinq &eacute;tapes de la prise de contact &agrave; la fermeture
-              des vuln&eacute;rabilit&eacute;s. Vous savez exactement o&ugrave;
-              on en est &agrave; chaque instant.
+              M&eacute;thodologie offensive transparente bas&eacute;e sur PTES,
+              OWASP et MITRE ATT&amp;CK. Devis fixe avant d&eacute;marrage,
+              re-test offert apres remediation.
             </p>
+
+            <div className="mt-8 flex flex-wrap gap-2">
+              {['PTES', 'OWASP', 'MITRE ATT&CK', 'OWASP LLM'].map((label) => (
+                <span
+                  key={label}
+                  className="inline-flex items-center rounded-full border border-white/[0.08] px-3 py-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-soft"
+                  style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Right: timeline */}
+          {/* Right: stepper */}
           <div className="flex flex-col">
             {METHOD_STEPS.map((step) => (
               <div key={step.id} className="group relative flex gap-6">
                 {/* Number + vertical line */}
                 <div className="flex flex-col items-center">
                   <div
-                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-inari-text-muted transition-colors duration-300 group-hover:border-[#E31E24] group-hover:text-[#E31E24]"
-                    style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                    className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl transition-colors duration-300"
+                    style={{
+                      backgroundColor: 'rgba(227, 30, 36, 0.08)',
+                      color: '#E31E24',
+                    }}
                   >
                     <span className="font-mono text-sm font-medium">{step.number}</span>
                   </div>
@@ -466,9 +943,14 @@ function MethodologySection() {
 
                 {/* Content */}
                 <div className="pb-12 group-last:pb-0">
-                  <h3 className="font-sans text-lg font-medium text-inari-white">
-                    {step.title}
-                  </h3>
+                  <div className="flex items-baseline gap-3">
+                    <h3 className="font-sans text-lg font-medium text-inari-white">
+                      {step.title}
+                    </h3>
+                    <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted">
+                      {step.duration}
+                    </span>
+                  </div>
                   <p className="mt-2 max-w-lg text-[15px] leading-relaxed text-inari-text-soft">
                     {step.description}
                   </p>
@@ -477,6 +959,159 @@ function MethodologySection() {
             ))}
           </div>
         </div>
+      </div>
+    </section>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Comparator section (C-rouge) — Inaricom Red Team vs SaaS automatique.
+// ---------------------------------------------------------------------------
+
+function ComparatorRow({ row }: { row: CompareRow }) {
+  return (
+    <div className="grid gap-3 border-b border-white/[0.06] py-5 last:border-0 sm:grid-cols-[1.1fr_1fr_1fr] sm:items-baseline sm:gap-6 sm:py-6">
+      {/* Axis */}
+      <p className="font-mono text-[11px] font-medium uppercase tracking-[0.16em] text-inari-text-muted sm:text-[12px]">
+        {row.axis}
+      </p>
+
+      {/* SaaS cell */}
+      <div className="flex flex-col gap-1">
+        <span className="font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted sm:hidden">
+          SaaS automatique
+        </span>
+        <p className="text-[15px] leading-snug text-inari-text-muted">
+          {row.saas}
+        </p>
+        {row.saasDetail && (
+          <p className="text-[11px] leading-snug text-inari-text-muted opacity-60">
+            {row.saasDetail}
+          </p>
+        )}
+      </div>
+
+      {/* Inaricom cell */}
+      <div className="flex flex-col gap-1">
+        <span
+          className="font-mono text-[10px] uppercase tracking-[0.14em] sm:hidden"
+          style={{ color: '#E31E24' }}
+        >
+          Inaricom Red Team
+        </span>
+        <p className="text-[15px] leading-snug text-inari-text-soft">
+          {row.inaricom}
+        </p>
+        {row.inaricomHighlight && (
+          <p
+            className="text-[11px] font-medium leading-snug"
+            style={{ color: '#E31E24' }}
+          >
+            {row.inaricomHighlight}
+          </p>
+        )}
+      </div>
+    </div>
+  )
+}
+
+function ComparatorSection() {
+  return (
+    <section
+      id="comparatif"
+      className="relative overflow-hidden px-6 py-24 lg:px-10 lg:py-32"
+      aria-labelledby="cybersec-comparator-title"
+    >
+      <div className="mx-auto max-w-[1360px]">
+        {/* Eyebrow */}
+        <div className="flex items-center gap-3">
+          <span aria-hidden="true" className="h-px w-10 bg-inari-border" />
+          <p className="font-mono text-xs uppercase tracking-[0.22em] text-inari-text-muted">
+            Inaricom vs SaaS automatique
+          </p>
+        </div>
+
+        {/* H2 */}
+        <h2
+          id="cybersec-comparator-title"
+          className="mt-5 max-w-3xl font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl"
+        >
+          Pourquoi un humain.{' '}
+          <em className="not-italic" style={{ color: '#E31E24' }}>
+            Vraiment.
+          </em>
+        </h2>
+
+        <p className="mt-5 max-w-2xl text-base leading-relaxed text-inari-text-soft sm:text-lg">
+          Les scanners SaaS (Acunetix, Qualys, Tenable...) couvrent 30 % de la
+          surface d&rsquo;attaque reelle d&rsquo;une PME. Pour le reste —
+          logique m&eacute;tier, IDOR, BAC, race conditions, post-exploitation
+          — il faut un humain qui pense comme un attaquant.
+        </p>
+
+        {/* Comparator card */}
+        <div
+          className="mt-12 overflow-hidden rounded-2xl border border-white/[0.08] p-5 sm:p-7 lg:p-9"
+          style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
+        >
+          {/* Header (desktop only) */}
+          <div className="hidden border-b border-white/[0.10] pb-5 sm:grid sm:grid-cols-[1.1fr_1fr_1fr] sm:gap-6 sm:items-end">
+            <div />
+            <div>
+              <div
+                className="flex h-9 w-9 items-center justify-center rounded-lg"
+                style={{ backgroundColor: 'rgba(255, 255, 255, 0.04)', color: 'var(--inari-text-muted)' }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <line x1="3" y1="9" x2="21" y2="9" />
+                  <line x1="9" y1="21" x2="9" y2="9" />
+                </svg>
+              </div>
+              <p className="mt-3 font-sans text-base font-medium text-inari-text-soft">
+                SaaS automatique
+              </p>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em] text-inari-text-muted">
+                Acunetix, Qualys, Tenable...
+              </p>
+            </div>
+            <div>
+              <div
+                className="flex h-9 w-9 items-center justify-center rounded-lg"
+                style={{ backgroundColor: 'rgba(227, 30, 36, 0.08)', color: '#E31E24' }}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                </svg>
+              </div>
+              <p className="mt-3 font-sans text-base font-medium text-inari-white">
+                Inaricom Red Team
+              </p>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.14em]" style={{ color: '#E31E24' }}>
+                Humains + methodologie
+              </p>
+            </div>
+          </div>
+
+          {/* Rows */}
+          <div className="flex flex-col">
+            {COMPARE_ROWS.map((row) => (
+              <ComparatorRow key={row.id} row={row} />
+            ))}
+          </div>
+        </div>
+
+        {/* Footer note + CTA */}
+        <p className="mx-auto mt-10 max-w-2xl text-center text-[15px] leading-relaxed text-inari-text-soft">
+          Vous pensez qu&rsquo;un scan automatique suffit&nbsp;?{' '}
+          <a
+            href="/contact/"
+            className="font-medium underline-offset-4 transition hover:underline"
+            style={{ color: '#E31E24' }}
+          >
+            &Eacute;crivez-nous &rarr;
+          </a>
+        </p>
       </div>
     </section>
   )
@@ -492,12 +1127,13 @@ function CybersecCTA() {
       className="relative overflow-hidden px-6 py-28 lg:px-10 lg:py-36"
       aria-labelledby="cybersec-cta-title"
     >
-      {/* Radial glow */}
+      {/* Radial glow rouge */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10"
         style={{
-          background: 'radial-gradient(ellipse at 50% 50%, rgba(227, 30, 36, 0.08), transparent 60%)',
+          background:
+            'radial-gradient(ellipse at 50% 50%, rgba(227, 30, 36, 0.08), transparent 60%)',
         }}
       />
 
@@ -506,16 +1142,15 @@ function CybersecCTA() {
           id="cybersec-cta-title"
           className="font-serif text-4xl leading-[1.1] tracking-tight text-inari-white sm:text-5xl lg:text-6xl"
         >
-          Testez votre{' '}
+          Pr&ecirc;t a savoir{' '}
           <em className="not-italic text-inari-text-soft">
-            r&eacute;silience.
+            ce qui est expos&eacute;&nbsp;?
           </em>
         </h2>
 
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-inari-text-soft sm:text-lg">
-          Premier &eacute;change sans engagement pour cadrer votre
-          p&eacute;rim&egrave;tre, estimer l&rsquo;effort, et choisir
-          le bon niveau de test.
+          Premier &eacute;change par &eacute;crit pour cadrer votre besoin
+          (perimetre, contraintes, calendrier) et choisir le bon audit.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">
@@ -524,15 +1159,15 @@ function CybersecCTA() {
             className="group inline-flex items-center gap-2 rounded-md px-7 py-3.5 font-sans text-sm font-medium transition hover:brightness-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
             style={{ backgroundColor: '#E31E24', color: '#FFFFFF' }}
           >
-            Planifier un audit
+            D&eacute;marrer un audit
             <span aria-hidden="true" className="transition group-hover:translate-x-0.5">&rarr;</span>
           </a>
           <a
-            href="/blog/"
+            href="#tarifs"
             className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-7 py-3.5 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
             style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
           >
-            Lire nos articles s&eacute;curit&eacute;
+            Voir les tarifs publics
           </a>
         </div>
 
@@ -563,9 +1198,11 @@ function CybersecIsland() {
 
       <div className="relative z-10">
         <CybersecHero />
-        <ServicesSection />
-        <TechDemo />
+        <StatsBar />
+        <AttackVectorsSection />
+        <AuditPricingSection />
         <MethodologySection />
+        <ComparatorSection />
         <CybersecCTA />
       </div>
     </main>
