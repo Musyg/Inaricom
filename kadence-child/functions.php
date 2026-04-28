@@ -74,3 +74,23 @@ function inaricom_fox_canvas() {
     </div>
     <?php
 }
+
+// ============================================================
+// A11Y : footer widget titles h4 -> h3 (heading-order Lighthouse)
+// Les titres "Informations" et "Legal" du footer sont dans le HTML brut de
+// widgets Gutenberg blocks (block-8, block-10) en tant que <h4 class="footer-title">.
+// Cela casse l'ordre semantique (H1 > H2 > H4) et fail l'audit heading-order.
+// Fix chirurgical : str_replace tres specifique sur "footer-title" (classe unique).
+// ============================================================
+add_filter('widget_block_content', 'inaricom_footer_title_h3', 10, 1);
+function inaricom_footer_title_h3($content) {
+    if (strpos($content, 'footer-title') === false) {
+        return $content;
+    }
+    // Cible <h4 class="footer-title">...</h4> -> <h3>...</h3>, preserve attributs
+    return preg_replace(
+        '#<h4(\s+class="footer-title"[^>]*)>(.*?)</h4>#s',
+        '<h3$1>$2</h3>',
+        $content
+    );
+}
