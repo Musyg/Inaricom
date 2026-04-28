@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "react-islands (Vite)",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--dir", "react-islands", "dev"],
+      "port": 5173
+    }
+  ]
+}
