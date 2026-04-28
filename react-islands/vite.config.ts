@@ -39,6 +39,28 @@ export default defineConfig(({ command }) => ({
           if (name.endsWith('.css')) return 'css/[name]-[hash][extname]'
           return 'assets/[name]-[hash][extname]'
         },
+        // manualChunks : extrait les vendors lourds dans des chunks dedies
+        // pour eviter qu'un composant partage (ex VolumetricFog) embarque
+        // React dans son chunk et apparaisse a tort comme "195 KB".
+        // - react-vendor : React + ReactDOM + scheduler (cache stable)
+        // - three : Three.js (charge uniquement quand NeuralNetworkGreen
+        //   active = theme vert)
+        // - tanstack-query : React Query (charge uniquement par homepage)
+        manualChunks(id) {
+          if (
+            id.includes('node_modules/react/') ||
+            id.includes('node_modules/react-dom/') ||
+            id.includes('node_modules/scheduler/')
+          ) {
+            return 'react-vendor'
+          }
+          if (id.includes('node_modules/three/')) {
+            return 'three'
+          }
+          if (id.includes('node_modules/@tanstack/')) {
+            return 'tanstack-query'
+          }
+        },
       },
     },
   },
