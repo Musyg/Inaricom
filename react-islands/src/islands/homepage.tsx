@@ -9,6 +9,7 @@ import { ParticleNeonGold } from '@/components/backgrounds/ParticleNeonGold'
 import { NeuralNetworkGreen } from '@/components/backgrounds/NeuralNetworkGreen'
 import { BlueprintGridBlue } from '@/components/backgrounds/BlueprintGridBlue'
 import { MeshGradientNeutral } from '@/components/backgrounds/MeshGradientNeutral'
+import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
 import { FoxAnimationV29 } from '@/components/hero/FoxAnimationV29'
 import { PillarCards } from '@/components/sections/PillarCards'
 import { WhySection } from '@/components/sections/WhySection'
@@ -58,6 +59,11 @@ const queryClient = new QueryClient({
 function ThemedBackgroundStack() {
   return (
     <>
+      {/* VolumetricFog : fumee dense en fond, presente sur tous les themes
+          (silver sur neutre, rouge/or/vert/bleu sur les autres). Sur la
+          homepage, remplace l'orbe centrale argent qui etait dans
+          MeshGradientNeutral. */}
+      <VolumetricFog />
       <MatrixRainRed />
       <ParticleNeonGold />
       <NeuralNetworkGreen />
@@ -234,7 +240,7 @@ function Hero() {
               <div
                 key={item.title}
                 className="flex items-start gap-4 p-6 sm:p-7"
-                style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-inari-border text-inari-text-muted">
                   {item.icon}

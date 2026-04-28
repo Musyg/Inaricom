@@ -37,7 +37,7 @@ const PARALLAX_MAX_CENTER = 50 // px sur l'orbe central
 const PARALLAX_LERP = 0.12
 const DRIFT_FRAC = 0.12 // ±12% du viewport autour du point d'ancrage
 
-type ColorKey = 'center' | 'bleu' | 'rouge' | 'or' | 'vert'
+type ColorKey = 'bleu' | 'rouge' | 'or' | 'vert'
 type Rgb = { r: number; g: number; b: number }
 
 type OrbSpec = {
@@ -127,26 +127,12 @@ const ORB_SPECS: OrbSpec[] = [
     parallaxK: 0.5,
     mobile: true,
   },
-  // 5 · CENTRE · argent (= --inari-red = #FFFFFF en neutre) — DOMINANT,
-  // dessiné en dernier, couvre la zone fox hero argentée. Rayon RÉDUIT
-  // pour laisser les 4 coins respirer avec leur teinte.
-  {
-    baseFracX: 0.5,
-    baseFracY: 0.5,
-    phaseX: 3.9,
-    phaseY: 1.6,
-    periodX: 22000,
-    periodY: 16000,
-    radiusFrac: 0.55,
-    colorKey: 'center',
-    opacity: 0.14,
-    parallaxK: 1.0,
-    mobile: true,
-  },
+  // NOTE : l'orbe centrale argent (5e historique) a ete retiree le 28 avril 2026
+  // au profit de VolumetricFog (composant universel) qui prend en charge la
+  // fumee centrale themee sur tous les themes (silver sur neutre).
 ]
 
 const FALLBACK_COLORS: Record<ColorKey, Rgb> = {
-  center: { r: 255, g: 255, b: 255 },
   bleu: { r: 0, g: 212, b: 255 },
   rouge: { r: 227, g: 30, b: 36 },
   or: { r: 255, g: 215, b: 0 },
@@ -233,7 +219,6 @@ export function MeshGradientNeutral() {
     const readColors = () => {
       const cs = getComputedStyle(host)
       const map: Array<[ColorKey, string, Rgb]> = [
-        ['center', '--inari-red', FALLBACK_COLORS.center],
         ['rouge', '--accent-rouge', FALLBACK_COLORS.rouge],
         ['or', '--accent-or', FALLBACK_COLORS.or],
         ['vert', '--accent-vert', FALLBACK_COLORS.vert],

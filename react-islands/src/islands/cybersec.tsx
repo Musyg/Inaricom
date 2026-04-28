@@ -4,6 +4,7 @@ import { createRoot } from 'react-dom/client'
 import '@/styles/globals.css'
 
 import { MatrixRainRed } from '@/components/backgrounds/MatrixRainRed'
+import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
 import { TechDemo } from '@/components/sections/TechDemo'
 
 // ---------------------------------------------------------------------------
@@ -231,7 +232,7 @@ function CybersecHero() {
               <a
                 href="#services"
                 className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-6 py-3 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-                style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
                 Voir nos offres
               </a>
@@ -278,7 +279,7 @@ function CybersecHero() {
               <div
                 key={item.title}
                 className="flex items-start gap-4 p-6 sm:p-7"
-                style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg border border-white/[0.08] text-inari-text-muted">
                   {item.icon}
@@ -309,7 +310,7 @@ function ServiceCard({ service }: { service: Service }) {
     <a
       href={service.href}
       className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/[0.08] transition-all duration-300 hover:border-[#E31E24] hover:shadow-[0_20px_60px_-15px_rgba(227,30,36,0.15)]"
-      style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+      style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
     >
       {/* Glow top */}
       <div
@@ -456,7 +457,7 @@ function MethodologySection() {
                 <div className="flex flex-col items-center">
                   <div
                     className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/[0.08] text-inari-text-muted transition-colors duration-300 group-hover:border-[#E31E24] group-hover:text-[#E31E24]"
-                    style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                    style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
                   >
                     <span className="font-mono text-sm font-medium">{step.number}</span>
                   </div>
@@ -529,7 +530,7 @@ function CybersecCTA() {
           <a
             href="/blog/"
             className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-7 py-3.5 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-            style={{ background: 'rgba(18, 18, 26, 0.18)', backdropFilter: 'blur(16px) saturate(180%)' }}
+            style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
           >
             Lire nos articles s&eacute;curit&eacute;
           </a>
@@ -550,12 +551,13 @@ function CybersecCTA() {
 function CybersecIsland() {
   return (
     <main className="relative text-inari-text" data-theme="rouge">
-      {/* Background fixe */}
+      {/* Background fixe — fumee theme + matrix rain en surcouche */}
       <div
         aria-hidden="true"
         className="pointer-events-none fixed inset-0 bg-inari-black"
         style={{ zIndex: 0 }}
       >
+        <VolumetricFog />
         <MatrixRainRed />
       </div>
 
