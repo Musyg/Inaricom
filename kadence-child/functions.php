@@ -77,20 +77,8 @@ function inaricom_fox_canvas() {
 
 // ============================================================
 // A11Y : footer widget titles h4 -> h3 (heading-order Lighthouse)
-// Les titres "Informations" et "Legal" du footer sont dans le HTML brut de
-// widgets Gutenberg blocks (block-8, block-10) en tant que <h4 class="footer-title">.
-// Cela casse l'ordre semantique (H1 > H2 > H4) et fail l'audit heading-order.
-// Fix chirurgical : str_replace tres specifique sur "footer-title" (classe unique).
+// Note : le fix definitif a ete fait directement en DB (widget_block option)
+// car le filter widget_block_content n'est pas applique par Kadence Theme Builder.
+// Si les widgets footer sont reedites depuis l'admin, repasser :
+//   wp eval '$o=get_option("widget_block");foreach($o as $id=>&$w){if(is_array($w)&&isset($w["content"]))$w["content"]=preg_replace("#<h4(\s+class=\"footer-title\"[^>]*)>(.*?)</h4>#s","<h3$1>$2</h3>",$w["content"]);}update_option("widget_block",$o);'
 // ============================================================
-add_filter('widget_block_content', 'inaricom_footer_title_h3', 10, 1);
-function inaricom_footer_title_h3($content) {
-    if (strpos($content, 'footer-title') === false) {
-        return $content;
-    }
-    // Cible <h4 class="footer-title">...</h4> -> <h3>...</h3>, preserve attributs
-    return preg_replace(
-        '#<h4(\s+class="footer-title"[^>]*)>(.*?)</h4>#s',
-        '<h3$1>$2</h3>',
-        $content
-    );
-}
