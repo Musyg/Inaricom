@@ -106,7 +106,11 @@ function PillarCard({ pillar }: { pillar: Pillar }) {
           </div>
           <span
             className="font-mono text-xs uppercase tracking-[0.14em] transition-colors duration-300"
-            style={{ color: `rgba(${pillar.rgb}, ${hovered ? 0.9 : 0.5})` }}
+            style={{
+              color: hovered
+                ? `rgb(${pillar.rgb})`
+                : 'var(--inari-text-soft)',
+            }}
           >
             {pillar.tagline}
           </span>

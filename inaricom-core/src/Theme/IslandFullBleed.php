@@ -53,6 +53,29 @@ final class IslandFullBleed
 
         // Footer uniforme sur tout le site — override snippet 347 globalement.
         add_action('wp_head', [$this, 'print_global_footer_css'], 99);
+
+        // Meta description fallback sur les pages avec island (a defaut de Rank Math/Yoast).
+        // Priority 2 : avant les SEO plugins (qui passent leur head a 0/1/10).
+        add_action('wp_head', [$this, 'print_meta_description'], 2);
+    }
+
+    /**
+     * Meta description fallback pour les pages avec island.
+     * Skip si une meta description existe deja dans le head (Rank Math, Yoast, etc.).
+     * Override par island name si besoin futur.
+     */
+    public function print_meta_description(): void
+    {
+        if (!is_singular() || !$this->page_has_island()) {
+            return;
+        }
+
+        // Meta description par defaut homepage (pivot cybersec, FR francophone).
+        // ~138 chars, sous le seuil SEO 160 chars.
+        $description = "Inaricom : cybersecurite offensive et IA souveraine pour PME francophones. "
+            . "Pentest, Red Team, audits sans boite noire. OWASP, PTES, MITRE.";
+
+        echo "<meta name=\"description\" content=\"" . esc_attr($description) . "\" />\n";
     }
 
     /**
