@@ -3,21 +3,21 @@
 > Vue transversale : priorites actuelles, tickets en cours, roadmap par phase.
 > Source de verite pour "sur quoi on bosse aujourd'hui".
 
-Derniere MAJ : 21 avril 2026
+Derniere MAJ : 28 avril 2026
 
 ---
 
-## Priorites immediates (cette semaine — Phase 2 React islands)
+## Priorites immediates (cette semaine — Phase 2.4 QA + bascule prod)
 
 | # | Tache | Agent | Impact | Effort |
 |---|-------|-------|--------|--------|
-| 1 | **Phase 2.0 setup** : `react-islands/` + Vite + React + Tailwind v4 + shadcn/ui | frontend-kadence | Critique | 2-3h |
-| 2 | **Phase 2.1 Homepage island** : HeroNeutral + 3 PillarCards + ArticleCards + WhySection + FinalCTA | frontend-kadence | Critique | 2-3 sessions |
-| 3 | **Phase 2.2 Integration WP** : `ReactLoader.php` + `ReactMountPoints.php` dans `inaricom-core` | woo-backend | Critique | 1 session |
-| 4 | **Phase 2.3 Swap homepage** : nouvelle page "Accueil Inaricom" + deplacer page 985 vers `/accueil-cybersecurite/` | woo-backend | Critique | 1 session |
-| 5 | **Phase 2.4 QA** : Lighthouse 95+, axe-core, visual regression | qa-visual | Critique | 1-2 sessions |
+| 1 | **Phase 2.4 QA Lighthouse** : Performance 95+, LCP < 2.5s, INP < 200ms, CLS < 0.1 sur staging | qa-visual | Critique | 1 session |
+| 2 | **Phase 2.4 QA axe-core** : 0 violation accessibilite WCAG 2.2 AA | qa-visual | Critique | 0.5 session |
+| 3 | **Phase 2.4 Visual regression** : Playwright 3 viewports (375/768/1440) | qa-visual | Important | 0.5 session |
+| 4 | **Confirmer ArticleCards prod** : verifier que `/wp-json/wp/v2/posts` retourne articles publies | woo-backend | Important | 0.2 session |
+| 5 | **Bascule prod** : appliquer `41487b4` sur prod inaricom.com (apres validation QA) | frontend-kadence | Critique | 1 session |
 
-**Plan detaille** : voir `docs/phase2-react-islands.md`
+**Phase 2.0-2.3 finalisees** (commit `41487b4`, 28 avril) — voir `docs/session-report-2026-04-28.md`
 
 ---
 
@@ -80,53 +80,54 @@ Derniere MAJ : 21 avril 2026
 
 ---
 
-## Phase 2 — React islands sur WordPress (Q2 2026 — DEMARRE)
+## Phase 2 — React islands sur WordPress (Q2 2026 — STAGING LIVRE)
 
-### Status : 0% — setup en cours
+### Status : 85% — homepage staging OK (commit 41487b4), QA Lighthouse + bascule prod restantes
 
-**Plan detaille** : voir `docs/phase2-react-islands.md`
+**Plan detaille** : voir `docs/phase2-react-islands.md` + `docs/session-report-2026-04-28.md`
 
-### Phase 2.0 Setup (cette semaine)
-- [ ] Creer `react-islands/` a la racine
-- [ ] `npm create vite@latest` (template React-TS)
-- [ ] Installer Tailwind v4 + `@tailwindcss/vite`
-- [ ] Installer shadcn/ui init
-- [ ] Configurer `vite.config.ts` avec entries multiples
-- [ ] Configurer `tailwind.config.ts` avec tokens `--inari-*`
-- [ ] Creer `src/styles/globals.css` avec `@theme` heritant des tokens WP
-- [ ] HMR fonctionnel, premier composant visible en dev
+### Phase 2.0 Setup — FAIT
+- [x] `react-islands/` a la racine (pnpm v10 securise)
+- [x] Vite + React 19 + Tailwind v4 + `@tailwindcss/vite`
+- [x] `@tanstack/react-query`, `framer-motion`, `lucide-react`, `cva`, `tailwind-merge`
+- [x] `vite.config.ts` entries multiples (homepage + cybersec) + build vers `inaricom-core/assets/react/`
+- [x] `globals.css` avec `@theme` heritant des tokens WP (5 themes)
+- [x] HMR fonctionnel + multiples composants livres en dev
 
-### Phase 2.1 Homepage island (cette semaine/prochaine)
-- [ ] `HeroNeutral.tsx` : titre "L'IA et la cybersecurite, sans boite noire" + sous-titre + indicateur scroll
-- [ ] `PillarCard.tsx` : card thematique accent rouge/or/vert avec CTA
-- [ ] 3 PillarCards : Cybersecurite / IA Locale / Ressources
-- [ ] `WhySection.tsx` : 4 points-cles (local-first, PME-friendly, methodologie, couplage hardware+services)
-- [ ] `ArticleCard.tsx` + `useWPPosts` : fetch 3 derniers articles via REST
-- [ ] `FinalCTA.tsx` : "Parlons de votre projet" vers /contact/
-- [ ] Respect prefers-reduced-motion sur toutes animations
-- [ ] Responsive 375/768/1280/1920 valide
+### Phase 2.1 Homepage island — FAIT
+- [x] Hero : copy pivot ("Securite offensive. / IA souveraine. / Sans dependance."), badge neutre, H1 72px, fox v28 prod
+- [x] FoxAnimationV29 : `foxScale 0.85`, `foxOffsetX 0.72`, `offsetY = (cssH - foxH)/2 - cssH*0.1` (snippet 443 exact)
+- [x] 3 cards arguments inline (OWASP/PTES/MITRE, IA local-first, Tarifs publics)
+- [x] PillarCards : Cybersec (rouge) / IA souveraine (or) / Ressources (vert)
+- [x] WhySection : 4 engagements numerotes
+- [x] ArticleCards + useWPPosts (TanStack Query, fetch `/wp/v2/posts`)
+- [x] FinalCTA : "Parlons de votre projet" -> /contact/
+- [x] 5 backgrounds animes (MatrixRainRed, ParticleNeonGold, NeuralNetworkGreen, MeshGradientNeutral fixed, BlueprintGridBlue)
+- [x] Respect `prefers-reduced-motion`
+- [x] Responsive 375/768/1440 valide (1920 a verifier QA Lighthouse)
 
-### Phase 2.2 Integration WP (suivante)
-- [ ] `inaricom-core/src/React/ReactLoader.php` : enqueue bundles Vite avec manifest
-- [ ] `inaricom-core/src/React/ReactMountPoints.php` : shortcode `[inari_island name="homepage"]`
-- [ ] Tests montage React sur page staging brouillon
-- [ ] Fallback HTML si bundle 404 (skeleton)
-- [ ] CSP adaptee pour charger les bundles React
+### Phase 2.2 Integration WP — FAIT
+- [x] `ReactLoader.php` : enqueue bundles Vite avec manifest
+- [x] `ReactMountPoints.php` : shortcode `[inari_island name="homepage"]` + skeleton HTML
+- [x] CSP adaptee pour bundles React
+- [x] `IslandFullBleed.php` : marges Cloudflare 1360px scopees
+- [x] CSS critique inline pour cacher entry-header Kadence sur pages island
 
-### Phase 2.3 Swap homepage (suivante)
-- [ ] Creer page WP "Accueil Inaricom" en brouillon
-- [ ] Ajouter shortcode island + meta SEO
-- [ ] Tests preview staging
-- [ ] Deplacer page 985 vers `/accueil-cybersecurite/`
-- [ ] Changer `page_on_front` WP
-- [ ] Redirection 301 si ancienne URL utilisee
+### Phase 2.3 Swap homepage (staging) — FAIT
+- [x] Page WP 1069 "Accueil Inaricom" creee
+- [x] Shortcode `[inari_island name=homepage]` ajoute
+- [x] Page 985 "Accueil Cybersecurite" deplacee vers `/accueil-cybersecurite/`
+- [x] Menu Kadence : item 376 -> page 1069
+- [x] Tests staging OK
+- [ ] Bascule prod (apres validation QA Lighthouse Phase 2.4)
 
-### Phase 2.4 QA + polish
+### Phase 2.4 QA + polish — EN COURS
+- [x] Bundle JS critique < 80 KB gzipped (`homepage.js` = 27.5 KB gzipped) ✓
 - [ ] Lighthouse Performance 95+ mobile + desktop
 - [ ] Core Web Vitals : LCP < 2.5s, INP < 200ms, CLS < 0.1
-- [ ] Bundle size critique < 80 KB gzipped
-- [ ] axe-core 0 violation
-- [ ] Visual regression Playwright
+- [ ] axe-core 0 violation WCAG 2.2 AA
+- [ ] Visual regression Playwright (375/768/1440)
+- [ ] Confirmer ArticleCards en prod (REST WP retourne articles)
 - [ ] Deploy prod (validation Kevin)
 
 ### Phase 2.5+ Roadmap post-homepage

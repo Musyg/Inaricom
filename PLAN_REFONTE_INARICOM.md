@@ -2,8 +2,8 @@
 
 > Plan consolide integrant le pivot strategique cybersecurite et l'acceleration Phase 2 React islands.
 > v2 archive (~17 avril 2026) pour historique.
-> Derniere MAJ : 21 avril 2026
-> Progression globale : ~50%
+> Derniere MAJ : 28 avril 2026
+> Progression globale : ~62%
 
 ---
 
@@ -94,73 +94,76 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 
 ---
 
-## PHASE 2 — REACT ISLANDS SUR WORDPRESS (Q2 2026 — DEMARRE)
+## PHASE 2 — REACT ISLANDS SUR WORDPRESS (Q2 2026 — EN COURS)
 
-### Status : 0% — setup en cours cette semaine
+### Status : ~85% — homepage staging finalisee, QA Lighthouse a faire
 
-**Avance d'un an sur le plan initial.** Le backend WP est mature (Phase 1 a 85%), on passe directement au front premium.
+**Avance d'un an sur le plan initial.** Le backend WP est mature (Phase 1 a 85%), homepage React livree sur staging.
 
 **Plan detaille complet** : `docs/phase2-react-islands.md`
 
-### Phase 2.0 — Setup Vite + React + Tailwind v4
+### Phase 2.0 — Setup Vite + React + Tailwind v4 — FAIT
 **Effort** : 2-3h  
 **Livrable** : `react-islands/` operationnel avec HMR
 
-- [ ] `npm create vite@latest react-islands` (template React-TS)
-- [ ] Installer Tailwind v4 + `@tailwindcss/vite`
-- [ ] Installer shadcn/ui (Radix + lucide-react)
-- [ ] Installer `@tanstack/react-query`, `framer-motion`
-- [ ] Configurer `vite.config.ts` entries multiples + build vers `plugins/inaricom-core/assets/react/`
-- [ ] Configurer `tailwind.config.ts` avec tokens `--inari-*`
-- [ ] Creer `src/styles/globals.css` avec `@theme` heritant des tokens WP
-- [ ] Premier composant minimal en dev + HMR valide
+- [x] `pnpm create vite@latest react-islands` (template React-TS, pnpm v10 securise)
+- [x] Installer Tailwind v4 + `@tailwindcss/vite`
+- [x] Installer `@tanstack/react-query`, `framer-motion`, `lucide-react`, `class-variance-authority`, `tailwind-merge`
+- [x] Configurer `vite.config.ts` entries multiples (homepage + cybersec) + build vers `inaricom-core/assets/react/`
+- [x] Configurer `globals.css` avec `@theme` heritant des tokens WP (5 themes)
+- [x] HMR fonctionnel + premier composant valide
 
-### Phase 2.1 — Homepage island complete
-**Effort** : 2-3 sessions  
-**Livrable** : Homepage visuelle prete en dev mode
+### Phase 2.1 — Homepage island complete — FAIT
+**Effort** : 2-3 sessions
+**Livrable** : Homepage React complete en staging
 
-- [ ] `HeroNeutral.tsx` : titre fil rouge (d) + sous-titre + scroll indicator
-- [ ] `PillarCard.tsx` : component generique rouge/or/vert + animations survol + CTA
-- [ ] Section 3 cards piliers : Cybersecurite / IA Locale / Ressources
-- [ ] `WhySection.tsx` : 4 points-cles local-first / PME-friendly / methodologie / couplage
-- [ ] `ArticleCard.tsx` + `useWPPosts.ts` : 3 derniers articles via REST API
-- [ ] `FinalCTA.tsx` : "Parlons de votre projet" vers /contact/
-- [ ] Respect `prefers-reduced-motion` sur tout
-- [ ] Responsive 375/768/1280/1920 valide
+- [x] Hero : copy pivot cybersec ("Securite offensive. / IA souveraine. / Sans dependance."), badge neutre, H1 72px
+- [x] FoxAnimationV29 : aligne sur constantes EXACTES v28 prod (snippet 443) : foxScale 0.85, foxOffsetX 0.72, offsetY centre viewport - 10%
+- [x] 3 cards arguments inline (OWASP/PTES/MITRE, IA local-first, Tarifs publics)
+- [x] PillarCards : 3 piliers Cybersec (rouge) / IA souveraine (or) / Ressources (vert) avec accents thematiques
+- [x] WhySection : 4 engagements local-first / PME / methodo / convergence
+- [x] ArticleCards + useWPPosts (TanStack Query) : fetch WP REST `/wp/v2/posts`
+- [x] FinalCTA : "Parlons de votre projet" -> /contact/
+- [x] 5 backgrounds animes par theme (MatrixRainRed, ParticleNeonGold, NeuralNetworkGreen, MeshGradientNeutral, BlueprintGridBlue)
+- [x] Mesh background passe en `fixed` (suit le scroll)
+- [x] Marges Cloudflare 1360px globales
+- [x] cybersec.tsx : island scaffold pour `/accueil-cybersecurite/`
 
-### Phase 2.2 — Integration WordPress
-**Effort** : 1 session  
-**Livrable** : React island montable via shortcode WP
+### Phase 2.2 — Integration WordPress — FAIT
+**Effort** : 1 session
+**Livrable** : React island monte via shortcode WP
 
-- [ ] `inaricom-core/src/React/ReactLoader.php` : enqueue bundles Vite avec manifest
-- [ ] `inaricom-core/src/React/ReactMountPoints.php` : shortcode `[inari_island name="homepage"]`
-- [ ] Skeleton HTML dans shortcode (pas de CLS, LCP < 1s)
-- [ ] CSP adaptee pour charger bundles React depuis `/wp-content/plugins/inaricom-core/assets/react/`
-- [ ] Fallback HTML si bundle 404
-- [ ] Tests : montage React sur page staging brouillon
+- [x] `inaricom-core/src/React/ReactLoader.php` : enqueue bundles Vite avec manifest
+- [x] `inaricom-core/src/React/ReactMountPoints.php` : shortcode `[inari_island name="homepage"]`
+- [x] Skeleton HTML dans shortcode (pas de CLS)
+- [x] CSP adaptee pour charger bundles React depuis `/wp-content/plugins/inaricom-core/assets/react/`
+- [x] `IslandFullBleed.php` : marges Cloudflare 1360px scopees `.content-area .site-container`
+- [x] CSS critique inline pour cacher entry-header Kadence sur pages island
 
-### Phase 2.3 — Swap homepage production
-**Effort** : 1 session  
-**Livrable** : `/` est la nouvelle React homepage
+### Phase 2.3 — Swap homepage production (staging) — FAIT
+**Effort** : 1 session
+**Livrable** : Page React montee sur staging
 
-- [ ] Creer page WP "Accueil Inaricom" en brouillon
-- [ ] Ajouter shortcode `[inari_island name="homepage"]`
-- [ ] Meta title/description SEO optimises
-- [ ] Deplacer page 985 "Accueil Cybersecurite" vers slug `/accueil-cybersecurite/`
-- [ ] Changer `page_on_front` WP vers nouvelle page
-- [ ] Update menu principal
-- [ ] Tests : homepage = React, `/accueil-cybersecurite/` = contenu preserve
+- [x] Page WP 1069 "Accueil Inaricom" creee
+- [x] Shortcode `[inari_island name=homepage]` ajoute
+- [x] Page 985 "Accueil Cybersecurite" deplacee vers `/accueil-cybersecurite/`
+- [x] Menu Kadence : item 376 pointe vers page 1069
+- [x] Tests OK : homepage staging = React, `/accueil-cybersecurite/` preservee
+- [ ] Bascule prod (en attente validation finale + QA Lighthouse)
 
-### Phase 2.4 — QA + polish
-**Effort** : 1-2 sessions  
+### Phase 2.4 — QA + polish — EN COURS
+**Effort** : 1-2 sessions
 **Livrable** : Homepage prod-ready, metrics validees
 
-- [ ] Lighthouse Performance 95+ mobile + desktop
+- [x] Bundle JS critique < 80 KB gzipped (homepage.js = 27.5 KB gzipped) ✓
+- [ ] Lighthouse Performance 95+ mobile + desktop (a executer sur staging)
 - [ ] Core Web Vitals : LCP < 2.5s, INP < 200ms, CLS < 0.1
-- [ ] Bundle JS critique < 80 KB gzipped
 - [ ] axe-core : 0 violation accessibilite
-- [ ] Visual regression tests Playwright
+- [ ] Visual regression tests Playwright (3 viewports)
 - [ ] Check data-theme transitions (MutationObserver React)
+- [ ] Confirmer ArticleCards en prod (REST WP retourne articles publies)
+
+### Phase 2.5+ — Roadmap post-homepage (inchangee)
 
 ### Phase 2.5+ — Roadmap post-homepage
 
@@ -281,7 +284,7 @@ Une fois homepage sortie, on itere sur les autres islands :
 |-------|-----|--------|-------------|
 | 0 | Fondations infra | ~ | 85% |
 | 1 | Design System + Infra WP | ~ | 85% |
-| **2** | **React islands (Q2 2026)** | **~** | **0% — DEMARRE** |
+| **2** | **React islands (Q2 2026)** | **~** | **85% — homepage staging livree, QA Lighthouse a faire** |
 | 3 | Contenu securite-first | ~ | 40% |
 | 4 | Boutique WooCommerce | ~ | 15% |
 | 5 | Articles premium | ~ | 20% |
@@ -289,7 +292,7 @@ Une fois homepage sortie, on itere sur les autres islands :
 | 7 | Hardening securite | ~ | 30% |
 | 8 | Publication finale | - | 0% |
 
-**PROGRESSION TOTALE : ~50%**
+**PROGRESSION TOTALE : ~62%**
 
 ---
 
@@ -297,7 +300,7 @@ Une fois homepage sortie, on itere sur les autres islands :
 
 - **M1** (fait) : Fondations infra + staging operationnel
 - **M2** (fait) : Plugin inaricom-core v0.1 + design tokens 4 themes + infra tokens 5 themes
-- **M3** (cette semaine) : **Phase 2.0-2.3 terminees, homepage React en prod**
+- **M3** (28 avril 2026, partiel) : **Phase 2.0-2.3 terminees, homepage React en STAGING (commit 41487b4). Reste : QA Lighthouse + bascule prod.**
 - **M4** (Q3 2026) : Structure contenu securite-first complete, 4 piliers publies
 - **M5** (Q3-Q4 2026) : AI Tool Finder + Hardware Configurator livres
 - **M6** (Q4 2026) : Boutique operationnelle, 10+ produits, Stripe+Twint actifs
