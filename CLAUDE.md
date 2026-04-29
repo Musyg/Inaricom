@@ -14,7 +14,7 @@
 - **Nom** : Inaricom (inaricom.com)
 - **Siege** : Suisse (Fribourg/Suisse romande)
 - **Proprietaire** : Kevin Ronald Mathieu Meunier (entreprise individuelle)
-- **Responsable technique site** : Gilles Munier
+- **Responsable technique site** : Gilles Musy
 
 ### Activite — pivot en cours
 1. **Pilier 1 (prioritaire)** : Cybersecurite / Red Team / pentest / audit cyber
@@ -246,7 +246,7 @@ TVA suisse, droit contractuel : grandes lignes + renvoi vers fiduciaire/avocat.
 
 ## EXISTANT PROD — NE PAS DUPLIQUER
 
-Ecrit et deploye par Gilles Munier. **A NE PAS toucher sans test staging complet**. Pour toute evolution, passer par Gilles.
+Ecrit et deploye par Gilles Musy. **A NE PAS toucher sans test staging complet**. Pour toute evolution, passer par Gilles.
 
 ### `inaricom-security.php` (must-use, 189 lignes)
 - **Chemin** : `/home/toriispo/inaricom.com/web/wp-content/mu-plugins/inaricom-security.php`

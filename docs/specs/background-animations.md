@@ -1,7 +1,7 @@
 # Specs — Animations background par theme
 
 > 5 animations de fond thematiques, une par theme. Legeres, contextuelles, non-distractives.
-> Derniere MAJ doc d'intention : 24 avril 2026 (arbitrage Gilles Munier)
+> Derniere MAJ doc d'intention : 24 avril 2026 (arbitrage Gilles Musy)
 > Derniere MAJ etat reel : 25 avril 2026 (sync avec commits Phase 2.0)
 
 ---

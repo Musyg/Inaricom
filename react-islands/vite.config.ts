@@ -31,6 +31,7 @@ export default defineConfig(({ command }) => ({
         cybersec: path.resolve(__dirname, 'src/islands/cybersec.tsx'),
         ia: path.resolve(__dirname, 'src/islands/ia.tsx'),
         blog: path.resolve(__dirname, 'src/islands/blog.tsx'),
+        about: path.resolve(__dirname, 'src/islands/about.tsx'),
       },
       output: {
         entryFileNames: 'js/[name]-[hash].js',

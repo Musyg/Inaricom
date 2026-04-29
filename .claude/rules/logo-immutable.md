@@ -101,13 +101,18 @@ Refuser poliment et renvoyer vers Kevin Meunier :
 
 > « Les 5 logos actuels sont verrouillés par décision du propriétaire (Kevin Meunier). Toute modification doit passer par lui directement. »
 
-## Cas autorisés (par exception, sur demande explicite de Kevin Meunier)
+## Cas autorisés (par exception, sur demande explicite de Kevin Meunier ou Gilles Musy)
 
 - Création d'un favicon dérivé (`.ico`), basé sur un des 5 logos existants
 - Création d'une version Open Graph (export PNG 1200×630 avec padding), basée sur un des 5 logos
 - Création d'une version email signature (PNG basse résolution), basée sur un des 5 logos
+- **Patch palette mécanique** : alignement d'une couleur d'accent obsolète (cyan, etc.) sur la nouvelle valeur arbitrée pour le thème (ex: `#00D4FF` → `#0081f2`). Préserve silhouette, anti-aliasing, transparence. Pas une création de logo, un alignement palette. **Trace** dans la section Historique ci-dessous.
 
-Même dans ces cas, **les 5 logos originaux ne sont jamais modifiés visuellement**.
+Même dans ces cas, **la silhouette des 5 logos originaux n'est jamais modifiée**.
+
+## Exceptions historiques (trace horodatée)
+
+- **2026-04-29 — Gilles Musy** : dérogation explicite pour repaint mécanique de `Design-sans-titre-13.png` (logo bleu) du cyan `#00D4FF` vers le royal blue `#0081f2`, suite au changement de palette bleue arbitré le 28 avril 2026 (alignement trustsec.xyz). Méthode : shift HSV sur les pixels famille cyan, préservation alpha + luminance + AA. Silhouette, typo, proportions inchangées. Les 5 variantes WP (original + 4 thumbnails) ont été repaintées de manière identique.
 
 ## À retenir
 

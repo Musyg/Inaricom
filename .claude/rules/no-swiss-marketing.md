@@ -1,7 +1,7 @@
 # Regle : AUCUN argument marketing Suisse
 
 > Regle chargee automatiquement. Contrainte absolue non-negociable.
-> Derniere MAJ : 24 avril 2026 (decision Gilles Munier — alignement cible francophone globale)
+> Derniere MAJ : 24 avril 2026 (decision Gilles Musy — alignement cible francophone globale)
 
 ## Principe central
 
@@ -130,4 +130,4 @@ Si la reponse a 1) est "non" et que 3) est "argument commercial", **reformuler s
 - **Inaricom = entreprise francophone globale**, pas "entreprise suisse".
 - **Arguments commerciaux** = valeur technique (local-first, pedagogie, convergence IA+sec), jamais geographie.
 - **Suisse = fait legal/technique**, visible uniquement aux endroits factuels (legal, contact, checkout, politique de confidentialite).
-- **Decision** : Kevin Meunier + Gilles Munier, 24 avril 2026. Non negociable sans nouvel arbitrage explicite.
+- **Decision** : Kevin Meunier + Gilles Musy, 24 avril 2026. Non negociable sans nouvel arbitrage explicite.

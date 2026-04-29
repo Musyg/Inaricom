@@ -3,7 +3,7 @@
 > Plugin must-use localisé sur prod : `/home/toriispo/inaricom.com/web/wp-content/mu-plugins/inaricom-security.php`
 > Copie locale : `audits/plugins-discovered/inaricom-security.php`
 > Date audit : 17 avril 2026
-> **Auteur : Gilles Munier** (responsable technique site)
+> **Auteur : Gilles Musy** (responsable technique site)
 
 ## Bilan global
 

@@ -259,5 +259,5 @@ Voir : https://docs.claude.com/claude-code/settings
 ---
 
 Date d'installation : 17 avril 2026
-Par : Gilles Munier (Phoenix2)
+Par : Gilles Musy (Phoenix2)
 Versions clones : HEAD au 2026-04-17
