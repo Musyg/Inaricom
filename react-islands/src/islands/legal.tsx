@@ -373,10 +373,43 @@ function LegalContentStyles() {
 // Island root
 // ---------------------------------------------------------------------------
 
+// Lit le payload JSON embedde par ReactMountPoints.php cote serveur.
+// Evite un fetch REST API supplementaire au mount.
+function readEmbeddedPayload(): LegalPageData | null {
+  const el = document.getElementById('inari-legal-data')
+  if (!el) return null
+  try {
+    const raw = el.textContent || ''
+    if (!raw.trim()) return null
+    const parsed = JSON.parse(raw) as {
+      title: string
+      content: string
+      modified: string
+    }
+    return {
+      title: decodeHtml(parsed.title),
+      content: parsed.content,
+      date: parsed.modified,
+    }
+  } catch {
+    return null
+  }
+}
+
 function LegalIsland() {
-  const [state, setState] = useState<LoadState>({ status: 'loading' })
+  // Init synchrone : tente de lire le payload embedde (instant, zero round-trip).
+  // Si dispo, etat 'ready' direct -> render immediat sans flicker.
+  const [state, setState] = useState<LoadState>(() => {
+    const embedded = readEmbeddedPayload()
+    return embedded
+      ? { status: 'ready', data: embedded }
+      : { status: 'loading' }
+  })
 
   useEffect(() => {
+    // Si deja ready (embed cote serveur), pas de fetch
+    if (state.status !== 'loading') return
+
     const slug = getCurrentSlug()
     if (!slug) {
       setState({ status: 'error', message: 'Slug introuvable dans l\'URL' })
@@ -390,7 +423,7 @@ function LegalIsland() {
           message: err instanceof Error ? err.message : 'Erreur de chargement',
         }),
       )
-  }, [])
+  }, [state.status])
 
   return (
     <div className="relative text-inari-text" data-theme="bleu" role="region" aria-label="Page legale">

@@ -59,11 +59,72 @@ final class ReactMountPoints
         }
 
         $skeleton = $this->get_skeleton_for($name);
+        $embedded = $this->get_embedded_payload_for($name);
 
         return sprintf(
-            '<div id="inari-%1$s-root" class="inari-island-root" data-island="%1$s">%2$s</div>',
+            '<div id="inari-%1$s-root" class="inari-island-root" data-island="%1$s">%2$s%3$s</div>',
             esc_attr($name),
-            $skeleton
+            $skeleton,
+            $embedded
+        );
+    }
+
+    /**
+     * Pour certains islands (legal), embedde le contenu necessaire dans le
+     * mount point sous forme de <script type="application/json"> pour eviter
+     * un fetch REST API supplementaire au mount React.
+     *
+     * Le React island lit le JSON via document.getElementById(...) avant de
+     * fallback sur fetch.
+     *
+     * Resultat : zero round-trip reseau, render quasi-instantane.
+     */
+    private function get_embedded_payload_for(string $name): string
+    {
+        if ($name !== 'legal') {
+            return '';
+        }
+
+        $post_id = get_the_ID();
+        if (!$post_id) {
+            return '';
+        }
+        $post = get_post($post_id);
+        if (!$post instanceof \WP_Post) {
+            return '';
+        }
+
+        // Contenu original sauvegarde dans le meta lors de la migration en island.
+        // Fallback sur post_content (cas exceptionnel : si meta absent et content
+        // != shortcode, on prend le content tel quel).
+        $original = (string) get_post_meta($post_id, '_legal_original_content', true);
+        if ($original === '') {
+            $original = (string) $post->post_content;
+        }
+        // Skip si le contenu est juste le shortcode (boucle)
+        if (preg_match('/^\s*\[inari_island[^\]]*\]\s*$/', $original)) {
+            return '';
+        }
+
+        // Apply WP filters pour rendre le HTML final (do_shortcode, wpautop, etc.)
+        $rendered = apply_filters('the_content', $original);
+        // Nettoyage : retire eventuels shortcodes residuels
+        $rendered = (string) preg_replace('/\[inari_island[^\]]*\]/', '', $rendered);
+
+        $payload = [
+            'id'       => $post_id,
+            'slug'     => $post->post_name,
+            'title'    => get_the_title($post),
+            'content'  => $rendered,
+            'modified' => mysql2date('c', $post->post_modified),
+        ];
+
+        // wp_json_encode echappe correctement pour <script>. Pas besoin de htmlspecialchars
+        // car JSON est parse par JSON.parse, pas par le HTML parser.
+        return sprintf(
+            '<script type="application/json" id="inari-%1$s-data">%2$s</script>',
+            esc_attr($name),
+            wp_json_encode($payload, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
         );
     }
 
