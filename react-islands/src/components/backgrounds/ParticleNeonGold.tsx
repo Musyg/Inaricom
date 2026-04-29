@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useMountFadeIn } from '@/hooks/useMountFadeIn'
 
 // Inaricom — ParticleNeonGold
 // Porte l'animation "Particle neon" (source: Animations/Particle neon/js.txt)
@@ -73,6 +74,7 @@ export function ParticleNeonGold() {
 
   const [host, setHost] = useState<HTMLElement | null>(null)
   const [activeTheme, setActiveTheme] = useState<string | null | undefined>(undefined)
+  const visible = useMountFadeIn()
 
   // Phase 1 — détection du plus proche [data-theme] via probe invisible
   useLayoutEffect(() => {
@@ -375,7 +377,7 @@ export function ParticleNeonGold() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.07 }}
+      style={{ opacity: visible ? 0.07 : 0, transition: 'opacity 800ms ease-out' }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>

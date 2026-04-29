@@ -48,10 +48,22 @@ final class ReactLoader
      */
     private array $module_handles = [];
 
+    /**
+     * Liste des chunks a precharger via <link rel="modulepreload">.
+     * Remplie au runtime par enqueue_island() pour les chunks lazy backgrounds.
+     *
+     * @var array<int, string>
+     */
+    private array $modulepreload_urls = [];
+
     public function register(): void
     {
         add_action('wp_enqueue_scripts', [$this, 'enqueue_islands'], 20);
         add_filter('script_loader_tag', [$this, 'inject_module_attributes'], 10, 3);
+        // Injecte les <link rel="modulepreload"> en <head>, priorite 1 (avant
+        // tous les autres assets) pour que le browser fetch les chunks
+        // backgrounds en parallele du bundle island principal.
+        add_action('wp_head', [$this, 'inject_modulepreloads'], 1);
     }
 
     /**
@@ -239,6 +251,49 @@ final class ReactLoader
                     }
                 }
             }
+        }
+
+        // 4. modulepreload des dynamicImports (chunks lazy = backgrounds animes).
+        // Le bundle island fait `import('./MatrixRainRed')` async ; sans hint
+        // browser, le chunk est fetch UNIQUEMENT apres l'evaluation du bundle
+        // island (donc apres parse + execute). Avec modulepreload, le browser
+        // fetch en parallele des le head, et les chunks sont prets quand
+        // React.lazy declenche le mount → flash-on-mount fortement reduit.
+        if (isset($entry['dynamicImports']) && is_array($entry['dynamicImports'])) {
+            foreach ($entry['dynamicImports'] as $dyn_key) {
+                if (!is_string($dyn_key) || !isset($manifest[$dyn_key])) {
+                    continue;
+                }
+                $dyn = $manifest[$dyn_key];
+                if (!is_array($dyn) || !isset($dyn['file']) || !is_string($dyn['file'])) {
+                    continue;
+                }
+                $this->modulepreload_urls[] = $base_url . $dyn['file'];
+            }
+        }
+    }
+
+    /**
+     * Hook wp_head priorite 1 : pose les <link rel="modulepreload"> en tete
+     * du <head>, avant les <script> et <link rel="stylesheet">. Le browser
+     * commence a fetcher les chunks backgrounds en parallele du bundle
+     * island principal, divise par 2-3x le delai d'apparition du background.
+     */
+    public function inject_modulepreloads(): void
+    {
+        if (empty($this->modulepreload_urls)) {
+            return;
+        }
+        $printed = [];
+        foreach ($this->modulepreload_urls as $url) {
+            if (isset($printed[$url])) {
+                continue;
+            }
+            $printed[$url] = true;
+            printf(
+                '<link rel="modulepreload" href="%s" crossorigin="anonymous" />' . "\n",
+                esc_url($url)
+            );
         }
     }
 

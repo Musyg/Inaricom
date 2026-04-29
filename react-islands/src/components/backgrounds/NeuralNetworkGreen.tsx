@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type * as THREE from 'three'
+import { useMountFadeIn } from '@/hooks/useMountFadeIn'
 
 // Inaricom — NeuralNetworkGreen
 // Porte l'animation "Interactive neural network" (source: Animations/Ineractive neural network/html.txt)
@@ -119,6 +120,7 @@ export function NeuralNetworkGreen() {
   const probeRef = useRef<HTMLSpanElement | null>(null)
   const wrapRef = useRef<HTMLDivElement | null>(null)
   const canvasRef = useRef<HTMLCanvasElement | null>(null)
+  const visible = useMountFadeIn()
 
   const [host, setHost] = useState<HTMLElement | null>(null)
   const [activeTheme, setActiveTheme] = useState<string | null | undefined>(undefined)
@@ -464,7 +466,7 @@ export function NeuralNetworkGreen() {
         ref={wrapRef}
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 overflow-hidden"
-        style={{ opacity: 0.1 }}
+        style={{ opacity: visible ? 0.1 : 0, transition: 'opacity 800ms ease-out' }}
       >
         <StaticNeuralSvg />
       </div>
@@ -477,7 +479,7 @@ export function NeuralNetworkGreen() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.1 }}
+      style={{ opacity: visible ? 0.1 : 0, transition: 'opacity 800ms ease-out' }}
     >
       {!threeReady && <StaticNeuralSvg />}
       <canvas

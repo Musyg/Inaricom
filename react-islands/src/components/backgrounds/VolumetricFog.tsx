@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useMountFadeIn } from '@/hooks/useMountFadeIn'
 
 // Inaricom — VolumetricFog (universel, theme-aware)
 //
@@ -192,6 +193,7 @@ export function VolumetricFog() {
 
   const [host, setHost] = useState<HTMLElement | null>(null)
   const [activeTheme, setActiveTheme] = useState<string | null | undefined>(undefined)
+  const visible = useMountFadeIn()
 
   // Phase 1 — resolve [data-theme] ancestor
   useLayoutEffect(() => {
@@ -391,6 +393,10 @@ export function VolumetricFog() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
+      style={{
+        opacity: visible ? 1 : 0,
+        transition: 'opacity 800ms ease-out',
+      }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>

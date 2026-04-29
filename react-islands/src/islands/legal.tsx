@@ -1,4 +1,5 @@
 import { StrictMode, Suspense, lazy, useEffect, useState } from 'react'
+import { BackgroundSkeleton } from '@/components/backgrounds/BackgroundSkeleton'
 import { createRoot } from 'react-dom/client'
 
 import '@/styles/globals.css'
@@ -433,7 +434,7 @@ function LegalIsland() {
         className="pointer-events-none fixed inset-0 bg-inari-black"
         style={{ zIndex: 0 }}
       >
-        <Suspense fallback={null}>
+        <Suspense fallback={<BackgroundSkeleton />}>
           <VolumetricFog />
           <BlueprintGridBlue />
         </Suspense>

@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useMountFadeIn } from '@/hooks/useMountFadeIn'
 
 // Inaricom — BlueprintGridBlue (v2.4 — L-shape routing, 1px)
 // Fond animé thème "bleu" (institutionnel) : grille blueprint statique + nœuds
@@ -55,6 +56,7 @@ export function BlueprintGridBlue() {
 
   const [host, setHost] = useState<HTMLElement | null>(null)
   const [activeTheme, setActiveTheme] = useState<string | null | undefined>(undefined)
+  const visible = useMountFadeIn()
 
   useLayoutEffect(() => {
     const probe = probeRef.current
@@ -429,7 +431,7 @@ export function BlueprintGridBlue() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.3 }}
+      style={{ opacity: visible ? 0.3 : 0, transition: 'opacity 800ms ease-out' }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>

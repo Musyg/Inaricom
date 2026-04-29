@@ -1,4 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { useMountFadeIn } from '@/hooks/useMountFadeIn'
 
 // Inaricom — MatrixRainRed
 // Porte l'animation "Run Matrix Text" (source: Animations/Run Matrix Text/js.txt)
@@ -45,6 +46,7 @@ export function MatrixRainRed() {
   const [host, setHost] = useState<HTMLElement | null>(null)
   // undefined = pas encore mesuré · null = pas d'ancêtre [data-theme] · string = thème actif
   const [activeTheme, setActiveTheme] = useState<string | null | undefined>(undefined)
+  const visible = useMountFadeIn()
 
   // Phase 1 — après premier layout, remonte au plus proche [data-theme]
   useLayoutEffect(() => {
@@ -269,7 +271,7 @@ export function MatrixRainRed() {
       ref={wrapRef}
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 overflow-hidden"
-      style={{ opacity: 0.10 }}
+      style={{ opacity: visible ? 0.10 : 0, transition: 'opacity 800ms ease-out' }}
     >
       <canvas ref={canvasRef} className="block h-full w-full" />
     </div>

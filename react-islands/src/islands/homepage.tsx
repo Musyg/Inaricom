@@ -6,6 +6,7 @@ import '@/styles/globals.css'
 
 // VolumetricFog : import statique, present sur tous les themes (renders toujours)
 import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
+import { BackgroundSkeleton } from '@/components/backgrounds/BackgroundSkeleton'
 
 // 5 backgrounds theme-specifiques : lazy imports — seul le matchant au
 // data-theme courant est telecharge + execute. Coupe ~80% du JS eval
@@ -103,7 +104,7 @@ function ThemedBackgroundStack() {
       <VolumetricFog />
 
       {/* Background theme-specifique (un seul, lazy-loade) */}
-      <Suspense fallback={null}>
+      <Suspense fallback={<BackgroundSkeleton />}>
         {theme === 'rouge' && <MatrixRainRed />}
         {theme === 'or' && <ParticleNeonGold />}
         {theme === 'vert' && <NeuralNetworkGreen />}
