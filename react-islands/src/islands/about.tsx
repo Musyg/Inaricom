@@ -23,7 +23,7 @@ function AboutHero() {
       style={{ minHeight: '70vh' }}
       aria-label="Hero a propos"
     >
-      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-[1360px] flex-col px-6 py-16 lg:px-10 lg:py-24">
+      <div className="relative z-10 mx-auto flex min-h-[70vh] max-w-[1360px] flex-col px-6 pb-16 lg:px-10 lg:pb-24">
         {/* Badge bleu */}
         <div className="flex justify-center" style={{ paddingTop: '14px' }}>
           <div

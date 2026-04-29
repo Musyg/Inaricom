@@ -106,7 +106,7 @@ function BlogHero() {
       style={{ minHeight: '60vh' }}
       aria-label="Hero blog"
     >
-      <div className="relative z-10 mx-auto flex min-h-[60vh] max-w-[1360px] flex-col px-6 py-16 lg:px-10 lg:py-24">
+      <div className="relative z-10 mx-auto flex min-h-[60vh] max-w-[1360px] flex-col px-6 pb-16 lg:px-10 lg:pb-24">
         {/* Badge vert */}
         <div className="flex justify-center" style={{ paddingTop: '14px' }}>
           <div
