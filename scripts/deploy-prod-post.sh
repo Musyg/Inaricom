@@ -110,18 +110,31 @@ else
 fi
 
 echo ""
-echo "=== 2b. Patch snippet 684 (pages legales : cyan hardcode -> royal blue) ==="
-PATCH_684="$REPO_ROOT/scripts/wp-db-patches/patch_684_legal_pages_cyan.php"
-if [[ ! -f "$PATCH_684" ]]; then
-    echo "ECHEC: patch script absent localement: $PATCH_684"
-    exit 1
-fi
+echo "=== 2b. Desactivation snippets dead-code 684 + 740 ==="
+# Snippet 684 (Pages Legales CSS) : devenu dead code apres migration des
+# 7 pages footer en island legal (chaque page rend son propre styling).
+# Snippet 740 (WPForms style) : devenu dead code apres bypass WPForms sur
+# /contact/ (zero usage de [wpforms ...] dans le site verifie).
+# On desactive les deux pour eviter le flicker (CSS legacy applique avant
+# que React monte et override).
 
 if [[ -n "$DRY_RUN" ]]; then
-    echo "   [DRY] would scp + wp eval-file patch_684_legal_pages_cyan.php"
+    echo "   [DRY] would deactivate snippets 684 + 740"
 else
-    scp "$PATCH_684" "$SSH_HOST:/tmp/patch_684_legal_pages_cyan.php"
-    ssh "$SSH_HOST" "cd $PROD_PATH && /usr/local/bin/wp eval-file /tmp/patch_684_legal_pages_cyan.php" 2>&1 | tail -8
+    ssh "$SSH_HOST" "cd $PROD_PATH && /usr/local/bin/wp eval '
+foreach ([684, 740] as \$pid) {
+  \$post = get_post(\$pid);
+  if (!\$post) { echo \"\$pid : NOT FOUND\\n\"; continue; }
+  update_post_meta(\$pid, \"_active\", \"no\");
+  wp_update_post([\"ID\" => \$pid, \"post_status\" => \"draft\"]);
+  \$file = WP_CONTENT_DIR . \"/uploads/custom-css-js/\" . \$pid . \".css\";
+  if (file_exists(\$file)) {
+    rename(\$file, \$file . \".disabled-\" . date(\"Ymd-His\"));
+    echo \"\$pid.css renamed -> .disabled\\n\";
+  }
+  echo \"Snippet \$pid : status=\" . get_post_status(\$pid) . \" _active=\" . get_post_meta(\$pid, \"_active\", true) . \"\\n\";
+}
+' 2>&1 | tail -10"
 fi
 
 # ============================================================================

@@ -224,17 +224,21 @@ function LegalSkeleton() {
 // ---------------------------------------------------------------------------
 
 function LegalContentStyles() {
-  // CSS scope sur .legal-island-content pour eviter les conflits avec snippet 684.
-  // Override les classes legacy .legal-section, .legal-page-card, etc. en mode glass.
+  // Styles propres pour le contenu HTML servi par /wp-json/inaricom/v1/legal/{slug}.
+  // Snippet 684 (legacy "Pages Legales CSS") a ete desactive : pas besoin
+  // d'override avec !important. Les selecteurs natifs HTML + classes legacy
+  // (legal-*) recoivent ici un styling minimaliste coherent avec /a-propos/
+  // et /contact/.
   const css = `
     .legal-island-content { color: var(--inari-text); font-size: 16px; line-height: 1.75; }
+
+    /* Headings */
     .legal-island-content h2 {
       font-family: 'Geist', 'Inter', sans-serif;
       font-size: clamp(22px, 2vw, 28px);
       font-weight: 600;
       color: var(--inari-white);
-      margin-top: 2.5rem;
-      margin-bottom: 1rem;
+      margin: 2.5rem 0 1rem;
       padding-top: 1.5rem;
       border-top: 1px solid rgba(255, 255, 255, 0.06);
       letter-spacing: -0.01em;
@@ -245,108 +249,92 @@ function LegalContentStyles() {
       font-size: 17px;
       font-weight: 600;
       color: var(--inari-white);
-      margin-top: 1.75rem;
-      margin-bottom: 0.5rem;
+      margin: 1.75rem 0 0.5rem;
     }
+
+    /* Body text */
     .legal-island-content p { margin: 0 0 1rem; color: var(--inari-text-soft); }
+    .legal-island-content strong { color: var(--inari-text); font-weight: 600; }
+
+    /* Links */
     .legal-island-content a {
-      color: #1a93fe !important;
+      color: #1a93fe;
       text-decoration: underline;
       text-underline-offset: 3px;
       text-decoration-color: rgba(26, 147, 254, 0.4);
       transition: text-decoration-color 0.2s, color 0.2s;
     }
     .legal-island-content a:hover {
-      color: #4ba8ff !important;
+      color: #4ba8ff;
       text-decoration-color: rgba(75, 168, 255, 0.8);
     }
-    .legal-island-content strong { color: var(--inari-text); font-weight: 600; }
-    .legal-island-content ul, .legal-island-content ol {
+
+    /* Lists */
+    .legal-island-content ul,
+    .legal-island-content ol {
       padding-left: 1.5rem;
       margin: 0 0 1rem;
       color: var(--inari-text-soft);
     }
-    .legal-island-content ul li, .legal-island-content ol li { margin-bottom: 0.4rem; }
+    .legal-island-content ul li,
+    .legal-island-content ol li { margin-bottom: 0.4rem; }
     .legal-island-content ul li::marker { color: rgba(0, 129, 242, 0.7); }
     .legal-island-content ol li::marker { color: rgba(0, 129, 242, 0.7); font-weight: 600; }
 
-    /* Override snippet 684 ugly card styles (annule les bg + border heavy) */
-    .legal-island-content .legal-section,
-    .legal-island-content .legal-content,
-    .legal-island-content .legal-page,
-    .legal-island-content .wp-block-group {
-      background: transparent !important;
-      backdrop-filter: none !important;
-      -webkit-backdrop-filter: none !important;
-      border: 0 !important;
-      border-radius: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      box-shadow: none !important;
-    }
-    .legal-island-content .legal-section + .legal-section { margin-top: 1rem !important; }
-
-    /* Header (titre + date) deja affiche par le Hero island, on cache le duplicat */
+    /* Article + header (le hero island affiche deja le titre + date) */
+    .legal-island-content > article,
+    .legal-island-content article.legal-page { all: unset; display: block; }
     .legal-island-content .legal-header,
-    .legal-island-content > article > header,
-    .legal-island-content .legal-page-card,
-    .legal-island-content .legal-title-card {
-      display: none !important;
-    }
-    /* Article wrapper de WP : pas de bg/border, transparent */
-    .legal-island-content article.legal-page,
-    .legal-island-content > article {
-      background: transparent !important;
-      border: 0 !important;
-      padding: 0 !important;
-      margin: 0 !important;
-      box-shadow: none !important;
-    }
+    .legal-island-content > article > header { display: none; }
 
-    /* TOC simplifie : pas de card lourde */
+    /* TOC : style discret */
     .legal-island-content .legal-toc,
     .legal-island-content nav.legal-toc {
-      background: rgba(0, 129, 242, 0.04) !important;
-      border: 1px solid rgba(0, 129, 242, 0.12) !important;
-      border-radius: 12px !important;
-      padding: 1.5rem 1.75rem !important;
-      margin: 0 0 2.5rem !important;
+      background: rgba(0, 129, 242, 0.04);
+      border: 1px solid rgba(0, 129, 242, 0.12);
+      border-radius: 12px;
+      padding: 1.5rem 1.75rem;
+      margin: 0 0 2.5rem;
     }
     .legal-island-content .legal-toc h2 {
-      margin-top: 0 !important;
-      padding-top: 0 !important;
-      border-top: 0 !important;
-      font-size: 13px !important;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      font-size: 13px;
       text-transform: uppercase;
       letter-spacing: 0.18em;
-      color: var(--inari-text-muted) !important;
+      color: var(--inari-text-muted);
       font-weight: 500;
     }
-    .legal-island-content .legal-toc ol { padding-left: 1.25rem; }
+    .legal-island-content .legal-toc ol { padding-left: 1.25rem; margin: 1rem 0 0; }
     .legal-island-content .legal-toc a { font-size: 14px; }
 
-    /* Callouts (legal-info, legal-notice, legal-warning) — minimaliste */
+    /* Callouts */
     .legal-island-content .legal-info,
     .legal-island-content .legal-notice,
-    .legal-island-content .legal-warning,
     .legal-island-content blockquote,
     .legal-island-content .wp-block-quote {
-      background: rgba(0, 129, 242, 0.05) !important;
-      border-left: 3px solid #0081f2 !important;
-      border-radius: 0 6px 6px 0 !important;
-      padding: 1rem 1.25rem !important;
-      margin: 1.25rem 0 !important;
+      background: rgba(0, 129, 242, 0.05);
+      border-left: 3px solid #0081f2;
+      border-radius: 0 6px 6px 0;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
       font-size: 15px;
     }
     .legal-island-content .legal-warning {
-      background: rgba(245, 158, 11, 0.06) !important;
-      border-left-color: #F59E0B !important;
+      background: rgba(245, 158, 11, 0.06);
+      border-left: 3px solid #F59E0B;
+      border-radius: 0 6px 6px 0;
+      padding: 1rem 1.25rem;
+      margin: 1.25rem 0;
+      font-size: 15px;
     }
     .legal-island-content .legal-info p:last-child,
     .legal-island-content .legal-notice p:last-child,
-    .legal-island-content .legal-warning p:last-child { margin-bottom: 0; }
+    .legal-island-content .legal-warning p:last-child,
+    .legal-island-content blockquote p:last-child { margin-bottom: 0; }
 
-    /* Tables — propre et minimaliste */
+    /* Tables */
     .legal-island-content table {
       width: 100%;
       border-collapse: collapse;
@@ -354,7 +342,7 @@ function LegalContentStyles() {
       font-size: 14px;
     }
     .legal-island-content th {
-      background: rgba(0, 129, 242, 0.08) !important;
+      background: rgba(0, 129, 242, 0.08);
       color: var(--inari-white);
       text-align: left;
       padding: 10px 14px;
@@ -375,8 +363,8 @@ function LegalContentStyles() {
       margin: 2rem 0;
     }
 
-    /* "Retour a l'accueil" legacy bouton (de 684) — masque (on a notre propre version) */
-    .legal-island-content .legal-back-link { display: none !important; }
+    /* Legacy back-link bouton (de l'ancien 684) — au cas ou il reste du contenu : on cache */
+    .legal-island-content .legal-back-link { display: none; }
   `
   return <style dangerouslySetInnerHTML={{ __html: css }} />
 }
