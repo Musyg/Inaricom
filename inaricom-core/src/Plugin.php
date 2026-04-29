@@ -50,6 +50,11 @@ final class Plugin
         $this->services['theme_mapper'] = new Theme\ThemeMapper();
         $this->services['theme_mapper']->register();
 
+        // Logo swap PHP (or/bleu/vert/neutre selon theme courant). Plus fiable
+        // que le hack CSS `content: url()` qui rate sur les images avec srcset.
+        $this->services['logo_swapper'] = new Theme\LogoSwapper($this->services['theme_mapper']);
+        $this->services['logo_swapper']->register();
+
         // Cache le titre Kadence sur les pages avec une React island
         $this->services['island_fullbleed'] = new Theme\IslandFullBleed();
         $this->services['island_fullbleed']->register();
