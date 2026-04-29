@@ -1,10 +1,17 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import '@/styles/globals.css'
 
-import { MatrixRainRed } from '@/components/backgrounds/MatrixRainRed'
-import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
+// Lazy backgrounds : meme pattern que homepage / ia → reduit l'eval JS
+// initial sur le bundle cybersec, le hero rend immediatement et les
+// canvas montent en arriere-plan via Suspense.
+const MatrixRainRed = lazy(() =>
+  import('@/components/backgrounds/MatrixRainRed').then((m) => ({ default: m.MatrixRainRed })),
+)
+const VolumetricFog = lazy(() =>
+  import('@/components/backgrounds/VolumetricFog').then((m) => ({ default: m.VolumetricFog })),
+)
 
 // ---------------------------------------------------------------------------
 // Data — Stats (KPI panic). 4 chiffres choc en bandeau apres le hero.
@@ -495,8 +502,16 @@ function CybersecHero() {
               </a>
               <a
                 href="#methodologie"
-                className="inline-flex items-center gap-2 rounded-md border border-white/[0.20] px-6 py-3 font-sans text-sm font-medium text-inari-white transition hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-                style={{ background: 'rgba(18, 18, 26, 0.45)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                className="inline-flex items-center gap-2 rounded-md border border-white/[0.20] px-6 py-3 font-sans text-sm font-medium transition hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
+                style={{
+                  background: 'rgba(18, 18, 26, 0.45)',
+                  backdropFilter: 'blur(16px) saturate(180%)',
+                  // Inline color FFFFFF pour court-circuiter la regle
+                  // globale CSS `a { color: var(--inari-red) }` qui gagnait
+                  // la cascade vs notre className text-inari-white (audit
+                  // pass 3 : color-contrast WCAG serious).
+                  color: '#FFFFFF',
+                }}
               >
                 Notre m&eacute;thodologie
               </a>
@@ -1192,8 +1207,10 @@ function CybersecIsland() {
         className="pointer-events-none fixed inset-0 bg-inari-black"
         style={{ zIndex: 0 }}
       >
-        <VolumetricFog />
-        <MatrixRainRed />
+        <Suspense fallback={null}>
+          <VolumetricFog />
+          <MatrixRainRed />
+        </Suspense>
       </div>
 
       <div className="relative z-10">

@@ -1,10 +1,18 @@
-import { StrictMode } from 'react'
+import { StrictMode, Suspense, lazy } from 'react'
 import { createRoot } from 'react-dom/client'
 
 import '@/styles/globals.css'
 
-import { ParticleNeonGold } from '@/components/backgrounds/ParticleNeonGold'
-import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
+// Lazy backgrounds : meme pattern que homepage.tsx pour reduire l'eval JS
+// initial. Pass 3 a montre que les backgrounds importes statiquement
+// blockaient le main thread (TBT 2-4s sur IA). Suspense fallback null →
+// le hero s'affiche immediatement, le canvas mount en arriere-plan.
+const ParticleNeonGold = lazy(() =>
+  import('@/components/backgrounds/ParticleNeonGold').then((m) => ({ default: m.ParticleNeonGold })),
+)
+const VolumetricFog = lazy(() =>
+  import('@/components/backgrounds/VolumetricFog').then((m) => ({ default: m.VolumetricFog })),
+)
 
 // ---------------------------------------------------------------------------
 // Data — 6 cas d'usage par metier (Section B). Hardware + agent suggeres
@@ -1414,8 +1422,10 @@ function IaIsland() {
         className="pointer-events-none fixed inset-0 bg-inari-black"
         style={{ zIndex: 0 }}
       >
-        <VolumetricFog />
-        <ParticleNeonGold />
+        <Suspense fallback={null}>
+          <VolumetricFog />
+          <ParticleNeonGold />
+        </Suspense>
       </div>
 
       <div className="relative z-10">
