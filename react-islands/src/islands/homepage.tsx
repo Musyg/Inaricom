@@ -217,7 +217,8 @@ function Hero() {
               }}
             >
               Convergence unique IA + cybers&eacute;curit&eacute; offensive. Pour les
-              PME et CTO francophones qui refusent la bo&icirc;te noire.
+              particuliers, ind&eacute;pendants, TPE et PME francophones qui
+              refusent la bo&icirc;te noire.
             </p>
 
             {/* CTAs */}

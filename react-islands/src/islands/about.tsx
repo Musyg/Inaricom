@@ -166,7 +166,8 @@ function ConstatSection() {
 
         <p className="mt-5 max-w-2xl text-base leading-relaxed text-inari-text-soft sm:text-lg">
           Pas un projet ideologique. Un projet pragmatique. Le notre repose sur
-          trois faits que vous voyez chaque jour dans votre PME&nbsp;:
+          trois faits que vous voyez chaque jour, particulier comme
+          professionnel&nbsp;:
         </p>
 
         <div className="mt-12 grid gap-5 md:grid-cols-3">
@@ -433,7 +434,7 @@ function EquipeSection() {
   const founder = {
     name: 'Kevin Meunier',
     role: 'Fondateur / Direction',
-    bio: 'Pilote la strategie, les partenariats et l\'arbitrage des decisions structurantes. Veut prouver par les faits qu\'une PME peut etre productive sans broyer ses humains, ni dependre d\'une boite noire externe.',
+    bio: 'Pilote la strategie, les partenariats et l\'arbitrage des decisions structurantes. Veut prouver par les faits qu\'une organisation peut etre productive sans broyer ses humains, ni dependre d\'une boite noire externe.',
     initials: 'KM',
   }
 
@@ -689,9 +690,9 @@ function AboutCTA() {
         </h2>
 
         <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-inari-text-soft sm:text-lg">
-          Que vous soyez une PME, un independant, un CTO ou un dirigeant
-          non-technique&nbsp;: on commence par un echange ecrit, sans
-          engagement, pour comprendre ce qui bloque vraiment.
+          Particulier, independant, TPE ou PME, technique ou non&nbsp;: on
+          commence par un echange ecrit, sans engagement, pour comprendre ce
+          qui bloque vraiment.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-4">

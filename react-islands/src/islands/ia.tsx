@@ -16,7 +16,7 @@ const VolumetricFog = lazy(() =>
 
 // ---------------------------------------------------------------------------
 // Data — 6 cas d'usage par metier (Section B). Hardware + agent suggeres
-// par cas, langage cible PME/TPE/independants francophones.
+// par cas, langage cible particuliers / independants / TPE / PME francophones.
 // ---------------------------------------------------------------------------
 
 type UseCase = {
@@ -483,8 +483,8 @@ function IaHero() {
             >
               Hardware IA et agents pr&ecirc;ts &agrave; d&eacute;ployer.
               Mod&egrave;les open-weight, infrastructure locale, donn&eacute;es
-              chez vous. Pour les PME qui veulent l&rsquo;IA sans le Cloud
-              Act.
+              chez vous. Pour les particuliers, ind&eacute;pendants et PME
+              qui veulent l&rsquo;IA sans le Cloud Act.
             </p>
 
             {/* CTAs */}

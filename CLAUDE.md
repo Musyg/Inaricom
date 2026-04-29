@@ -23,10 +23,18 @@
 4. **Pilier 4** : Institutionnel (a propos, contact, legal)
 
 ### Cible
-- PME et TPE francophones (FR, BE, LU, CH) — marche francophone global, pas de priorite geographique
-- Independants / freelances
-- CTO / RSSI francophones
+**Particuliers + professionnels francophones (FR, BE, LU, CH)** — marche francophone global, pas de priorite geographique.
+
+Quatre segments structures :
+- **Particuliers** (donnees personnelles, IA locale curieuse, hygiene cyber individuelle)
+- **Independants / freelances** (solo, micro-entreprise, profession liberale)
+- **TPE** (1-9 salaries)
+- **PME** (10-249 salaries)
+
+Personas dans ces structures :
+- CTO / RSSI francophones (technique)
 - Dirigeants non-techniques (pedagogie essentielle)
+- Particuliers curieux / power users
 
 ### Positionnement differenciant
 - **Convergence unique** : IA + cybersec offensif (pentest LLM, OWASP LLM Top 10)

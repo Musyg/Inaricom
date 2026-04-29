@@ -58,12 +58,20 @@ Articles generaux (pentest, red team, IA locale, OWASP LLM, etc.) : **pas** de "
 
 ## Cible de reference (verrouillee)
 
-**Cible** : PME et TPE francophones — **FR + BE + LU + CH**, sans priorite geographique.
+**Cible** : particuliers et professionnels francophones — **FR + BE + LU + CH**, sans priorite geographique.
 
-**Segments secondaires** :
-- Independants / freelances
-- CTO / RSSI francophones
+**Quatre segments structures** :
+- **Particuliers** (donnees personnelles, IA locale curieuse, hygiene cyber individuelle)
+- **Independants / freelances** (solo, micro-entreprise, profession liberale)
+- **TPE** (1-9 salaries)
+- **PME** (10-249 salaries)
+
+**Personas dans ces structures** :
+- CTO / RSSI francophones (technique)
 - Dirigeants non-techniques (pedagogie essentielle)
+- Particuliers curieux / power users
+
+**Decision** : Gilles Musy 2026-04-29, ajout des particuliers comme cible primaire (auparavant absente). La gamme de produits Inaricom couvre du grand public (tutos IA, hygiene cyber) au B2B (audits, pentests, integration IA), donc la cible doit etre coherente avec cette amplitude.
 
 ---
 
