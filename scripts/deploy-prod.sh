@@ -133,12 +133,16 @@ ssh "$SSH_HOST" "rsync -av --dry-run \
 if [[ -z "$DRY_RUN" ]]; then
     echo ""
     echo "=== 3. Triple confirmation ==="
-    read -p "   Staging a-t-il ete valide par QA ? (oui/non) " c1
-    [[ "$c1" != "oui" ]] && { echo "Annule."; exit 1; }
-    read -p "   As-tu un plan de rollback mental ? (oui/non) " c2
-    [[ "$c2" != "oui" ]] && { echo "Annule."; exit 1; }
-    read -p "   Deployer en prod MAINTENANT ? Tape exactement 'DEPLOY PROD' : " c3
-    [[ "$c3" != "DEPLOY PROD" ]] && { echo "Annule."; exit 1; }
+    if [[ "${INARI_DEPLOY_PROD_CONFIRMED:-}" == "DEPLOY PROD" ]]; then
+        echo "   Bypass via INARI_DEPLOY_PROD_CONFIRMED=DEPLOY PROD (env var)"
+    else
+        read -p "   Staging a-t-il ete valide par QA ? (oui/non) " c1
+        [[ "$c1" != "oui" ]] && { echo "Annule."; exit 1; }
+        read -p "   As-tu un plan de rollback mental ? (oui/non) " c2
+        [[ "$c2" != "oui" ]] && { echo "Annule."; exit 1; }
+        read -p "   Deployer en prod MAINTENANT ? Tape exactement 'DEPLOY PROD' : " c3
+        [[ "$c3" != "DEPLOY PROD" ]] && { echo "Annule."; exit 1; }
+    fi
 fi
 
 # ============================================================================
