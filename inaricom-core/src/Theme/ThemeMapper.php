@@ -62,6 +62,22 @@ final class ThemeMapper
      *
      * @var array<int, string>
      */
+    /**
+     * Slugs de pages "blog landing" / hub editorial -> theme VERT.
+     * Permet de poser le theme vert sur une page custom (ex page 471
+     * "Articles") meme apres unset de page_for_posts (sinon is_home()
+     * ne match plus et le fallback rouge prend le dessus).
+     *
+     * @var array<int, string>
+     */
+    private const VERT_SLUGS = [
+        'articles',
+        'blog',
+        'ressources',
+        'guides',
+        'tutoriels',
+    ];
+
     private const INSTITUTIONAL_SLUGS = [
         'contact',
         'a-propos',
@@ -167,11 +183,16 @@ final class ThemeMapper
             return 'or';
         }
 
-        // 4. Pages institutionnelles détectées par slug -> BLEU
+        // 4. Pages identifiées par slug : institutionnelles BLEU ou hub VERT
         if (is_page()) {
             $slug = $this->get_current_page_slug();
-            if ($slug !== null && $this->is_institutional_slug($slug)) {
-                return 'bleu';
+            if ($slug !== null) {
+                if ($this->is_institutional_slug($slug)) {
+                    return 'bleu';
+                }
+                if (in_array(strtolower($slug), self::VERT_SLUGS, true)) {
+                    return 'vert';
+                }
             }
         }
 

@@ -77,6 +77,7 @@ final class ReactMountPoints
             'homepage',
             'cybersec',
             'ia',
+            'blog',
             // Phase 2.5+ : ai-tool-finder, hardware-config, ai-mastery-hub, etc.
         ];
         return in_array($name, $known, true);
@@ -98,6 +99,7 @@ final class ReactMountPoints
             'homepage' => '<div class="inari-skeleton-hero" style="min-height:100vh;background:#0A0A0F;"></div>',
             'cybersec' => '<div class="inari-skeleton-hero" style="min-height:100vh;background:#0A0A0F;"></div>',
             'ia'       => '<div class="inari-skeleton-hero" style="min-height:100vh;background:#0A0A0F;"></div>',
+            'blog'     => '<div class="inari-skeleton-hero" style="min-height:60vh;background:#0A0A0F;"></div>',
         ];
 
         return $skeletons[$name] ?? '';
