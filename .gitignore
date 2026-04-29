@@ -80,6 +80,11 @@ playwright-report/
 test-results/
 .lighthouseci/
 lighthouseci/
+# Raw Lighthouse JSON reports (heavy, regenerable). On commit uniquement
+# le README.md de chaque session de mesure (resume + commande de re-run).
+audits/lighthouse-*/lhr-*.json
+audits/lighthouse-*/*.json
+audits/lighthouse-*/*.html
 qa-screenshots/
 
 # === IDE ===

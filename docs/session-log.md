@@ -12,9 +12,10 @@
 - **Menu Principal restructure** (idempotent) : Boutique sous Intelligence Artificielle, Articles top-level + 9 categories enfants (Actualites IA, IA Locale, Materiel IA, Raspberry Pi, Tutoriels, LLMs, IA Business, Cloud Hybride, Architecture IA).
 - **Doc cleanup Infomaniak -> SwissCenter** sur 12 fichiers (architecture, backlog, plan refonte, no-swiss-marketing, agents, env.example, snippets/* docs, scripts).
 - **Ticket P1 `perf/fox-paths-worker`** : `src/utils/foxPaths.ts` (helpers extraits) + `src/workers/foxPathsWorker.ts` (DedicatedWorker) + refacto FoxAnimationV29.tsx pour utiliser worker via Vite ?worker import + fallback main thread. Worker chunk 3.65 KB autonome, homepage entry +0.7 KB gz.
+- **Lighthouse Pass 5 GO** (commit `64e87ea` deploye sur staging puis prod tag `prod-20260429-155352`) : 3 runs mobile no-throttle, LCP median 1748 ms vs baseline 2529 ms = **-781 ms** (objectif -30 ms largement depasse). TBT 81 ms, CLS 0, A11y 100, Perf 98. Rapports JSON dans `audits/lighthouse-pass5/`.
+- **Cleanup stale bundles** (`scripts/cleanup-stale-bundles.sh`, idempotent) : prod 278 -> 21 fichiers, js/ 25M -> 1.2M. Archive .stale-bundles-*.tar.gz pour rollback. Run aussi sur staging.
 
 **Next session** :
-- Lighthouse Pass 5 mobile sur staging pour confirmer -30 ms LCP homepage (worker fox-paths)
 - Phase 1.C : fox v28 -> OGL + glow additif HDR (6-8j) ou Phase 5 articles SEO pillar 1 pentest PME
 - Phase 4 boutique hardware (Stripe + Twint) si revenue prioritaire
 

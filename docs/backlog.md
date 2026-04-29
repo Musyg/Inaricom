@@ -13,7 +13,7 @@ Derniere MAJ : 29 avril 2026
 |---|-------|-------|--------|--------|
 | 1 | ~~**Bascule prod**~~ FAIT 2026-04-29 (tag `prod-20260429-144213`) | frontend-kadence | — | — |
 | 2 | ~~**Verifier pages WP prod**~~ FAIT : 1064 (homepage), 1066 (IA, pas 1078), 985 (cybersec) avec shortcodes en place + 7 pages legales en island | woo-backend | — | — |
-| 3 | ~~**Ticket P1 `perf/fox-paths-worker`**~~ FAIT 2026-04-29 : Web Worker decharge fetch + JSON.parse 2.3 MB + stitch O(n²) + split + trim. Worker chunk 3.65 KB autonome, fallback main thread. Mesure Lighthouse Pass 5 a faire pour confirmer -30 ms LCP mobile. | frontend-kadence | — | — |
+| 3 | ~~**Ticket P1 `perf/fox-paths-worker`**~~ FAIT 2026-04-29 : Web Worker decharge fetch + JSON.parse 2.3 MB + stitch O(n²) + split + trim. Worker chunk 3.65 KB autonome, fallback main thread. **Lighthouse Pass 5 confirme : LCP 1748 ms median (3 runs) vs baseline 2529 ms = -781 ms (objectif -30 ms largement depasse).** Voir `audits/lighthouse-pass5/`. | frontend-kadence | — | — |
 | 4 | ~~**Fix CLAUDE.md Infomaniak->SwissCenter**~~ FAIT 2026-04-29 (CLAUDE.md + 12 fichiers connexes alignes sur SwissCenter) | — | — | — |
 
 **Phase 2 React islands FINIE** (12 commits `6bd4cd8..884c106` merges 29 avril) — voir `docs/session-log.md` du 29 avril.
