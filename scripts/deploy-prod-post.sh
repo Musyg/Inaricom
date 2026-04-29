@@ -158,6 +158,39 @@ else
 fi
 
 # ============================================================================
+# 4b. Pages legales : sauvegarde contenu original + replace par island
+# ============================================================================
+echo ""
+echo "=== 4b. Pages legales (7 pages -> island legal) ==="
+LEGAL_SLUGS=(mentions-legales privacy-policy refund-policy terms-of-service-2 acceptable-use-policy cookie-policy help-faq)
+if [[ -n "$DRY_RUN" ]]; then
+    for slug in "${LEGAL_SLUGS[@]}"; do
+        echo "   [DRY] would migrate /$slug/ to legal island"
+    done
+else
+    # Idempotent : sauvegarde le contenu original dans _legal_original_content
+    # uniquement si pas deja fait, puis remplace post_content par le shortcode.
+    ssh "$SSH_HOST" "cd $PROD_PATH && /usr/local/bin/wp eval '
+\$slugs = [\"mentions-legales\", \"privacy-policy\", \"refund-policy\", \"terms-of-service-2\", \"acceptable-use-policy\", \"cookie-policy\", \"help-faq\"];
+foreach (\$slugs as \$slug) {
+  \$page = get_page_by_path(\$slug);
+  if (!\$page) { echo \"\$slug : NOT FOUND\\n\"; continue; }
+  // Si le contenu actuel est deja le shortcode island, skip
+  if (trim(\$page->post_content) === \"[inari_island name=\\\"legal\\\"]\") {
+    echo \"\$slug : deja migre, skip\\n\";
+    continue;
+  }
+  // Sauvegarde du contenu original dans meta (idempotent : ne ecrase pas)
+  if (!get_post_meta(\$page->ID, \"_legal_original_content\", true)) {
+    update_post_meta(\$page->ID, \"_legal_original_content\", \$page->post_content);
+  }
+  wp_update_post([\"ID\" => \$page->ID, \"post_content\" => \"[inari_island name=\\\"legal\\\"]\"]);
+  echo \"\$slug (ID=\" . \$page->ID . \") -> island legal\\n\";
+}
+' 2>&1 | tail -10"
+fi
+
+# ============================================================================
 # 5. Menu : Intelligence Artificielle parent + Boutique child + Articles + categories
 # ============================================================================
 echo ""

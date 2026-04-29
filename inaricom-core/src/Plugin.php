@@ -95,6 +95,12 @@ final class Plugin
         $this->services['contact_endpoint'] = new Contact\ContactEndpoint();
         $this->services['contact_endpoint']->register();
 
+        // Endpoint REST custom : GET /wp-json/inaricom/v1/legal/{slug}
+        // Sert le contenu HTML original des pages legales (sauvegarde en meta
+        // avant le remplacement par [inari_island name="legal"]).
+        $this->services['legal_endpoint'] = new Legal\LegalEndpoint();
+        $this->services['legal_endpoint']->register();
+
         do_action('inaricom_core_booted', $this);
     }
 
