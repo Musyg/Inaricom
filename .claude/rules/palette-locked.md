@@ -31,7 +31,7 @@
 | **rouge** (defaut) | Securite / Red Team / pentest | `#E31E24` | `#B8161B` | `#FF3A40` | `227, 30, 36` |
 | **or** | IA (services + hardware + tutos) | `#FFD700` | `#B8860B` | `#FFE55C` | `255, 215, 0` |
 | **vert** | Blog / ressources / savoir gratuit | `#10B981` | `#059669` | `#34D399` | `16, 185, 129` |
-| **bleu** | Institutionnel (contact, a propos, legal) | `#00D4FF` | `#00A8CC` | `#4DE8FF` | `0, 212, 255` |
+| **bleu** | Institutionnel (contact, a propos, legal) | `#0081f2` | `#1b61a6` | `#1a93fe` | `0, 129, 242` |
 
 **Pour le theme neutre** : l'accent principal est le **blanc** `#FFFFFF` avec fallback creme `#EFEBE8`. Pour les halos / glows, utiliser `rgba(239, 235, 232, x)` (creme) pour une teinte chaude discrete, ou `rgba(255, 255, 255, x)` pour un blanc pur. **Jamais** de couleur chromatique (bleu/rose/etc.) sur le theme neutre.
 
@@ -59,7 +59,7 @@
 --semantic-error: #F59E0B;        /* amber (JAMAIS le rouge marque) */
 --semantic-success: #10B981;
 --semantic-warning: #F59E0B;
---semantic-info: #00D4FF;
+--semantic-info: #0081f2;
 ```
 
 ## Regles d'usage

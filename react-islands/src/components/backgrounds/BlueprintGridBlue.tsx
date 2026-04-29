@@ -9,7 +9,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 // Contrats (docs/specs/animations-mapping.md § 🔵 + docs/specs/background-animations.md § 🔵) :
 // - Actif UNIQUEMENT quand le plus proche ancêtre [data-theme] vaut "bleu".
 // - Tout autre thème → return null.
-// - Couleur via var(--inari-red) sur le host (vaut #00D4FF en bleu).
+// - Couleur via var(--inari-red) sur le host (vaut #0081f2 en bleu).
 // - prefers-reduced-motion : 1 frame statique (grille + nœuds + packets figés).
 // - Pause off-screen via IntersectionObserver + document.visibilityState.
 // - MutationObserver sur le host pour couleur live.
@@ -102,7 +102,7 @@ export function BlueprintGridBlue() {
 
     const readColor = (): string => {
       const raw = getComputedStyle(host).getPropertyValue('--inari-red').trim()
-      return raw || '#00D4FF'
+      return raw || '#0081f2'
     }
     let themeColor = readColor()
     let rgb = hexToRgb(themeColor)

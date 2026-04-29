@@ -133,7 +133,7 @@ const ORB_SPECS: OrbSpec[] = [
 ]
 
 const FALLBACK_COLORS: Record<ColorKey, Rgb> = {
-  bleu: { r: 0, g: 212, b: 255 },
+  bleu: { r: 0, g: 129, b: 242 },  // #0081f2 (royal blue, aligne trustsec.xyz)
   rouge: { r: 227, g: 30, b: 36 },
   or: { r: 255, g: 215, b: 0 },
   vert: { r: 16, g: 185, b: 129 },

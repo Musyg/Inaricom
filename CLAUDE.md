@@ -49,7 +49,7 @@
 | **rouge** (defaut) | Securite / Red Team / pentest / cybersec | `#E31E24` | `#B8161B` | `#FF3A40` | `227, 30, 36` |
 | **or** | IA (services + boutique hardware + tutos IA) | `#FFD700` | `#B8860B` | `#FFE55C` | `255, 215, 0` |
 | **vert** | Blog / ressources / savoir general | `#10B981` | `#059669` | `#34D399` | `16, 185, 129` |
-| **bleu** | Institutionnel (a propos, contact, legal) | `#00D4FF` | `#00A8CC` | `#4DE8FF` | `0, 212, 255` |
+| **bleu** | Institutionnel (a propos, contact, legal) | `#0081f2` | `#1b61a6` | `#1a93fe` | `0, 129, 242` |
 
 **Regle** : un article blog sur la cybersecurite s'affiche en ROUGE (thematique secu), un article hardware IA en OR (thematique IA). La couleur suit le sujet, jamais le template.
 
@@ -79,7 +79,7 @@
 --semantic-error: #F59E0B;        /* amber */
 --semantic-success: #10B981;
 --semantic-warning: #F59E0B;
---semantic-info: #00D4FF;
+--semantic-info: #0081f2;
 ```
 
 ### Regles CSS absolues
@@ -209,7 +209,7 @@ Defense-grade minimalism + posture red-team confiante + clarte editoriale.
 
 ### Couleurs — STRICTEMENT la palette verrouillee (5 themes)
 Les refs d'inspiration ci-dessus servent uniquement pour **structure, mouvement, typo, micro-interactions**. Les couleurs proviennent EXCLUSIVEMENT de la palette Inari definie plus haut :
-- **rouge** `#E31E24` (cybersec/default), **or** `#FFD700` (IA), **vert** `#10B981` (blog), **bleu** `#00D4FF` (institutionnel), **neutre/argent** `#FFFFFF`/`#E0E0E0` (homepage) + palette noirs/textes fixe.
+- **rouge** `#E31E24` (cybersec/default), **or** `#FFD700` (IA), **vert** `#10B981` (blog), **bleu** `#0081f2` (institutionnel, royal blue trustsec), **neutre/argent** `#FFFFFF`/`#E0E0E0` (homepage) + palette noirs/textes fixe.
 - Toute tentative d'introduire navy, purple, lime, teal, cream hors `#EFEBE8`, terracotta ou autre couleur hors palette = **rejet immediat**. Voir `.claude/rules/palette-locked.md`.
 
 ### A eviter absolument

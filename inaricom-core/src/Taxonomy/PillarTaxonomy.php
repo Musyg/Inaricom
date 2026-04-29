@@ -49,7 +49,7 @@ final class PillarTaxonomy
         ],
         'institutionnel' => [
             'theme' => 'bleu',
-            'color' => '#00D4FF',
+            'color' => '#0081f2',
             'label' => 'Institutionnel',
         ],
     ];

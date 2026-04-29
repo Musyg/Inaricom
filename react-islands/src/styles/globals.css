@@ -43,7 +43,7 @@
   --semantic-error: #F59E0B;
   --semantic-success: #10B981;
   --semantic-warning: #F59E0B;
-  --semantic-info: #00D4FF;
+  --semantic-info: #0081f2;
 
   /* Accents des 4 themes — exposes partout pour usage homepage neutre */
   /* Ne sont PAS de nouvelles couleurs : reprennent exactement les valeurs */
@@ -51,7 +51,7 @@
   --accent-rouge: #E31E24;
   --accent-or: #FFD700;
   --accent-vert: #10B981;
-  --accent-bleu: #00D4FF;
+  --accent-bleu: #0081f2;
 
   /* Theme default : rouge (securite / Red Team) */
   --inari-red: #E31E24;
@@ -94,12 +94,16 @@ html[data-theme="neutre"] {
   --inari-red-rgb: 16, 185, 129;
 }
 
-/* Theme bleu — Institutionnel */
+/* Theme bleu — Institutionnel.
+   Palette alignee sur trustsec.xyz (royal blue plus profond, plus
+   "premium tech" que le cyan precedent). Decision Gilles 29 avril 2026.
+   Avant : #00D4FF / #4DE8FF / #00A8CC (cyan-leaning).
+   Apres : #0081f2 / #1a93fe / #1b61a6 (royal blue). */
 [data-theme="bleu"] {
-  --inari-red: #00D4FF;
-  --inari-red-dark: #00A8CC;
-  --inari-red-light: #4DE8FF;
-  --inari-red-rgb: 0, 212, 255;
+  --inari-red: #0081f2;
+  --inari-red-dark: #1b61a6;
+  --inari-red-light: #1a93fe;
+  --inari-red-rgb: 0, 129, 242;
 }
 
 /* ============================================================ */

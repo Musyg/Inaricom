@@ -61,9 +61,10 @@ const THEME_PALETTES: Record<string, Palette> = {
     lowlight: { r: 5, g: 150, b: 105 },    // vert-dark
   },
   bleu: {
-    highlight: { r: 77, g: 232, b: 255 },  // bleu-light
-    midtone: { r: 0, g: 212, b: 255 },     // bleu default
-    lowlight: { r: 0, g: 168, b: 204 },    // bleu-dark
+    // Aligne sur trustsec.xyz (royal blue) — decision Gilles 29 avril 2026.
+    highlight: { r: 26, g: 147, b: 254 },  // #1a93fe (bleu-light)
+    midtone: { r: 0, g: 129, b: 242 },     // #0081f2 (bleu default)
+    lowlight: { r: 27, g: 97, b: 166 },    // #1b61a6 (bleu-dark)
   },
 }
 
