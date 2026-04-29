@@ -93,7 +93,14 @@ final class ThemeMapper
         'privacy',
         'privacy-policy',
         'cookies',
+        'cookie-policy',           // ajout 2026-04-29 : slug WP genere par defaut
         'politique-cookies',
+        'refund-policy',           // ajout 2026-04-29 : page CGV & Remboursements WC
+        'refund',
+        'terms-of-service',        // ajout 2026-04-29 : Conditions d'utilisation (matche aussi -2 etc.)
+        'terms',
+        'acceptable-use-policy',   // ajout 2026-04-29 : Utilisation Acceptable
+        'acceptable-use',
     ];
 
     public function register(): void
@@ -178,12 +185,12 @@ final class ThemeMapper
             }
         }
 
-        // 3. Contexte WooCommerce entier -> OR (IA hardware + futur)
-        if ($this->is_woocommerce_context()) {
-            return 'or';
-        }
-
-        // 4. Pages identifiées par slug : institutionnelles BLEU ou hub VERT
+        // 3. Pages identifiées par slug : institutionnelles BLEU ou hub VERT
+        //    PRIORITÉ sur le check WooCommerce (étape 4) : si une page comme
+        //    /contact/, /mentions-legales/, /refund-policy/ est marquée WC pour
+        //    une raison externe (page WC "terms" assignee dans WC settings,
+        //    plugin tiers...), elle DOIT rester en BLEU/VERT car son slug
+        //    institutionnel l'emporte sur sa nature WC accidentelle.
         if (is_page()) {
             $slug = $this->get_current_page_slug();
             if ($slug !== null) {
@@ -194,6 +201,13 @@ final class ThemeMapper
                     return 'vert';
                 }
             }
+        }
+
+        // 4. Contexte WooCommerce entier -> OR (IA hardware + futur)
+        //    Couvre shop archive, produit single, panier, checkout, mon compte, etc.
+        //    Les pages institutionnelles l'ont deja court-circuite en etape 3.
+        if ($this->is_woocommerce_context()) {
+            return 'or';
         }
 
         // 5. Contexte blog standard -> VERT

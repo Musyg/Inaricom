@@ -32,6 +32,7 @@ export default defineConfig(({ command }) => ({
         ia: path.resolve(__dirname, 'src/islands/ia.tsx'),
         blog: path.resolve(__dirname, 'src/islands/blog.tsx'),
         about: path.resolve(__dirname, 'src/islands/about.tsx'),
+        contact: path.resolve(__dirname, 'src/islands/contact.tsx'),
       },
       output: {
         entryFileNames: 'js/[name]-[hash].js',

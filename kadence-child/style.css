@@ -109,6 +109,61 @@
     padding: 2rem;
 }
 
+/* WPForms — alignement avec accent thematique de la page (var --inari-red
+   se met a jour selon [data-theme]) — bouton submit, focus rings, asterisques.
+   Couvre tous les themes via les CSS custom properties. */
+.wpforms-container input[type="text"],
+.wpforms-container input[type="email"],
+.wpforms-container input[type="tel"],
+.wpforms-container input[type="url"],
+.wpforms-container textarea,
+.wpforms-container select {
+    background-color: rgba(10, 10, 15, 0.6) !important;
+    color: var(--inari-text) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+.wpforms-container input[type="text"]:focus,
+.wpforms-container input[type="email"]:focus,
+.wpforms-container input[type="tel"]:focus,
+.wpforms-container input[type="url"]:focus,
+.wpforms-container textarea:focus,
+.wpforms-container select:focus {
+    border-color: var(--inari-red) !important;
+    box-shadow: 0 0 0 3px rgba(var(--inari-red-rgb), 0.18) !important;
+    outline: none !important;
+}
+.wpforms-container .wpforms-field-label,
+.wpforms-container .wpforms-field-sublabel {
+    color: var(--inari-text) !important;
+}
+.wpforms-container .wpforms-required-label {
+    color: var(--inari-red) !important;
+}
+.wpforms-container .wpforms-submit,
+.wpforms-container button[type="submit"].wpforms-submit {
+    background-color: var(--inari-red) !important;
+    color: var(--inari-white) !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 0.75rem 1.75rem !important;
+    font-weight: 500 !important;
+    font-size: 0.875rem !important;
+    letter-spacing: 0.02em !important;
+    transition: filter 0.2s, transform 0.2s !important;
+    cursor: pointer !important;
+}
+.wpforms-container .wpforms-submit:hover {
+    filter: brightness(1.15) !important;
+    transform: translateY(-1px) !important;
+}
+.wpforms-container .wpforms-submit:focus-visible {
+    outline: 2px solid var(--inari-red) !important;
+    outline-offset: 2px !important;
+}
+/* Lien anchor #wpforms-643 (depuis CTA island) — scroll smooth */
+html { scroll-behavior: smooth; }
+
 /* Single article content card (exclut les pages island fullbleed) */
 body:not(.inari-fullbleed) .single-post .entry-content-wrap,
 body:not(.inari-fullbleed) .single-product .entry-summary {
