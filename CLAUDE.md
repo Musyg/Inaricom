@@ -31,7 +31,7 @@
 ### Positionnement differenciant
 - **Convergence unique** : IA + cybersec offensif (pentest LLM, OWASP LLM Top 10)
 - **Transparence tarifaire** : grilles EUR/CHF publiques (rupture marche)
-- **Local-first / self-hosting** : Ollama, Mistral self-hosted, donnees hebergees chez Infomaniak (Europe)
+- **Local-first / self-hosting** : Ollama, Mistral self-hosted, donnees hebergees chez SwissCenter (Suisse / Europe, nLPD native)
 - **Pedagogie double-livrable** : rapport technique + synthese COMEX
 
 ---
@@ -154,10 +154,10 @@
 - Respect `prefers-reduced-motion` obligatoire cote WP **et** React
 
 ### Hebergement & infra
-- **Hebergeur** : Infomaniak (Geneve/Zurich) — nLPD native, ISO 27001
+- **Hebergeur** : SwissCenter (`web24.swisscenter.com`, plan Home — 128 MB PHP max). Suisse, nLPD native.
 - **CDN/WAF** : Cloudflare (Free tier suffit initialement)
 - **Repo** : GitHub `Musyg/Inaricom` (ce repo local)
-- **Pipeline** : GitHub Actions + SSH/rsync vers Infomaniak
+- **Pipeline** : GitHub Actions + SSH/rsync vers SwissCenter (alias `ssh inaricom`, scripts `deploy-staging.sh` / `deploy-prod.sh`)
 - **Monitoring** : UptimeRobot + Sentry + Cloudflare Analytics + WPScan daily
 
 ### Infrastructure dev
