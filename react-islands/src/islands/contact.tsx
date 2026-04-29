@@ -73,10 +73,11 @@ function ContactHero() {
               className="font-serif text-inari-white"
               style={{
                 fontSize: 'clamp(40px, 4.8vw, 72px)',
-                lineHeight: '1.05',
+                lineHeight: '1.15',
                 letterSpacing: '-0.02em',
                 fontWeight: 400,
                 margin: 0,
+                paddingBottom: '0.15em',
               }}
             >
               <span className="block">On commence</span>
