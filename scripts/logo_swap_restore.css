@@ -31,15 +31,16 @@
 }
 
 /* --- 2. Hack srcset : masquer l'<img> natif pour tous les themes non-rouge ---
-   opacity: 0.01 (vs 0) pour que Lighthouse LCP detecte l'element comme
-   rendu — sinon il fallback sur un element plus tardif et LCP explose
-   (audit QA 28 avril : LCP homepage 5.9 s mobile). Invisible a l'oeil. */
+   opacity: 0.05 (vs 0) pour que Lighthouse LCP detecte l'element comme
+   rendu — pass 1 a montre que 0.01 etait insuffisant pour la detection
+   LCP de Lighthouse. 0.05 reste quasi-invisible (le logo themed est
+   superpose en bg-image sur le parent .brand). */
 
 .theme-or img.custom-logo,
 .theme-bleu img.custom-logo,
 .theme-vert img.custom-logo,
 .theme-neutre img.custom-logo {
-  opacity: 0.01;
+  opacity: 0.05;
 }
 
 /* --- 3. Re-afficher le bon logo en background-image sur .brand --- */

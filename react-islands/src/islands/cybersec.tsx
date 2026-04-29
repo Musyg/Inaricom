@@ -495,8 +495,8 @@ function CybersecHero() {
               </a>
               <a
                 href="#methodologie"
-                className="inline-flex items-center gap-2 rounded-md border border-white/[0.08] px-6 py-3 font-sans text-sm font-medium text-inari-text transition hover:bg-white/[0.06] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
-                style={{ background: 'rgba(18, 18, 26, 0.10)', backdropFilter: 'blur(16px) saturate(180%)' }}
+                className="inline-flex items-center gap-2 rounded-md border border-white/[0.20] px-6 py-3 font-sans text-sm font-medium text-inari-white transition hover:bg-white/[0.08] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-inari-black"
+                style={{ background: 'rgba(18, 18, 26, 0.45)', backdropFilter: 'blur(16px) saturate(180%)' }}
               >
                 Notre m&eacute;thodologie
               </a>

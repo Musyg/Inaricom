@@ -1,15 +1,34 @@
-import { StrictMode } from 'react'
+import { StrictMode, lazy, Suspense, useEffect, useState } from 'react'
 import { createRoot } from 'react-dom/client'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import '@/styles/globals.css'
 
-import { MatrixRainRed } from '@/components/backgrounds/MatrixRainRed'
-import { ParticleNeonGold } from '@/components/backgrounds/ParticleNeonGold'
-import { NeuralNetworkGreen } from '@/components/backgrounds/NeuralNetworkGreen'
-import { BlueprintGridBlue } from '@/components/backgrounds/BlueprintGridBlue'
-import { MeshGradientNeutral } from '@/components/backgrounds/MeshGradientNeutral'
+// VolumetricFog : import statique, present sur tous les themes (renders toujours)
 import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
+
+// 5 backgrounds theme-specifiques : lazy imports — seul le matchant au
+// data-theme courant est telecharge + execute. Coupe ~80% du JS eval
+// homepage (pass 2 QA : 5s eval JS sur theme=neutre alors que seul
+// MeshGradientNeutral rend reellement). Compromise zero : chaque
+// composant continue de retourner null si pas son theme, donc cache
+// chunks reutilisable au switch live (rare cas).
+const MatrixRainRed = lazy(() =>
+  import('@/components/backgrounds/MatrixRainRed').then((m) => ({ default: m.MatrixRainRed })),
+)
+const ParticleNeonGold = lazy(() =>
+  import('@/components/backgrounds/ParticleNeonGold').then((m) => ({ default: m.ParticleNeonGold })),
+)
+const NeuralNetworkGreen = lazy(() =>
+  import('@/components/backgrounds/NeuralNetworkGreen').then((m) => ({ default: m.NeuralNetworkGreen })),
+)
+const BlueprintGridBlue = lazy(() =>
+  import('@/components/backgrounds/BlueprintGridBlue').then((m) => ({ default: m.BlueprintGridBlue })),
+)
+const MeshGradientNeutral = lazy(() =>
+  import('@/components/backgrounds/MeshGradientNeutral').then((m) => ({ default: m.MeshGradientNeutral })),
+)
+
 import { FoxAnimationV29 } from '@/components/hero/FoxAnimationV29'
 import { PillarCards } from '@/components/sections/PillarCards'
 import { WhySection } from '@/components/sections/WhySection'
@@ -45,18 +64,36 @@ const queryClient = new QueryClient({
 })
 
 /**
- * Stack des 5 backgrounds animes par theme.
+ * Stack des backgrounds animes selon le data-theme courant.
  *
- * Chaque composant lit son closest('[data-theme]') et return null si ce
- * n'est pas son theme. Les 5 sont donc tous montes simultanement, mais un
- * seul rend un canvas actif selon data-theme du parent. Au switch live
- * (MutationObserver dans chaque composant), l'ancien se met en sommeil
- * et le nouveau demarre sa RAF.
+ * Avant : tous les 5 backgrounds etaient importes statiquement et montes
+ * simultanement (chacun retournait null si pas le bon theme). Le bundle
+ * homepage chargeait les 5 modules + 5 useLayoutEffect probe + 5
+ * MutationObserver setup → eval JS ~5s sur mobile (audit pass 2).
  *
- * Cout perf negligeable : chaque composant fait un useLayoutEffect court
- * qui retourne null si pas le bon theme.
+ * Maintenant : on lit le data-theme une seule fois sur l'ancetre (html
+ * via ThemeMapper.php), puis on lazy-importe SEULEMENT le background
+ * correspondant. VolumetricFog reste statique (universel, tous themes).
+ * MutationObserver sur html.data-theme pour switch live (rare cas, ex
+ * theme switcher utilisateur — actuellement absent).
  */
 function ThemedBackgroundStack() {
+  const [theme, setTheme] = useState<string | null>(() => {
+    if (typeof document === 'undefined') return null
+    return document.documentElement.getAttribute('data-theme')
+  })
+
+  useEffect(() => {
+    const mo = new MutationObserver(() => {
+      setTheme(document.documentElement.getAttribute('data-theme'))
+    })
+    mo.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-theme'],
+    })
+    return () => mo.disconnect()
+  }, [])
+
   return (
     <>
       {/* VolumetricFog : fumee dense en fond, presente sur tous les themes
@@ -64,11 +101,15 @@ function ThemedBackgroundStack() {
           homepage, remplace l'orbe centrale argent qui etait dans
           MeshGradientNeutral. */}
       <VolumetricFog />
-      <MatrixRainRed />
-      <ParticleNeonGold />
-      <NeuralNetworkGreen />
-      <BlueprintGridBlue />
-      <MeshGradientNeutral />
+
+      {/* Background theme-specifique (un seul, lazy-loade) */}
+      <Suspense fallback={null}>
+        {theme === 'rouge' && <MatrixRainRed />}
+        {theme === 'or' && <ParticleNeonGold />}
+        {theme === 'vert' && <NeuralNetworkGreen />}
+        {theme === 'bleu' && <BlueprintGridBlue />}
+        {theme === 'neutre' && <MeshGradientNeutral />}
+      </Suspense>
     </>
   )
 }

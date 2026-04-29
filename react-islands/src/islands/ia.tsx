@@ -894,9 +894,9 @@ function StackLayerRow({ layer }: { layer: StackLayer }) {
           <span className="font-mono text-[10px] tracking-[0.14em] text-inari-text-muted">
             {layer.number}
           </span>
-          <h4 className="font-sans text-sm font-medium text-inari-white">
+          <h3 className="font-sans text-sm font-medium text-inari-white">
             {layer.title}
-          </h4>
+          </h3>
         </div>
         <p className="mt-1 text-[13px] leading-snug text-inari-text-soft">
           {layer.description}
@@ -945,9 +945,9 @@ function CloudOpaqueBox() {
             <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
         </div>
-        <h4 className="mt-5 font-sans text-base font-medium text-inari-text-soft">
+        <h3 className="mt-5 font-sans text-base font-medium text-inari-text-soft">
           Mod&egrave;le propri&eacute;taire ferm&eacute;
-        </h4>
+        </h3>
         <p className="mt-2 max-w-xs text-[13px] leading-relaxed text-inari-text-muted">
           Vous envoyez vos donn&eacute;es a un fournisseur tiers. Ce qui se
           passe ensuite vous &eacute;chappe.
