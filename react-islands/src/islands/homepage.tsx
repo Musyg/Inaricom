@@ -4,16 +4,22 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import '@/styles/globals.css'
 
-// VolumetricFog : import statique, present sur tous les themes (renders toujours)
+// VolumetricFog + MeshGradientNeutral : imports statiques.
+// La homepage est ToUJOURS theme=neutre (ThemeMapper -> is_front_page() ->
+// 'neutre'). Donc MeshGradientNeutral mount sur 100% des chargements de la
+// homepage. Le passer en lazy (commit 8b8958d) a ajoute ~200-400 ms de
+// delai entre le mount React et l apparition des orbes colores → flash visible
+// "le wordmark INARICOM apparait avant les couleurs du background".
+// Solution : import statique = canvas mount synchrone au 1er render React,
+// les couleurs apparaissent instantanement (avec le fade-in 800ms en cours).
 import { VolumetricFog } from '@/components/backgrounds/VolumetricFog'
+import { MeshGradientNeutral } from '@/components/backgrounds/MeshGradientNeutral'
 import { BackgroundSkeleton } from '@/components/backgrounds/BackgroundSkeleton'
 
-// 5 backgrounds theme-specifiques : lazy imports — seul le matchant au
-// data-theme courant est telecharge + execute. Coupe ~80% du JS eval
-// homepage (pass 2 QA : 5s eval JS sur theme=neutre alors que seul
-// MeshGradientNeutral rend reellement). Compromise zero : chaque
-// composant continue de retourner null si pas son theme, donc cache
-// chunks reutilisable au switch live (rare cas).
+// 4 backgrounds des autres themes : lazy imports — homepage est en pratique
+// theme=neutre 100% du temps, ces 4 chunks ne sont jamais executes. Le lazy
+// les sort du bundle homepage (-15 KB gz cumulees), conserves uniquement
+// au cas ou un dev/admin force un autre theme via DevTools (rare).
 const MatrixRainRed = lazy(() =>
   import('@/components/backgrounds/MatrixRainRed').then((m) => ({ default: m.MatrixRainRed })),
 )
@@ -25,9 +31,6 @@ const NeuralNetworkGreen = lazy(() =>
 )
 const BlueprintGridBlue = lazy(() =>
   import('@/components/backgrounds/BlueprintGridBlue').then((m) => ({ default: m.BlueprintGridBlue })),
-)
-const MeshGradientNeutral = lazy(() =>
-  import('@/components/backgrounds/MeshGradientNeutral').then((m) => ({ default: m.MeshGradientNeutral })),
 )
 
 import { FoxAnimationV29 } from '@/components/hero/FoxAnimationV29'
@@ -98,18 +101,22 @@ function ThemedBackgroundStack() {
   return (
     <>
       {/* VolumetricFog : fumee dense en fond, presente sur tous les themes
-          (silver sur neutre, rouge/or/vert/bleu sur les autres). Sur la
-          homepage, remplace l'orbe centrale argent qui etait dans
-          MeshGradientNeutral. */}
+          (silver sur neutre, rouge/or/vert/bleu sur les autres). */}
       <VolumetricFog />
 
-      {/* Background theme-specifique (un seul, lazy-loade) */}
+      {/* MeshGradientNeutral : 4 halos couleurs piliers + halo argent central.
+          Import statique car ToUJOURS rendu sur la homepage (theme=neutre
+          via ThemeMapper). Mount synchrone au 1er render → couleurs visibles
+          immediatement, plus apres l apparition du wordmark INARICOM. */}
+      {theme === 'neutre' && <MeshGradientNeutral />}
+
+      {/* 4 autres backgrounds : lazy, jamais utilises en pratique sur homepage
+          (theme=neutre toujours), gardes au cas ou theme switcher dev. */}
       <Suspense fallback={<BackgroundSkeleton />}>
         {theme === 'rouge' && <MatrixRainRed />}
         {theme === 'or' && <ParticleNeonGold />}
         {theme === 'vert' && <NeuralNetworkGreen />}
         {theme === 'bleu' && <BlueprintGridBlue />}
-        {theme === 'neutre' && <MeshGradientNeutral />}
       </Suspense>
     </>
   )
