@@ -86,6 +86,7 @@ audits/lighthouse-*/lhr-*.json
 audits/lighthouse-*/*.json
 audits/lighthouse-*/*.html
 qa-screenshots/
+qa/
 
 # === IDE ===
 .vscode/

@@ -142,7 +142,8 @@ final class ReactMountPoints
             'about',
             'contact',
             'legal',
-            // Phase 2.5+ : ai-tool-finder, hardware-config, ai-mastery-hub, etc.
+            'audit-web',
+            // Phase 2.5+ : audit-infra, audit-smart-contract, ai-tool-finder, etc.
         ];
         return in_array($name, $known, true);
     }
@@ -167,6 +168,7 @@ final class ReactMountPoints
             'about'    => '<div class="inari-skeleton-hero" style="min-height:70vh;background:#0A0A0F;"></div>',
             'contact'  => '<div class="inari-skeleton-hero" style="min-height:50vh;background:#0A0A0F;"></div>',
             'legal'    => '<div class="inari-skeleton-hero" style="min-height:60vh;background:#0A0A0F;"></div>',
+            'audit-web' => '<div class="inari-skeleton-hero" style="min-height:100vh;background:#0A0A0F;"></div>',
         ];
 
         return $skeletons[$name] ?? '';
