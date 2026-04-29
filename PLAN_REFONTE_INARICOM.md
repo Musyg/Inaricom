@@ -20,7 +20,7 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 ### 3 differenciateurs uniques marche FR
 1. **Transparence pedagogique** : "sans boite noire" — audits, systemes et contenus lisibles
 2. **Convergence IA + cybersec offensif** (pentest LLM / OWASP LLM Top 10)
-3. **Local-first + self-hosting** : Ollama, Mistral self-hosted, donnees hebergees chez Infomaniak (Europe)
+3. **Local-first + self-hosting** : Ollama, Mistral self-hosted, donnees hebergees chez SwissCenter (Suisse / Europe, nLPD native)
 
 ---
 
@@ -36,7 +36,7 @@ Positionner Inaricom comme **cabinet cybersec de reference pour PME francophones
 - [x] `.claude/settings.json` + `.mcp.json`
 - [x] `.claude/rules/` (security-first, css-custom-properties, surgical-fixes)
 - [x] `docs/` (architecture, backlog, tech-debt, session-log, runbooks, deployment)
-- [x] Staging Infomaniak provisionne (clone prod + DB anonymisee)
+- [x] Staging SwissCenter provisionne (clone prod + DB anonymisee, sous-domaine staging.inaricom.com)
 - [x] mu-plugin `staging-hardening.php` (noindex + banner + mail-block)
 - [x] Scripts deploy (`sync-from-prod.sh`, `db-backup.sh`, `db-clone-prod-to-staging.sh`)
 - [x] Cles API hors Desktop (`C:\Users\gimu8\.secrets\`)

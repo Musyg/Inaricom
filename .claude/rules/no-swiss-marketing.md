@@ -43,7 +43,7 @@ Ces elements sont des **faits legaux ou techniques**, pas des arguments. Ils app
 |---|---|---|
 | Siege social (Fribourg, CH) | Mentions legales, /a-propos/, footer legal, contact | Hero, slogans, CTA, badges marketing |
 | Inaricom = entreprise individuelle Kevin Meunier | Mentions legales, CGV | Homepage, argumentaire commercial |
-| Hebergement Infomaniak (Geneve/Zurich) | /politique-confidentialite/, schema.org data residency | Hero, badges de confiance |
+| Hebergement SwissCenter (web24.swisscenter.com) | /politique-confidentialite/, schema.org data residency | Hero, badges de confiance |
 | nLPD (loi qui s'applique) | Articles juridiques specifiques, politique confidentialite, pages compliance | Hero, slogans generaux |
 | CHF (devise d'affichage produits) | Boutique WooCommerce, checkout, factures | Argument differenciateur marketing |
 | TVA suisse | Checkout, factures, CGV | Marketing |
@@ -106,9 +106,9 @@ Securisez, maitrisez, industrialisez votre IA.
 
 ### CTA pied de page
 
-❌ **Avant** : "Hebergement 100% Suisse — Infomaniak certifie ISO 27001"
+❌ **Avant** : "Hebergement 100% Suisse — SwissCenter certifie ISO 27001"
 
-✅ **Apres** (dans footer legal uniquement, pas en argument hero) : "Donnees hebergees en Europe (Infomaniak, Geneve/Zurich). ISO 27001."
+✅ **Apres** (dans footer legal uniquement, pas en argument hero) : "Donnees hebergees en Suisse (SwissCenter, web24.swisscenter.com)."
 
 ### Titre article generique
 

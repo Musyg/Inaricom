@@ -50,7 +50,7 @@ Voir plan detaille : `docs/phase2-react-islands.md`
 | CMS | WordPress (dernier stable) | Ecosysteme, maitrise equipe |
 | Theme | Kadence Classic | Maturite 5 ans, hooks documentes, CWV OK |
 | E-commerce | WooCommerce | Standard marche, compat Twint/Swiss VAT |
-| Hebergement | Infomaniak (Geneve/Zurich) | nLPD native, ISO 27001 |
+| Hebergement | SwissCenter (`web24.swisscenter.com`, plan Home 128 MB) | Suisse, nLPD native, Caddy + Let's Encrypt |
 | CDN/WAF | Cloudflare Free (puis Pro) | WAF custom, bot mgmt, DDoS |
 | SEO | Rank Math Free | llms.txt natif, Schema Builder |
 | Multilingue | Polylang Pro | Hreflang auto, sous-repertoires |
@@ -219,11 +219,11 @@ Build via `scripts/_build_347.py` a partir des sections modulaires dans `audits/
 
 ## 9. Data residency — nLPD
 
-- **Donnees utilisateurs** : 100% Suisse (Infomaniak Geneve/Zurich)
+- **Donnees utilisateurs** : 100% Suisse (SwissCenter, web24.swisscenter.com)
 - **CDN Cloudflare** : pas de stockage PII, uniquement cache de rendu
 - **Fonts** : self-hostees obligatoires (jugement Munich €250k Google Fonts CDN)
 - **Analytics** : Matomo self-hosted (pas Google Analytics) ou consent mode
-- **Politique confidentialite** : publiee FR/DE/IT, responsable Inaricom Sarl, sous-traitant Infomaniak
+- **Politique confidentialite** : publiee FR/DE/IT, responsable Inaricom (entreprise individuelle Kevin Meunier), sous-traitant SwissCenter
 - **Fox animation paths JSON** : a migrer depuis raw.githubusercontent vers self-hosted WP (dette tech P3)
 
 ---
@@ -232,9 +232,9 @@ Build via `scripts/_build_347.py` a partir des sections modulaires dans `audits/
 
 - [x] Git repo initialise
 - [x] Phoenix2 dev env (skills, Claude Code)
-- [x] Staging Infomaniak provisionne (clone prod)
+- [x] Staging SwissCenter provisionne (clone prod, sous-domaine staging.inaricom.com)
 - [x] SSH staging + prod (alias `inaricom`)
-- [ ] Infomaniak prod configure (production finale, post-Phase 2)
+- [x] SwissCenter prod configure (production live depuis 2026-04-29)
 - [ ] Cloudflare DNS + WAF
 - [ ] GitHub Actions (lighthouse, playwright, security, deploy)
 - [ ] MCP staging + MCP prod-readonly

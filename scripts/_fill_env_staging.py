@@ -11,7 +11,7 @@ STAGING_SSH_USER=''
 STAGING_SSH_PORT=''
 STAGING_SSH_KEY_PATH=''"""
 
-new = """# === STAGING (Infomaniak clone prod, MEME serveur SSH que prod) ===
+new = """# === STAGING (SwissCenter clone prod, MEME serveur SSH que prod) ===
 STAGING_URL='https://staging.inaricom.com'
 STAGING_SSH_HOST='web24.swisscenter.com'
 STAGING_SSH_USER='toriispo'

@@ -218,7 +218,7 @@ Code à lire en détail quand on en aura besoin.
 
 1. **Jamais de hex en dur** dans le code final. Toujours `var(--inari-red)` et dérivées.
 2. **Jamais de Google Fonts CDN** (voir guardrails CLAUDE.md). Si police référencée, la retirer ou passer sur Geist (self-hosted).
-3. **Jamais de CDN tiers** pour assets (textures, scripts). Tout self-host (Infomaniak).
+3. **Jamais de CDN tiers** pour assets (textures, scripts). Tout self-host (SwissCenter).
 4. **`prefers-reduced-motion: reduce`** doit désactiver l'animation → fallback statique SVG.
 5. **Pause off-screen** via `IntersectionObserver` (performance, voir `docs/specs/background-animations.md`).
 6. **Opacité max 10%** pour les backgrounds de section (le contenu passe devant).

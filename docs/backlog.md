@@ -7,14 +7,14 @@ Derniere MAJ : 29 avril 2026
 
 ---
 
-## Priorites immediates (cette semaine — Bascule prod + perf optim)
+## Priorites immediates (cette semaine — Post bascule prod + perf optim)
 
 | # | Tache | Agent | Impact | Effort |
 |---|-------|-------|--------|--------|
-| 1 | **Bascule prod** : `bash scripts/deploy-prod.sh` (12 commits merges sur main, QA Pass 4 GO) | frontend-kadence | Critique | 0.5 session |
-| 2 | **Verifier pages WP prod** : 1064 (homepage), 1078 (IA), 985 (cybersec) avec shortcodes en place | woo-backend | Important | 0.2 session |
+| 1 | ~~**Bascule prod**~~ FAIT 2026-04-29 (tag `prod-20260429-144213`) | frontend-kadence | — | — |
+| 2 | ~~**Verifier pages WP prod**~~ FAIT : 1064 (homepage), 1066 (IA, pas 1078), 985 (cybersec) avec shortcodes en place + 7 pages legales en island | woo-backend | — | — |
 | 3 | **Ticket P1 `perf/fox-paths-worker`** : chunker fox-paths.json 2.3 MB + parsing dans Web Worker pour gagner ~30 ms LCP mobile homepage | frontend-kadence | Important | 1.5 session |
-| 4 | **Fix CLAUDE.md** : remplacer "Infomaniak" par "SwissCenter" (web24.swisscenter.com est l'hote reel) | — | Mineur | 0.1 session |
+| 4 | ~~**Fix CLAUDE.md Infomaniak->SwissCenter**~~ FAIT 2026-04-29 (CLAUDE.md + 12 fichiers connexes alignes sur SwissCenter) | — | — | — |
 
 **Phase 2 React islands FINIE** (12 commits `6bd4cd8..884c106` merges 29 avril) — voir `docs/session-log.md` du 29 avril.
 
@@ -36,7 +36,7 @@ QA Lighthouse Pass 4 = **GO** sur 6/6 configs (devtools no-throttle) :
 - [x] `.mcp.json` (scope projet)
 - [x] `docs/architecture.md`
 - [x] `docs/backlog.md` (ce fichier)
-- [x] Staging Infomaniak provisionne + clone prod fonctionnel
+- [x] Staging SwissCenter provisionne + clone prod fonctionnel (sous-domaine staging.inaricom.com, meme SSH host que prod)
 - [x] SSH staging + prod (alias `inaricom`)
 - [x] Scripts deploy (`sync-from-prod.sh`, `db-backup.sh`, `db-clone-prod-to-staging.sh`)
 - [x] mu-plugin `staging-hardening.php` (noindex + banner + mail-block)

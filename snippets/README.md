@@ -21,7 +21,7 @@
 ## Troubleshooting
 
 Si "save failed" ou erreur 500 au save :
-- Le snippet est peut-etre trop gros pour le WAF Infomaniak
+- Le snippet est peut-etre trop gros pour le WAF Cloudflare ou les limites SwissCenter
 - Solution : decouper en 2 snippets plus petits
 - Ou : uploader le fichier `.php` directement dans `mu-plugins/` via SFTP
 

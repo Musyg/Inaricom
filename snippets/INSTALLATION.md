@@ -93,13 +93,13 @@ https://inaricom.com/wp-admin/
 
 ### "Error saving snippet" ou erreur 500 au save
 
-Cause probable : WAF Infomaniak bloque le contenu (trop gros ou pattern suspect).
+Cause probable : WAF Cloudflare ou regles SwissCenter bloquent le contenu (trop gros ou pattern suspect).
 
 Solutions par ordre de preference :
 1. Enlever temporairement le `<style>` inline et tester (le CSS est le plus gros)
 2. Uploader le fichier en SFTP dans `wp-content/mu-plugins/coming-soon.php`
    (mu-plugins s'active automatiquement, pas besoin de Code Snippets)
-3. Contact Infomaniak pour ajuster la regle WAF sur wp-admin/admin-ajax.php
+3. Verifier les regles Cloudflare WAF sur wp-admin/admin-ajax.php (Cloudflare dashboard > Security > WAF)
 
 ### Les pages publiques affichent une erreur blanche au lieu du Coming Soon
 
@@ -107,7 +107,7 @@ Cause probable : erreur PHP fatale.
 
 Actions :
 1. Desactiver le snippet immediatement (toggle off dans Code Snippets)
-2. Verifier les logs PHP dans Infomaniak (Panel > Logs > Error Log)
+2. Verifier les logs PHP dans SwissCenter (Apanel > Logs > Error Log, ou `tail -50 /home/toriispo/inaricom.com/web/error_log` via SSH)
 3. Corriger l'erreur
 4. Reactiver
 

@@ -40,7 +40,7 @@ define('WP_DEBUG', false);
 define('WP_DEBUG_DISPLAY', false);
 define('WP_ENVIRONMENT_TYPE', 'production');
 define('WP_HTTP_BLOCK_EXTERNAL', true);
-define('WP_ACCESSIBLE_HOSTS', 'api.wordpress.org,*.infomaniak.ch,*.cloudflare.com');
+define('WP_ACCESSIBLE_HOSTS', 'api.wordpress.org,*.swisscenter.com,*.cloudflare.com');
 
 // table_prefix jamais 'wp_'
 $table_prefix = 'inr_x7k9_';
@@ -90,7 +90,7 @@ add_header Permissions-Policy "geolocation=(), microphone=(), camera=()" always;
 - **Cloudflare Free** : WAF custom, bot mgmt, cache, DDoS
 - **Wordfence Premium** : $149/an (scanner, firewall, 2FA, live traffic)
 - **UpdraftPlus Premium** ou **BlogVault** : $70-100/an backups
-- **Infomaniak** : hebergement CH, ISO 27001, malware scanner inclus
+- **SwissCenter** : hebergement CH (web24.swisscenter.com), Caddy, Let's Encrypt auto
 - **GitHub Dependabot** + **Renovate** : PRs auto sur CVE
 
 ## Exemples de taches typiques

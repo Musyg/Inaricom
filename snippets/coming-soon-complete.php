@@ -1,7 +1,7 @@
 
 /**
  * HTML de la page Coming Soon
- * CSS inline compact pour eviter les problemes WAF Infomaniak sur save
+ * CSS inline compact pour eviter les problemes WAF Cloudflare / SwissCenter sur save
  */
 function inaricom_coming_soon_html( $logo_url, $contact, $return_date ) {
     ob_start(); ?>

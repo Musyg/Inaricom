@@ -39,7 +39,7 @@ Tu es l'expert WooCommerce + PHP WordPress Inaricom. Ta mission : livrer du code
 
 ## Stack backend
 
-- **PHP 8.1+** (Infomaniak compatible)
+- **PHP 8.5.4** (SwissCenter binaire `/usr/local/bin/php85`)
 - **WordPress** (dernier stable)
 - **WooCommerce** (dernier stable)
 - **Plugins pinces** : Rank Math, Polylang Pro, Code Snippets, Simple Custom CSS and JS, ACF Free
