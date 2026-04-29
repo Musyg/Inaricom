@@ -3,21 +3,24 @@
 > Vue transversale : priorites actuelles, tickets en cours, roadmap par phase.
 > Source de verite pour "sur quoi on bosse aujourd'hui".
 
-Derniere MAJ : 28 avril 2026
+Derniere MAJ : 29 avril 2026
 
 ---
 
-## Priorites immediates (cette semaine — Phase 2.4 QA + bascule prod)
+## Priorites immediates (cette semaine — Bascule prod + perf optim)
 
 | # | Tache | Agent | Impact | Effort |
 |---|-------|-------|--------|--------|
-| 1 | **Phase 2.4 QA Lighthouse** : Performance 95+, LCP < 2.5s, INP < 200ms, CLS < 0.1 sur staging | qa-visual | Critique | 1 session |
-| 2 | **Phase 2.4 QA axe-core** : 0 violation accessibilite WCAG 2.2 AA | qa-visual | Critique | 0.5 session |
-| 3 | **Phase 2.4 Visual regression** : Playwright 3 viewports (375/768/1440) | qa-visual | Important | 0.5 session |
-| 4 | **Confirmer ArticleCards prod** : verifier que `/wp-json/wp/v2/posts` retourne articles publies | woo-backend | Important | 0.2 session |
-| 5 | **Bascule prod** : appliquer `41487b4` sur prod inaricom.com (apres validation QA) | frontend-kadence | Critique | 1 session |
+| 1 | **Bascule prod** : `bash scripts/deploy-prod.sh` (12 commits merges sur main, QA Pass 4 GO) | frontend-kadence | Critique | 0.5 session |
+| 2 | **Verifier pages WP prod** : 1064 (homepage), 1078 (IA), 985 (cybersec) avec shortcodes en place | woo-backend | Important | 0.2 session |
+| 3 | **Ticket P1 `perf/fox-paths-worker`** : chunker fox-paths.json 2.3 MB + parsing dans Web Worker pour gagner ~30 ms LCP mobile homepage | frontend-kadence | Important | 1.5 session |
+| 4 | **Fix CLAUDE.md** : remplacer "Infomaniak" par "SwissCenter" (web24.swisscenter.com est l'hote reel) | — | Mineur | 0.1 session |
 
-**Phase 2.0-2.3 finalisees** (commit `41487b4`, 28 avril) — voir `docs/session-report-2026-04-28.md`
+**Phase 2 React islands FINIE** (12 commits `6bd4cd8..884c106` merges 29 avril) — voir `docs/session-log.md` du 29 avril.
+
+QA Lighthouse Pass 4 = **GO** sur 6/6 configs (devtools no-throttle) :
+- Homepage / IA / cybersec : LCP 1.5-2.5 s · TBT 0-73 ms · A11y 100/100 · 0 axe critical/serious
+- Une seule reserve : LCP homepage mobile 2529 ms (+29 ms) — pre-existant FoxAnimationV29, traite par ticket P1.
 
 ---
 
@@ -80,11 +83,11 @@ Derniere MAJ : 28 avril 2026
 
 ---
 
-## Phase 2 — React islands sur WordPress (Q2 2026 — STAGING LIVRE)
+## Phase 2 — React islands sur WordPress (Q2 2026 — MERGE MAIN, BASCULE PROD A FAIRE)
 
-### Status : 85% — homepage staging OK (commit 41487b4), QA Lighthouse + bascule prod restantes
+### Status : 95% — 12 commits merges main 29 avril (`6bd4cd8..884c106`), bascule prod restante
 
-**Plan detaille** : voir `docs/phase2-react-islands.md` + `docs/session-report-2026-04-28.md`
+**Plan detaille** : voir `docs/phase2-react-islands.md` + `docs/session-log.md` (29 avril).
 
 ### Phase 2.0 Setup — FAIT
 - [x] `react-islands/` a la racine (pnpm v10 securise)
@@ -119,16 +122,26 @@ Derniere MAJ : 28 avril 2026
 - [x] Page 985 "Accueil Cybersecurite" deplacee vers `/accueil-cybersecurite/`
 - [x] Menu Kadence : item 376 -> page 1069
 - [x] Tests staging OK
-- [ ] Bascule prod (apres validation QA Lighthouse Phase 2.4)
+- [x] Page WP 1078 "Accueil IA" creee + shortcode `[inari_island name=ia]` (28 avril)
 
-### Phase 2.4 QA + polish — EN COURS
-- [x] Bundle JS critique < 80 KB gzipped (`homepage.js` = 27.5 KB gzipped) ✓
-- [ ] Lighthouse Performance 95+ mobile + desktop
-- [ ] Core Web Vitals : LCP < 2.5s, INP < 200ms, CLS < 0.1
-- [ ] axe-core 0 violation WCAG 2.2 AA
-- [ ] Visual regression Playwright (375/768/1440)
-- [ ] Confirmer ArticleCards en prod (REST WP retourne articles)
-- [ ] Deploy prod (validation Kevin)
+### Phase 2.4 QA + polish — FAIT (29 avril, QA Pass 4 GO)
+- [x] Bundle JS critique < 80 KB gzipped (homepage 12 KB / ia 8.7 KB / cybersec 7.9 KB)
+- [x] Lighthouse Performance LCP < 2.5s sur 5/6 configs (homepage mobile 2529 ms = +29 ms, traite par ticket P1)
+- [x] Core Web Vitals : TBT 0-73 ms (mode devtools no-throttle), CLS < 0.01
+- [x] axe-core 0 violation critical/serious WCAG 2.2 AA
+- [x] A11y 100/100 sur 6/6 audits
+- [ ] Bascule prod via `bash scripts/deploy-prod.sh` (en cours)
+
+### Phase 2.X — Refonte cybersec + IA + design system unifie (29 avril) — FAIT
+- [x] Refonte page IA (commit `d066e6e`) : 7 sections B/A/E/C
+- [x] Refonte page cybersec (commit `3f5dce3`) : 7 sections + chiffres marche
+- [x] VolumetricFog universel (commit `25e3efc`) sur 3 islands
+- [x] Cards opacite 0.10 + icones filled gold tint site-wide
+- [x] Particles ParticleNeonGold tuning final (taille/alpha/dispersion)
+- [x] Vite manualChunks (commit `4151ac4`) : react-vendor / three / tanstack splits
+- [x] Retrait CTAs verbaux (decision Gilles : ecrit only au debut)
+- [x] Lazy backgrounds (homepage `8b8958d`, ia/cybersec `137b76f`)
+- [x] Snippet 443 fox v28 desactivee (deprecated par FoxAnimationV29 React)
 
 ### Phase 2.5+ Roadmap post-homepage
 - [ ] AI Tool Finder (Q3 2026) : questionnaire interactif IA
