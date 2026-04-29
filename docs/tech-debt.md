@@ -18,40 +18,136 @@ Derniere MAJ : 29 avril 2026
 mobile/desktop) sont GO avec LCP entre 1.5 s et 2.5 s. Impact CWV : "Needs
 Improvement" sur la page la plus exposee aux nouveaux visiteurs mobile.
 
-**Cause racine identifiee** : `FoxAnimationV29` charge `fox-paths.json`
-(**2.3 MB non chunked**) et execute `stitchSegments` en O(n²) sur le main
-thread. Resultat :
+#### Diagnostic precis (corrige vs estimation initiale)
 
-- Fetch JSON 2.3 MB sans gzip optimal contribue au TTFB
-- `JSON.parse` synchrone bloque ~200-400 ms sur mobile
-- `stitchSegments` quadratique sur le tableau de paths bloque ~300-500 ms
+`fox-paths.json` fait **84 KB sur disque** (`Content-Length: 84242` verifie
+sur staging — pas 2.3 MB comme l'agent QA Pass 4 l'a initialement reporte).
+Le 2.3 MB etait la taille **memoire** apres parse (chaque `[x, y]` JSON
+devient un objet `{x: ..., y: ...}` JS, expansion ~10x).
 
-Pre-existant (avant Pass 1), pas une regression introduite par les commits
-Phase 2.X. Mais maintenant que tous les autres bottlenecks sont resolus, c'est
-le dernier obstacle au LCP < 2.5 s mobile.
+Donc le bottleneck **n'est pas le reseau** (84 KB / ~20 KB gz = <100 ms en 4G
+simule). Les vrais blockers main thread :
 
-**Solution recommandee** :
+1. `JSON.parse(82 KB)` : ~30-80 ms sur mobile mid-range
+2. **Transformation `paths[].subpaths[][x, y]` → `Segment[]`** dans
+   `FoxAnimationV29.tsx:896-905` : iteration sur ~3000-5000 points, allocations
+   d'objets {x, y} : 80-150 ms
+3. **`stitchSegments(segments, threshold)` O(n²)** dans
+   `FoxAnimationV29.tsx:227-272` : double boucle sur les segments avec calcul
+   `Math.hypot` × 4 par paire. Avec ~80 segments c'est ~6400 hypot/iteration ×
+   plusieurs iterations (while changed) = **300-500 ms sur mobile**
+4. `splitSegments` + `trySplitRoundtrip` qui suivent : ~50-100 ms
 
-1. **Chunker `fox-paths.json`** en plusieurs fichiers paresseux (ex : par phase
-   d'animation — 4-6 fichiers de ~400 KB chacun, charges en sequence pendant
-   l'animation). Reduit le fetch initial a ~400 KB.
-2. **Web Worker pour `JSON.parse` + `stitchSegments`** : deplacer dans un
-   `fox-paths.worker.ts` (Vite + Rolldown supportent `?worker` import suffix).
-   Le main thread reste libre, le canvas commence a animer des que le 1er
-   chunk est parse cote worker.
-3. **Compression assets** : verifier que le serveur sert `fox-paths.json` en
-   `Content-Encoding: gzip` ou `br` (audit Pass 1 indiquait absence du header).
+**Total main-thread block** : ~500-800 ms apres LCP, ce qui pousse la fenetre
+"largest contentful element stable" au-dela de 2.5 s.
 
-**Impact attendu** : LCP homepage mobile **2.5 s -> ~1.8-2.0 s**. Bonus : TBT
-mobile post-LCP qui etait ~9 s tombe aussi (parsing + stitching off-main).
+#### Solution : Web Worker pour parse + transform + stitch
 
-**Effort** : ~1-1.5 jour (chunking + worker + compression server check).
+**Pas besoin de chunker** (84 KB est negligeable cote reseau). Un seul
+`fox-paths.worker.ts` qui fait tout off-main :
 
-**Liens** :
+```
+[Worker]                              [Main thread]
+fetch fox-paths.json                  postMessage 'init' → worker
+JSON.parse                            (continue rendering hero,
+transform paths → Segment[]            CTAs, sections — non bloque)
+stitchSegments O(n²)                  
+filter minSegmentLength               
+trySplitRoundtrip + trim              
+postMessage 'ready' → main ──────►    worker.onmessage : segments prets
+                                      → calculatePathLength sur main (rapide)
+                                      → start RAF animation
+```
+
+#### Plan d'action detaille (8h estimees)
+
+**Step 1 — Extraction types + helpers purs (1h)**
+- Creer `react-islands/src/components/hero/fox-paths.types.ts` :
+  - `type Pt = { x: number; y: number }`
+  - `type Segment = { points: Pt[]; color: string; parentId: string; length?: number }`
+  - `type FoxPathsData = { canvas: [number, number]; paths: Array<{...}> }`
+  - `type WorkerMsgIn = { type: 'init'; jsonUrl: string; stitchThreshold: number; minSegmentLength: number; trimRatio: number }`
+  - `type WorkerMsgOut = { type: 'ready'; canvas: [number, number]; segments: Segment[] } | { type: 'error'; message: string }`
+
+**Step 2 — Creer le worker (3h)**
+- Creer `react-islands/src/components/hero/fox-paths.worker.ts`
+- Importer types depuis fox-paths.types.ts
+- Implementer `onmessage` qui :
+  1. fetch + json.parse
+  2. transform paths → segments (copie du code FoxAnimationV29.tsx:896-905)
+  3. stitchSegments (copie de FoxAnimationV29.tsx:227-272)
+  4. calculatePathLength + filter
+  5. trySplitRoundtrip + trim cusps (copie de FoxAnimationV29.tsx:911-...)
+  6. postMessage ready
+- Ne PAS importer React ni rien lie au DOM (worker context)
+
+**Step 3 — Refactor FoxAnimationV29.tsx (2h)**
+- Remplacer la chaine `loadJson = fetch(...).then(...)` (L890) par :
+  ```ts
+  const Worker = new Worker(
+    new URL('./fox-paths.worker.ts', import.meta.url),
+    { type: 'module' },
+  )
+  Worker.postMessage({ type: 'init', jsonUrl: CONFIG.jsonUrl, ... })
+  Worker.onmessage = (e) => {
+    if (e.data.type === 'error') { /* fallback main thread */ return }
+    originalWidth = e.data.canvas[0]
+    originalHeight = e.data.canvas[1]
+    segments = e.data.segments
+    // continue : calculatePathLength, RAF setup, etc.
+  }
+  ```
+- Garder un **fallback main-thread** si Worker echoue (CSP strict, browser
+  vieux, etc.) : on importe la meme logique pure depuis fox-paths.types.ts
+  helpers et on l'execute en async chunks via `requestIdleCallback`.
+
+**Step 4 — Tests (1h)**
+- Visuel : fox doit etre identique (frame par frame) — capture animation 5 s
+  avant/apres et compare.
+- Network : verifier que le worker fait bien le fetch (pas 2× le main thread).
+- Lighthouse : staging mobile homepage avant/apres. Cible LCP < 2.3 s.
+
+**Step 5 — Cleanup + commit + deploy staging (1h)**
+- Supprimer le code transform/stitch redondant de FoxAnimationV29.tsx (sauf
+  fallback)
+- Commit avec message detaille
+- Deploy staging + test
+- Re-run Lighthouse Pass 5
+
+#### Acceptance criteria
+
+- [ ] `fox-paths.worker.ts` existe et fait fetch + parse + stitch + filter
+- [ ] FoxAnimationV29.tsx utilise le worker via postMessage
+- [ ] Fallback main-thread present (try/catch + branche alternative)
+- [ ] Visuel fox identique (pas de regression animation)
+- [ ] Lighthouse staging mobile homepage : LCP **< 2.3 s** (gain >= 200 ms)
+- [ ] TBT post-LCP < 200 ms (etait ~500-800 ms)
+- [ ] Bundle worker < 5 KB gzipped (le code est compact)
+- [ ] Aucune regression cybersec / IA (FoxAnimationV29 reste homepage-only)
+
+#### Rollback
+
+Si regression visuelle ou perf en prod : revert le commit. Le code
+`FoxAnimationV29.tsx` original (Phase 2.0-2.4) est preserve en `git log` jusqu'au
+commit precedent ce ticket.
+
+#### Bonus (post-merge si fenetre)
+
+- Compression `fox-paths.json` cote serveur : verifier `Content-Encoding: gzip`
+  ou `br`. Si absent, ajouter dans `.htaccess` ou `staging-hardening.php`.
+  Gain : 84 KB → ~20 KB gz (~75% economisses).
+- Generer un fox-paths.bin (binary protocol au lieu de JSON) : skipper le
+  parse JSON entierement. Gain : ~30-50 ms supplementaires sur mobile.
+  Effort : 0.5-1 j supplementaire. **Pas necessaire si Worker suffit**.
+
+#### Liens
 
 - Composant : `react-islands/src/components/hero/FoxAnimationV29.tsx`
-- Asset : `fox-animation/fox-paths.json` (~2.3 MB)
+  - L227-272 : stitchSegments (a deplacer dans worker)
+  - L890-907 : fetch + parse + transform + stitch chain (a refactorer)
+- Asset : `kadence-child/assets/data/fox-paths.json` (84 KB sur disque)
 - Audit Pass 4 : staging.inaricom.com - 29 avril 2026 (LCP mobile 2529 ms)
+- Vite Worker docs : https://vite.dev/guide/features.html#web-workers
 - A synchroniser comme issue GitHub quand `gh` sera installe
 
 ---
