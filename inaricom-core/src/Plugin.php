@@ -90,6 +90,11 @@ final class Plugin
             $this->services['schema']->register();
         }
 
+        // Endpoint REST custom : POST /wp-json/inaricom/v1/contact
+        // Bypass WPForms pour le formulaire React island /contact/
+        $this->services['contact_endpoint'] = new Contact\ContactEndpoint();
+        $this->services['contact_endpoint']->register();
+
         do_action('inaricom_core_booted', $this);
     }
 

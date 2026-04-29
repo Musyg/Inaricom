@@ -72,6 +72,22 @@ final class ReactLoader
         foreach ($islands_in_page as $island_name) {
             $this->enqueue_island($island_name, $manifest);
         }
+
+        // Injecte la config API pour les islands qui en ont besoin (contact, futurs).
+        // window.inariApi = { root: '/wp-json/', nonce: '...' }
+        // Pose une dependance sur le premier handle enqueue pour que ca apparaisse
+        // dans <head> avant le module island. wp_create_nonce('wp_rest') est lie a
+        // la session courante : visiteur anonyme = nonce anonyme, mais valide par
+        // wp_verify_nonce cote serveur.
+        if (!empty($this->module_handles)) {
+            $first_handle = $this->module_handles[0];
+            $config = sprintf(
+                'window.inariApi = { root: %s, nonce: %s };',
+                wp_json_encode(esc_url_raw(rest_url())),
+                wp_json_encode(wp_create_nonce('wp_rest'))
+            );
+            wp_add_inline_script($first_handle, $config, 'before');
+        }
     }
 
     /**
@@ -242,10 +258,14 @@ final class ReactLoader
             return $tag;
         }
 
-        // Remplace `<script ...src=` par `<script type="module" crossorigin ...src=`
-        // Une seule occurrence (le tag du handle courant).
+        // Cible uniquement le tag <script> qui a un attribut `src=` (le bundle Vite),
+        // PAS les inline scripts qu'on a injectes via wp_add_inline_script. WordPress
+        // peut concatener plusieurs <script> dans le meme $tag (inline before + main +
+        // inline after), donc une regex globale "remplacer tous les <script\s" ajouterait
+        // type=module aux inline aussi (qu'ils aient des imports ou non, ca casse rien),
+        // mais on prefere etre precis : on ne touche que le script src=.
         return (string) preg_replace(
-            '/<script(\s)/',
+            '/<script(\s+[^>]*\bsrc=)/',
             '<script type="module" crossorigin$1',
             $tag,
             1
