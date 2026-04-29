@@ -5,6 +5,21 @@
 
 ---
 
+## 2026-04-29 (PM) — Bascule prod + theme bleu corrections + perf fox-worker
+
+- **Bascule prod** (tag `prod-20260429-144213`) via `scripts/deploy-prod.sh` puis `deploy-prod-post.sh` : 5 logos repaintes royal blue, snippets 684/740 desactives, 7 pages legales en island, /a-propos/ (1074) + /contact/ (374) en island, mu-plugin REST lightweight actif. Smoke wp-login + wp-json/legal = 200.
+- **Snippet 347 prod** patch (87 selectors data-theme bleu) : `patch_347_prod_cyan_to_royalblue.py` Python pull/patch/push (25× #00d4ff + 27× rgba 0,212,255 -> royal blue) + `patch_347_block2_text_white.php` 2e bloc texte noir->blanc. Cache regen verifie 0 trace cyan, 55 instances royal blue.
+- **Menu Principal restructure** (idempotent) : Boutique sous Intelligence Artificielle, Articles top-level + 9 categories enfants (Actualites IA, IA Locale, Materiel IA, Raspberry Pi, Tutoriels, LLMs, IA Business, Cloud Hybride, Architecture IA).
+- **Doc cleanup Infomaniak -> SwissCenter** sur 12 fichiers (architecture, backlog, plan refonte, no-swiss-marketing, agents, env.example, snippets/* docs, scripts).
+- **Ticket P1 `perf/fox-paths-worker`** : `src/utils/foxPaths.ts` (helpers extraits) + `src/workers/foxPathsWorker.ts` (DedicatedWorker) + refacto FoxAnimationV29.tsx pour utiliser worker via Vite ?worker import + fallback main thread. Worker chunk 3.65 KB autonome, homepage entry +0.7 KB gz.
+
+**Next session** :
+- Lighthouse Pass 5 mobile sur staging pour confirmer -30 ms LCP homepage (worker fox-paths)
+- Phase 1.C : fox v28 -> OGL + glow additif HDR (6-8j) ou Phase 5 articles SEO pillar 1 pentest PME
+- Phase 4 boutique hardware (Stripe + Twint) si revenue prioritaire
+
+---
+
 ## 2026-04-29 — Refonte cybersec + perf optim + QA Pass 4 GO
 
 - **Refonte page `/accueil-cybersecurite/`** (commit `3f5dce3`) : 7 sections (Hero + StatsBar 4 chiffres choc + 6 vecteurs d'attaque + 4 tarifs publics audits + Methodology stepper + Comparator vs SaaS + CTA). Inspiration trustsec.xyz + stats Verizon DBIR / Astra / Mastercard / OFCS Suisse 2026.
