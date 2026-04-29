@@ -59,7 +59,43 @@ postMessage 'ready' → main ──────►    worker.onmessage : segment
                                       → start RAF animation
 ```
 
-#### Plan d'action detaille (8h estimees)
+#### Plan d'action detaille (8.5 h estimees)
+
+**Step 0 — Gzip server-side (30 min) — A FAIRE EN PREMIER**
+
+Verifier puis activer la compression gzip pour les `application/json`. Effet
+de levier global (tous les fichiers JSON du site beneficient), risque zero,
+cout 5-10 min de config :
+
+1. Verifier l'etat actuel :
+   ```bash
+   curl -H "Accept-Encoding: gzip" -sI \
+     https://staging.inaricom.com/wp-content/themes/kadence-child/assets/data/fox-paths.json \
+     | grep -iE "content-encoding|content-length"
+   ```
+   Si `Content-Encoding: gzip` absent → step suivant.
+
+2. Activer via `.htaccess` racine (ou mieux : `inaricom-security.php` mu-plugin
+   pour rester en code versionne) :
+   ```apache
+   <IfModule mod_deflate.c>
+     AddOutputFilterByType DEFLATE \
+       application/json \
+       application/javascript \
+       text/css \
+       text/html \
+       text/xml
+   </IfModule>
+   ```
+
+3. Re-tester avec curl. Cible : `Content-Length: ~20000` (vs 84242 avant).
+
+**Gain seul** : 64 KB economisses au transfert. Sur mobile 4G simule (~1.5
+Mbps) = ~340 ms reseau gagnees. **Peut suffire** a passer LCP < 2.5 s sans
+faire le worker. **A tester en priorite** avant d'engager les 8 h restantes.
+
+**Si Step 0 suffit (LCP < 2.3 s)** : skip steps 1-5, ticket clos avec un seul
+commit cote mu-plugin. **Sinon** : continuer avec le worker.
 
 **Step 1 — Extraction types + helpers purs (1h)**
 - Creer `react-islands/src/components/hero/fox-paths.types.ts` :
@@ -131,14 +167,15 @@ Si regression visuelle ou perf en prod : revert le commit. Le code
 `FoxAnimationV29.tsx` original (Phase 2.0-2.4) est preserve en `git log` jusqu'au
 commit precedent ce ticket.
 
-#### Bonus (post-merge si fenetre)
+#### Bonus reellement optionnel (skip par defaut)
 
-- Compression `fox-paths.json` cote serveur : verifier `Content-Encoding: gzip`
-  ou `br`. Si absent, ajouter dans `.htaccess` ou `staging-hardening.php`.
-  Gain : 84 KB → ~20 KB gz (~75% economisses).
-- Generer un fox-paths.bin (binary protocol au lieu de JSON) : skipper le
-  parse JSON entierement. Gain : ~30-50 ms supplementaires sur mobile.
-  Effort : 0.5-1 j supplementaire. **Pas necessaire si Worker suffit**.
+- ~~Compression gzip server-side~~ : **promu en Step 0** ci-dessus (gain
+  systemique trop bon vs cout 30 min — toujours a faire).
+- **Binary protocol au lieu de JSON** (skip parse, ~30-50 ms gain) : effort
+  0.5-1 j, complexite long-terme (encoder + decoder custom + regen a chaque
+  update SVG fox), debug plus dur. **Skip par defaut** — a reconsiderer
+  uniquement si Worker (Steps 1-5) ne suffit pas et qu'on veut chasser les
+  derniers 50 ms (improbable, on aura deja largement passe le seuil 2.5 s).
 
 #### Liens
 
