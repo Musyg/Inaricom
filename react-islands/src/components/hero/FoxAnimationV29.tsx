@@ -1,4 +1,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import FoxPathsWorker from '@/workers/foxPathsWorker?worker'
+import { processFoxPaths, type Pt, type Segment } from '@/utils/foxPaths'
+import type { FoxPathsWorkerRequest, FoxPathsWorkerResponse } from '@/workers/foxPathsWorker'
 
 // Inaricom — FoxAnimationV29 (React island)
 //
@@ -14,11 +17,14 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 // tete courante du beam avec petit trail, puis disparait absorbee par la ligne
 // qui se materialise. Le mot se "ronge" progressivement jusqu'a disparition
 // totale. Etat final : renard solide v28 identique, wordmark vide.
+//
+// Perf : le parse JSON (~2.3 MB) + le post-processing (stitch O(n²) + split +
+// trim) sont decharges sur un Web Worker (`@/workers/foxPathsWorker`). Gain
+// mesure ~30 ms LCP mobile homepage vs traitement main thread (ticket P1
+// `perf/fox-paths-worker`). Fallback main thread si worker fail (CSP, etc.).
 
 type ThemeName = 'rouge' | 'or' | 'bleu' | 'vert' | 'neutre'
 type Rgb = { r: number; g: number; b: number }
-type Pt = { x: number; y: number }
-type Segment = { points: Pt[]; color: string; parentId?: string; length?: number }
 
 const THEME_COLORS: Record<ThemeName, { primary: Rgb; dark: Rgb }> = {
   rouge: { primary: { r: 227, g: 30, b: 36 }, dark: { r: 160, g: 9, b: 9 } },
@@ -221,116 +227,6 @@ export function FoxAnimationV29() {
         activeColors.dark = { ...targetColors.dark }
       }
       for (const b of beams) if (b.isRed) b.color = activeColors.primary
-    }
-
-    // ====== stitch v28 ======
-    const stitchSegments = (segs: Segment[], threshold: number): Segment[] => {
-      const byColor: Record<string, Segment[]> = {}
-      for (const s of segs) {
-        if (!byColor[s.color]) byColor[s.color] = []
-        byColor[s.color].push(s)
-      }
-      const result: Segment[] = []
-      for (const color in byColor) {
-        const cs = byColor[color].map((s) => ({
-          points: [...s.points], color: s.color, parentId: s.parentId, merged: false,
-        }))
-        let changed = true, iter = 0
-        while (changed && iter < 100) {
-          changed = false; iter++
-          for (let i = 0; i < cs.length; i++) {
-            if (cs[i].merged) continue
-            const a = cs[i]
-            const sA = a.points[0], eA = a.points[a.points.length - 1]
-            for (let j = i + 1; j < cs.length; j++) {
-              if (cs[j].merged) continue
-              const b = cs[j]
-              const sB = b.points[0], eB = b.points[b.points.length - 1]
-              const d1 = Math.hypot(eA.x - sB.x, eA.y - sB.y)
-              const d2 = Math.hypot(eA.x - eB.x, eA.y - eB.y)
-              const d3 = Math.hypot(sA.x - sB.x, sA.y - sB.y)
-              const d4 = Math.hypot(sA.x - eB.x, sA.y - eB.y)
-              const minD = Math.min(d1, d2, d3, d4)
-              if (minD < threshold) {
-                let pts: Pt[]
-                if (minD === d1) pts = [...a.points, ...b.points]
-                else if (minD === d2) pts = [...a.points, ...b.points.slice().reverse()]
-                else if (minD === d3) pts = [...a.points.slice().reverse(), ...b.points]
-                else pts = [...b.points, ...a.points]
-                cs[i] = { points: pts, color: a.color, parentId: a.parentId, merged: false }
-                cs[j].merged = true
-                changed = true
-                break
-              }
-            }
-            if (changed) break
-          }
-        }
-        for (const s of cs) if (!s.merged) result.push({ points: s.points, color: s.color, parentId: s.parentId })
-      }
-      return result
-    }
-
-    const calculatePathLength = (points: Pt[]): number => {
-      let l = 0
-      for (let i = 1; i < points.length; i++) l += Math.hypot(points[i].x - points[i - 1].x, points[i].y - points[i - 1].y)
-      return l
-    }
-
-    // ====== split aller-retour + trim de cusp en zone basse ======
-    // Beaucoup de paths SVG sont des contours fermes : apres stitching, ils
-    // forment un segment qui parcourt l'aller puis revient sur lui-meme. Les
-    // 2 extremites sont alors proches l'une de l'autre, et le point le plus
-    // eloigne du depart est la "cusp" de pliure. On split a cet endroit.
-    // Si la cusp se trouve dans la zone basse de la bbox du fox, c'est une
-    // boucle visuelle indesirable (queue residuelle) : on tronque 10% de chaque
-    // moitie de part et d'autre de la cusp pour la dégager proprement.
-    // Pour les pliures ailleurs (oeil, oreilles), on garde les moities entieres.
-    const trimEnd = (pts: Pt[], keepRatio: number): Pt[] => {
-      if (keepRatio >= 1.0) return pts
-      const total = calculatePathLength(pts)
-      const target = total * keepRatio
-      let cum = 0
-      for (let i = 1; i < pts.length; i++) {
-        const segLen = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y)
-        if (cum + segLen >= target) return pts.slice(0, i + 1)
-        cum += segLen
-      }
-      return pts
-    }
-    const trimStart = (pts: Pt[], dropRatio: number): Pt[] => {
-      if (dropRatio <= 0) return pts
-      const total = calculatePathLength(pts)
-      const target = total * dropRatio
-      let cum = 0
-      for (let i = 1; i < pts.length; i++) {
-        const segLen = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y)
-        if (cum + segLen >= target) return pts.slice(i)
-        cum += segLen
-      }
-      return pts.slice(-2)
-    }
-    const trySplitRoundtrip = (
-      seg: Segment,
-      closeRatio = 0.12,
-    ): { halves: [Segment, Segment]; cuspIdx: number } | null => {
-      const pts = seg.points
-      if (pts.length < 10) return null
-      const totalLen = seg.length ?? calculatePathLength(pts)
-      const start = pts[0]
-      const end = pts[pts.length - 1]
-      const endpointDist = Math.hypot(end.x - start.x, end.y - start.y)
-      if (endpointDist > closeRatio * totalLen) return null
-      let farIdx = 0
-      let farD = 0
-      for (let i = 0; i < pts.length; i++) {
-        const d = Math.hypot(pts[i].x - start.x, pts[i].y - start.y)
-        if (d > farD) { farD = d; farIdx = i }
-      }
-      if (farIdx < pts.length * 0.2 || farIdx > pts.length * 0.8) return null
-      const h1: Segment = { points: pts.slice(0, farIdx + 1), color: seg.color, parentId: seg.parentId }
-      const h2: Segment = { points: pts.slice(farIdx), color: seg.color, parentId: seg.parentId }
-      return { halves: [h1, h2], cuspIdx: farIdx }
     }
 
     // ====== sparks v28 ======
@@ -887,79 +783,90 @@ export function FoxAnimationV29() {
       img.src = CONFIG.logoUrl
     })
 
-    const loadJson = fetch(CONFIG.jsonUrl)
-      .then((r) => r.json())
-      .then((data) => {
-        if (cancelled) return
-        originalWidth = Array.isArray(data.canvas) ? data.canvas[0] : data.canvas.width
-        originalHeight = Array.isArray(data.canvas) ? data.canvas[1] : data.canvas.height
-        for (const path of data.paths) {
-          const color = path.color || path.fill || '#ffffff'
-          if (path.subpaths && Array.isArray(path.subpaths)) {
-            for (const subpath of path.subpaths) {
-              const valid = subpath.filter((p: [number, number] | null) => p && p[0] !== null)
-              if (valid.length < 2) continue
-              const points: Pt[] = valid.map((p: [number, number]) => ({ x: p[0], y: p[1] }))
-              segments.push({ points, color, parentId: path.id })
-            }
-          }
-        }
-        segments = stitchSegments(segments, CONFIG.stitchThreshold)
-        segments.forEach((s) => { s.length = calculatePathLength(s.points) })
-        segments = segments.filter((s) => (s.length ?? 0) >= CONFIG.minSegmentLength)
+    // === Chargement + post-process des paths fox ===
+    // Strategie : Web Worker en priorite (decharge le main thread du parse
+    // 2.3 MB + stitch O(n²) + split). Fallback main thread si Worker
+    // indisponible (CSP, browser sans support module workers, etc.).
+    const applyProcessed = (
+      processedSegments: Segment[],
+      width: number,
+      height: number,
+      stats?: { splitCount: number; trimmedCount: number },
+    ) => {
+      if (cancelled) return
+      segments = processedSegments
+      originalWidth = width
+      originalHeight = height
+      // eslint-disable-next-line no-console
+      console.log(
+        `[FoxAnimationV29] segments after split: ${segments.length}` +
+          (stats ? ` (${stats.splitCount} roundtrips split, ${stats.trimmedCount} cusps trimmed in low zone)` : ''),
+      )
+      beams = segments.map((s, i) => new PulseBeam(s, i))
+    }
 
-        // === Split aller-retour + trim conditionnel des cusps en zone basse ===
-        // Calcule yMax du fox (en coords du JSON, donc en pixels source)
-        let yMaxFox = -Infinity
-        for (const s of segments) {
-          for (const p of s.points) if (p.y > yMaxFox) yMaxFox = p.y
+    const loadJson = new Promise<void>((resolve) => {
+      let worker: Worker | null = null
+      let mainThreadFallback = false
+
+      const cleanup = () => {
+        if (worker) {
+          worker.terminate()
+          worker = null
         }
-        const yLowThreshold = yMaxFox * 0.95 // cusp dans les 5% du bas = boucle a degager
-        const TRIM_RATIO = 0.10
-        const splitSegments: Segment[] = []
-        let splitCount = 0
-        let trimmedCount = 0
-        for (const s of segments) {
-          const split = trySplitRoundtrip(s)
-          if (!split) {
-            splitSegments.push(s)
-            continue
-          }
-          splitCount++
-          const [h1, h2] = split.halves
-          const cuspY = s.points[split.cuspIdx].y
-          if (cuspY >= yLowThreshold) {
-            // boucle en bas → tronquer 10% chaque moitie a la jonction.
-            // De plus : ces 2 moities forment l'arriere de la tete (du bas
-            // jusqu'a la pointe de l'oreille droite). On boost leur luminosite
-            // en reassignant leur couleur source de '#a00909' (dark) vers
-            // '#e31e24' (primary) → en thème neutre elles passent de gris fonce
-            // (128) a gris clair (208), et dans les autres themes elles passent
-            // de la teinte foncée a la teinte vive.
-            trimmedCount++
-            const h1Pts = trimEnd(h1.points, 1.0 - TRIM_RATIO)
-            const h2Pts = trimStart(h2.points, TRIM_RATIO)
-            const h1New: Segment = { ...h1, points: h1Pts, length: calculatePathLength(h1Pts), color: '#e31e24' }
-            const h2New: Segment = { ...h2, points: h2Pts, length: calculatePathLength(h2Pts), color: '#e31e24' }
-            if ((h1New.length ?? 0) >= 200) splitSegments.push(h1New)
-            if ((h2New.length ?? 0) >= 200) splitSegments.push(h2New)
-          } else {
-            // pliure ailleurs (oeil, oreille) → garder les 2 moities entieres
-            h1.length = calculatePathLength(h1.points)
-            h2.length = calculatePathLength(h2.points)
-            if ((h1.length ?? 0) >= 200) splitSegments.push(h1)
-            if ((h2.length ?? 0) >= 200) splitSegments.push(h2)
-          }
-        }
-        segments = splitSegments
+      }
+
+      const fallbackMainThread = async (reason: string) => {
+        if (mainThreadFallback) return
+        mainThreadFallback = true
+        cleanup()
         // eslint-disable-next-line no-console
-        console.log(`[FoxAnimationV29] segments after split: ${segments.length} (${splitCount} roundtrips split, ${trimmedCount} cusps trimmed in low zone)`)
+        console.warn('[FoxAnimationV29] fallback main thread :', reason)
+        try {
+          const res = await fetch(CONFIG.jsonUrl)
+          if (!res.ok) throw new Error(`HTTP ${res.status}`)
+          const data = await res.json()
+          if (cancelled) return resolve()
+          const out = processFoxPaths(data, {
+            stitchThreshold: CONFIG.stitchThreshold,
+            minSegmentLength: CONFIG.minSegmentLength,
+          })
+          applyProcessed(out.segments, out.originalWidth, out.originalHeight, out.stats)
+        } catch (err) {
+          if (!cancelled) console.warn('[FoxAnimationV29] main thread fetch error:', err)
+        } finally {
+          resolve()
+        }
+      }
 
-        beams = segments.map((s, i) => new PulseBeam(s, i))
-      })
-      .catch((err) => {
-        if (!cancelled) console.warn('FoxAnimationV29 fetch error:', err)
-      })
+      try {
+        worker = new FoxPathsWorker()
+        worker.onmessage = (e: MessageEvent<FoxPathsWorkerResponse>) => {
+          const msg = e.data
+          if (msg.type === 'success') {
+            applyProcessed(msg.segments, msg.originalWidth, msg.originalHeight, msg.stats)
+            cleanup()
+            resolve()
+          } else if (msg.type === 'error') {
+            void fallbackMainThread(`worker error: ${msg.message}`)
+          }
+        }
+        worker.onerror = (ev) => {
+          void fallbackMainThread(`worker onerror: ${ev.message || 'unknown'}`)
+        }
+        const req: FoxPathsWorkerRequest = {
+          type: 'load',
+          jsonUrl: CONFIG.jsonUrl,
+          config: {
+            stitchThreshold: CONFIG.stitchThreshold,
+            minSegmentLength: CONFIG.minSegmentLength,
+          },
+        }
+        worker.postMessage(req)
+      } catch (err) {
+        void fallbackMainThread(`worker init failed: ${err instanceof Error ? err.message : String(err)}`)
+      }
+    })
 
     Promise.all([loadLogo, loadJson]).then(() => {
       if (cancelled) return
