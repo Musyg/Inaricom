@@ -36,6 +36,7 @@ export default defineConfig(({ command }) => ({
         legal: path.resolve(__dirname, 'src/islands/legal.tsx'),
         'audit-web': path.resolve(__dirname, 'src/islands/audit-web.tsx'),
         'audit-infra': path.resolve(__dirname, 'src/islands/audit-infra.tsx'),
+        'audit-smart-contract': path.resolve(__dirname, 'src/islands/audit-smart-contract.tsx'),
       },
       output: {
         entryFileNames: 'js/[name]-[hash].js',
